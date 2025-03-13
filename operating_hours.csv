@@ -1,0 +1,840 @@
+outlet_name,day_of_week,opening_time,closing_time,is_closed
+Subway Menara UOA Bangsar,Monday,08:00:00,20:00:00,False
+Subway Menara UOA Bangsar,Tuesday,08:00:00,20:00:00,False
+Subway Menara UOA Bangsar,Wednesday,08:00:00,20:00:00,False
+Subway Menara UOA Bangsar,Thursday,08:00:00,20:00:00,False
+Subway Menara UOA Bangsar,Friday,08:00:00,20:00:00,False
+Subway Menara UOA Bangsar,Saturday,08:00:00,20:00:00,False
+Subway Menara UOA Bangsar,Sunday,08:00:00,20:00:00,False
+Subway One Utama,Monday,08:00:00,22:00:00,False
+Subway One Utama,Tuesday,08:00:00,22:00:00,False
+Subway One Utama,Wednesday,08:00:00,22:00:00,False
+Subway One Utama,Thursday,08:00:00,22:00:00,False
+Subway One Utama,Friday,08:00:00,22:30:00,False
+Subway One Utama,Saturday,08:00:00,22:30:00,False
+Subway One Utama,Sunday,08:00:00,22:00:00,False
+Subway Jln Pinang,Saturday,08:00:00,21:00:00,False
+Subway Jln Pinang,Sunday,11:30:00,18:30:00,False
+Subway UOA Damansara,Saturday,08:00:00,20:30:00,False
+Subway UOA Damansara,Sunday,,,True
+Subway The Mines,Monday,10:00:00,22:00:00,False
+Subway The Mines,Tuesday,10:00:00,22:00:00,False
+Subway The Mines,Wednesday,10:00:00,22:00:00,False
+Subway The Mines,Thursday,10:00:00,22:00:00,False
+Subway The Mines,Friday,10:00:00,22:00:00,False
+Subway The Mines,Saturday,10:00:00,22:00:00,False
+Subway The Mines,Sunday,10:00:00,22:00:00,False
+Subway Mont Kiara,Monday,10:00:00,22:00:00,False
+Subway Mont Kiara,Tuesday,10:00:00,22:00:00,False
+Subway Mont Kiara,Wednesday,10:00:00,22:00:00,False
+Subway Mont Kiara,Thursday,10:00:00,22:00:00,False
+Subway Mont Kiara,Friday,10:00:00,22:00:00,False
+Subway Mont Kiara,Saturday,10:00:00,22:00:00,False
+Subway Mont Kiara,Sunday,10:00:00,22:00:00,False
+Subway Amcorp Mall,Friday,09:00:00,22:00:00,False
+Subway Amcorp Mall,Sunday,10:00:00,22:00:00,False
+Subway Avenue K,Monday,08:00:00,22:00:00,False
+Subway Avenue K,Tuesday,08:00:00,22:00:00,False
+Subway Avenue K,Wednesday,08:00:00,22:00:00,False
+Subway Avenue K,Thursday,08:00:00,22:00:00,False
+Subway Avenue K,Friday,08:00:00,22:00:00,False
+Subway Avenue K,Saturday,08:00:00,22:00:00,False
+Subway Avenue K,Sunday,08:00:00,22:00:00,False
+Subway Center Point,Monday,08:00:00,22:00:00,False
+Subway Center Point,Wednesday,08:00:00,22:30:00,False
+Subway Center Point,Thursday,08:00:00,21:00:00,False
+Subway Center Point,Saturday,08:00:00,23:00:00,False
+Subway Center Point,Sunday,08:00:00,22:30:00,False
+Subway Shell Sunway Mentari,Monday,08:00:00,22:00:00,False
+Subway Shell Sunway Mentari,Tuesday,08:00:00,22:00:00,False
+Subway Shell Sunway Mentari,Wednesday,08:00:00,22:00:00,False
+Subway Shell Sunway Mentari,Thursday,08:00:00,22:00:00,False
+Subway Shell Sunway Mentari,Friday,08:00:00,22:00:00,False
+Subway Shell Sunway Mentari,Saturday,08:00:00,22:00:00,False
+Subway Shell Sunway Mentari,Sunday,08:00:00,22:00:00,False
+Subway Berjaya Times Square,Monday,10:00:00,22:00:00,False
+Subway Berjaya Times Square,Tuesday,10:00:00,22:00:00,False
+Subway Berjaya Times Square,Wednesday,10:00:00,22:00:00,False
+Subway Berjaya Times Square,Thursday,10:00:00,22:00:00,False
+Subway Berjaya Times Square,Friday,10:00:00,22:00:00,False
+Subway Berjaya Times Square,Saturday,10:00:00,22:00:00,False
+Subway Berjaya Times Square,Sunday,10:00:00,22:00:00,False
+Subway Capsquare,Saturday,08:00:00,21:00:00,False
+Subway Capsquare,Sunday,,,True
+Subway University Malaya,Friday,08:00:00,18:30:00,False
+Subway University Malaya,Saturday,08:00:00,15:00:00,False
+Subway University Malaya,Sunday,08:00:00,15:00:00,False
+Subway Wangsa Walk,Monday,09:30:00,21:30:00,False
+Subway Wangsa Walk,Tuesday,09:30:00,21:30:00,False
+Subway Wangsa Walk,Wednesday,09:30:00,21:30:00,False
+Subway Wangsa Walk,Thursday,09:30:00,21:30:00,False
+Subway Wangsa Walk,Friday,09:30:00,21:30:00,False
+Subway Wangsa Walk,Saturday,09:30:00,21:30:00,False
+Subway Wangsa Walk,Sunday,09:30:00,21:30:00,False
+Subway TTDI,Monday,08:30:00,21:00:00,False
+Subway TTDI,Tuesday,08:30:00,21:00:00,False
+Subway TTDI,Wednesday,08:30:00,21:00:00,False
+Subway TTDI,Thursday,08:30:00,21:00:00,False
+Subway TTDI,Friday,08:30:00,21:00:00,False
+Subway TTDI,Saturday,08:30:00,21:00:00,False
+Subway TTDI,Sunday,08:30:00,21:00:00,False
+Subway Plaza Shah Alam,Monday,09:30:00,21:30:00,False
+Subway Plaza Shah Alam,Tuesday,09:30:00,21:30:00,False
+Subway Plaza Shah Alam,Wednesday,09:30:00,21:30:00,False
+Subway Plaza Shah Alam,Thursday,09:30:00,21:30:00,False
+Subway Plaza Shah Alam,Friday,09:30:00,21:30:00,False
+Subway Plaza Shah Alam,Saturday,09:30:00,21:30:00,False
+Subway Plaza Shah Alam,Sunday,09:30:00,21:30:00,False
+Subway Taipan,Monday,08:00:00,20:00:00,False
+Subway Taipan,Tuesday,08:00:00,20:00:00,False
+Subway Taipan,Wednesday,08:00:00,20:00:00,False
+Subway Taipan,Thursday,08:00:00,20:00:00,False
+Subway Taipan,Friday,08:00:00,20:00:00,False
+Subway Taipan,Saturday,08:00:00,20:00:00,False
+Subway Taipan,Sunday,08:00:00,20:00:00,False
+Subway Menara Aras Jaya,Friday,08:00:00,21:00:00,False
+Subway Menara Aras Jaya,Sunday,10:00:00,19:00:00,False
+Subway The Place @ Ampang,Monday,08:30:00,21:00:00,False
+Subway The Place @ Ampang,Tuesday,08:30:00,21:00:00,False
+Subway The Place @ Ampang,Wednesday,08:30:00,21:00:00,False
+Subway The Place @ Ampang,Thursday,08:30:00,21:00:00,False
+Subway The Place @ Ampang,Friday,08:30:00,21:00:00,False
+Subway The Place @ Ampang,Saturday,08:30:00,21:00:00,False
+Subway The Place @ Ampang,Sunday,08:30:00,21:00:00,False
+Subway Tesco Kepong,Monday,10:15:00,21:30:00,False
+Subway Tesco Kepong,Tuesday,10:15:00,21:30:00,False
+Subway Tesco Kepong,Wednesday,10:15:00,21:30:00,False
+Subway Tesco Kepong,Thursday,10:15:00,21:30:00,False
+Subway Tesco Kepong,Friday,10:15:00,21:30:00,False
+Subway Tesco Kepong,Saturday,10:15:00,21:30:00,False
+Subway Tesco Kepong,Sunday,10:15:00,21:30:00,False
+Subway Jalan Ipoh,Monday,08:00:00,22:00:00,False
+Subway Jalan Ipoh,Tuesday,08:00:00,22:00:00,False
+Subway Jalan Ipoh,Wednesday,08:00:00,22:00:00,False
+Subway Jalan Ipoh,Thursday,08:00:00,22:00:00,False
+Subway Jalan Ipoh,Friday,08:00:00,22:00:00,False
+Subway Jalan Ipoh,Saturday,08:00:00,22:00:00,False
+Subway Jalan Ipoh,Sunday,08:00:00,22:00:00,False
+Subway Selayang Mall,Monday,09:00:00,22:00:00,False
+Subway Selayang Mall,Tuesday,09:00:00,22:00:00,False
+Subway Selayang Mall,Wednesday,09:00:00,22:00:00,False
+Subway Selayang Mall,Thursday,09:00:00,22:00:00,False
+Subway Selayang Mall,Friday,09:00:00,22:00:00,False
+Subway Selayang Mall,Saturday,09:00:00,22:00:00,False
+Subway Selayang Mall,Sunday,09:00:00,22:00:00,False
+Subway AEON BIG Puchong,Monday,10:00:00,22:00:00,False
+Subway AEON BIG Puchong,Tuesday,10:00:00,22:00:00,False
+Subway AEON BIG Puchong,Wednesday,10:00:00,22:00:00,False
+Subway AEON BIG Puchong,Thursday,10:00:00,22:00:00,False
+Subway AEON BIG Puchong,Friday,10:00:00,22:00:00,False
+Subway AEON BIG Puchong,Saturday,10:00:00,22:00:00,False
+Subway AEON BIG Puchong,Sunday,10:00:00,22:00:00,False
+Subway Seksyen 13,Monday,09:30:00,22:30:00,False
+Subway Seksyen 13,Tuesday,09:30:00,22:30:00,False
+Subway Seksyen 13,Wednesday,09:30:00,22:30:00,False
+Subway Seksyen 13,Thursday,09:30:00,22:30:00,False
+Subway Seksyen 13,Friday,09:30:00,22:30:00,False
+Subway Seksyen 13,Saturday,09:30:00,22:30:00,False
+Subway Seksyen 13,Sunday,09:30:00,22:30:00,False
+Subway Axis Atrium,Monday,08:00:00,21:00:00,False
+Subway Axis Atrium,Tuesday,08:00:00,21:00:00,False
+Subway Axis Atrium,Wednesday,08:00:00,21:00:00,False
+Subway Axis Atrium,Thursday,08:00:00,21:00:00,False
+Subway Axis Atrium,Friday,08:00:00,21:00:00,False
+Subway Axis Atrium,Saturday,08:00:00,21:00:00,False
+Subway Axis Atrium,Sunday,08:00:00,21:00:00,False
+Subway Taman Prima Saujana,Monday,08:00:00,21:30:00,False
+Subway Taman Prima Saujana,Tuesday,08:00:00,21:30:00,False
+Subway Taman Prima Saujana,Wednesday,08:00:00,21:30:00,False
+Subway Taman Prima Saujana,Thursday,08:00:00,21:30:00,False
+Subway Taman Prima Saujana,Friday,08:00:00,21:30:00,False
+Subway Taman Prima Saujana,Saturday,08:00:00,21:30:00,False
+Subway Taman Prima Saujana,Sunday,08:00:00,21:30:00,False
+Subway Cova Square,Monday,08:00:00,21:00:00,False
+Subway Cova Square,Tuesday,08:00:00,21:00:00,False
+Subway Cova Square,Wednesday,08:00:00,21:00:00,False
+Subway Cova Square,Thursday,08:00:00,21:00:00,False
+Subway Cova Square,Friday,08:00:00,21:00:00,False
+Subway Cova Square,Saturday,08:00:00,21:00:00,False
+Subway Cova Square,Sunday,08:00:00,21:00:00,False
+Subway Giant Bandar Kinrara - Puchong,Monday,09:30:00,22:00:00,False
+Subway Giant Bandar Kinrara - Puchong,Tuesday,09:30:00,22:00:00,False
+Subway Giant Bandar Kinrara - Puchong,Wednesday,09:30:00,22:00:00,False
+Subway Giant Bandar Kinrara - Puchong,Thursday,09:30:00,22:00:00,False
+Subway Giant Bandar Kinrara - Puchong,Friday,09:30:00,22:00:00,False
+Subway Giant Bandar Kinrara - Puchong,Saturday,09:30:00,22:00:00,False
+Subway Giant Bandar Kinrara - Puchong,Sunday,09:30:00,22:00:00,False
+Subway One City,Monday,09:00:00,19:45:00,False
+Subway One City,Tuesday,09:00:00,19:45:00,False
+Subway One City,Wednesday,09:00:00,19:45:00,False
+Subway One City,Thursday,09:00:00,19:45:00,False
+Subway One City,Friday,09:00:00,19:45:00,False
+Subway One City,Saturday,09:00:00,19:45:00,False
+Subway One City,Sunday,09:00:00,19:45:00,False
+Subway Southgate,Monday,08:00:00,21:00:00,False
+Subway Southgate,Tuesday,08:00:00,21:00:00,False
+Subway Southgate,Wednesday,08:00:00,21:00:00,False
+Subway Southgate,Thursday,08:00:00,21:00:00,False
+Subway Southgate,Friday,08:00:00,21:00:00,False
+Subway Southgate,Saturday,08:00:00,21:00:00,False
+Subway Southgate,Sunday,08:00:00,21:00:00,False
+Subway Brem Mall,Monday,08:00:00,22:00:00,False
+Subway Brem Mall,Tuesday,08:00:00,22:00:00,False
+Subway Brem Mall,Wednesday,08:00:00,22:00:00,False
+Subway Brem Mall,Thursday,08:00:00,22:00:00,False
+Subway Brem Mall,Friday,08:00:00,22:00:00,False
+Subway Brem Mall,Saturday,08:00:00,22:00:00,False
+Subway Brem Mall,Sunday,08:00:00,22:00:00,False
+Subway Festival City,Monday,10:00:00,22:00:00,False
+Subway Festival City,Tuesday,10:00:00,22:00:00,False
+Subway Festival City,Wednesday,10:00:00,22:00:00,False
+Subway Festival City,Thursday,10:00:00,22:00:00,False
+Subway Festival City,Friday,10:00:00,22:00:00,False
+Subway Festival City,Saturday,10:00:00,22:00:00,False
+Subway Festival City,Sunday,10:00:00,22:00:00,False
+Subway Aeon Big Wangsamaju,Monday,10:00:00,22:00:00,False
+Subway Aeon Big Wangsamaju,Tuesday,10:00:00,22:00:00,False
+Subway Aeon Big Wangsamaju,Wednesday,10:00:00,22:00:00,False
+Subway Aeon Big Wangsamaju,Thursday,10:00:00,22:00:00,False
+Subway Aeon Big Wangsamaju,Friday,10:00:00,22:00:00,False
+Subway Aeon Big Wangsamaju,Saturday,10:00:00,22:00:00,False
+Subway Aeon Big Wangsamaju,Sunday,10:00:00,22:00:00,False
+Subway Endah Parade,Monday,08:00:00,22:00:00,False
+Subway Endah Parade,Tuesday,08:00:00,22:00:00,False
+Subway Endah Parade,Wednesday,08:00:00,22:00:00,False
+Subway Endah Parade,Thursday,08:00:00,22:00:00,False
+Subway Endah Parade,Friday,08:00:00,22:00:00,False
+Subway Endah Parade,Saturday,08:00:00,22:00:00,False
+Subway Endah Parade,Sunday,08:00:00,22:00:00,False
+Subway NKVE,Monday,10:00:00,21:00:00,False
+Subway NKVE,Tuesday,10:00:00,21:00:00,False
+Subway NKVE,Wednesday,10:00:00,21:00:00,False
+Subway NKVE,Thursday,10:00:00,21:00:00,False
+Subway NKVE,Friday,10:00:00,21:00:00,False
+Subway NKVE,Saturday,10:00:00,21:00:00,False
+Subway NKVE,Sunday,10:00:00,21:00:00,False
+Subway Star Avenue,Monday,10:00:00,22:00:00,False
+Subway Star Avenue,Tuesday,10:00:00,22:00:00,False
+Subway Star Avenue,Wednesday,10:00:00,22:00:00,False
+Subway Star Avenue,Thursday,10:00:00,22:00:00,False
+Subway Star Avenue,Friday,10:00:00,22:00:00,False
+Subway Star Avenue,Saturday,10:00:00,22:00:00,False
+Subway Star Avenue,Sunday,10:00:00,22:00:00,False
+Subway Metro Point,Monday,09:30:00,21:30:00,False
+Subway Metro Point,Tuesday,09:30:00,21:30:00,False
+Subway Metro Point,Wednesday,09:30:00,21:30:00,False
+Subway Metro Point,Thursday,09:30:00,21:30:00,False
+Subway Metro Point,Friday,09:30:00,21:30:00,False
+Subway Metro Point,Saturday,09:30:00,21:30:00,False
+Subway Metro Point,Sunday,09:30:00,21:30:00,False
+Subway Mydin USJ,Monday,10:00:00,22:00:00,False
+Subway Mydin USJ,Tuesday,10:00:00,22:00:00,False
+Subway Mydin USJ,Wednesday,10:00:00,22:00:00,False
+Subway Mydin USJ,Thursday,10:00:00,22:00:00,False
+Subway Mydin USJ,Friday,10:00:00,22:00:00,False
+Subway Mydin USJ,Saturday,10:00:00,22:00:00,False
+Subway Mydin USJ,Sunday,10:00:00,22:00:00,False
+Subway TBS,Monday,10:00:00,20:00:00,False
+Subway TBS,Tuesday,10:00:00,20:00:00,False
+Subway TBS,Wednesday,10:00:00,20:00:00,False
+Subway TBS,Thursday,10:00:00,20:00:00,False
+Subway TBS,Friday,09:00:00,21:00:00,False
+Subway TBS,Saturday,10:00:00,20:00:00,False
+Subway TBS,Sunday,10:00:00,20:00:00,False
+Subway KWC (Kenanga),Monday,10:00:00,20:00:00,False
+Subway KWC (Kenanga),Tuesday,10:00:00,20:00:00,False
+Subway KWC (Kenanga),Wednesday,10:00:00,20:00:00,False
+Subway KWC (Kenanga),Thursday,10:00:00,20:00:00,False
+Subway KWC (Kenanga),Friday,10:00:00,20:00:00,False
+Subway KWC (Kenanga),Saturday,10:00:00,20:00:00,False
+Subway KWC (Kenanga),Sunday,10:00:00,20:00:00,False
+Subway Selayang 18,Monday,08:00:00,21:00:00,False
+Subway Selayang 18,Tuesday,08:00:00,21:00:00,False
+Subway Selayang 18,Wednesday,08:00:00,21:00:00,False
+Subway Selayang 18,Thursday,08:00:00,21:00:00,False
+Subway Selayang 18,Friday,08:00:00,21:00:00,False
+Subway Selayang 18,Saturday,08:00:00,21:00:00,False
+Subway Selayang 18,Sunday,08:00:00,21:00:00,False
+Subway Sime Darby Parkcity,Monday,08:00:00,21:30:00,False
+Subway Sime Darby Parkcity,Tuesday,08:00:00,21:30:00,False
+Subway Sime Darby Parkcity,Wednesday,08:00:00,21:30:00,False
+Subway Sime Darby Parkcity,Thursday,08:00:00,21:30:00,False
+Subway Sime Darby Parkcity,Friday,08:00:00,21:30:00,False
+Subway Sime Darby Parkcity,Saturday,08:00:00,21:30:00,False
+Subway Sime Darby Parkcity,Sunday,08:00:00,21:30:00,False
+Subway TM,Monday,10:00:00,20:00:00,False
+Subway TM,Thursday,08:00:00,20:00:00,False
+Subway TM,Friday,08:20:00,20:00:00,False
+Subway TM,Saturday,09:00:00,21:00:00,False
+Subway TM,Sunday,,,True
+Subway GPS,Monday,08:00:00,23:00:00,False
+Subway GPS,Tuesday,08:00:00,23:00:00,False
+Subway GPS,Wednesday,08:00:00,23:00:00,False
+Subway GPS,Thursday,08:00:00,23:00:00,False
+Subway GPS,Friday,08:00:00,23:00:00,False
+Subway GPS,Saturday,08:00:00,23:00:00,False
+Subway GPS,Sunday,08:00:00,23:00:00,False
+Subway Sunway Lagoon,Monday,10:00:00,18:00:00,False
+Subway Sunway Lagoon,Tuesday,,,True
+Subway Sunway Lagoon,Wednesday,10:00:00,18:00:00,False
+Subway Sunway Lagoon,Thursday,10:00:00,18:00:00,False
+Subway Sunway Lagoon,Friday,10:00:00,18:00:00,False
+Subway Sunway Lagoon,Saturday,10:00:00,18:00:00,False
+Subway Sunway Lagoon,Sunday,10:00:00,18:00:00,False
+Subway Sri Gombak,Monday,08:00:00,22:30:00,False
+Subway Sri Gombak,Tuesday,08:00:00,22:30:00,False
+Subway Sri Gombak,Wednesday,08:00:00,22:30:00,False
+Subway Sri Gombak,Thursday,08:00:00,22:30:00,False
+Subway Sri Gombak,Friday,08:00:00,22:30:00,False
+Subway Sri Gombak,Saturday,08:00:00,22:30:00,False
+Subway Sri Gombak,Sunday,08:00:00,22:30:00,False
+"Subway Trillium, Lake Fields",Monday,08:30:00,22:00:00,False
+"Subway Trillium, Lake Fields",Tuesday,08:30:00,22:00:00,False
+"Subway Trillium, Lake Fields",Wednesday,08:30:00,22:00:00,False
+"Subway Trillium, Lake Fields",Thursday,08:30:00,22:00:00,False
+"Subway Trillium, Lake Fields",Friday,08:30:00,22:00:00,False
+"Subway Trillium, Lake Fields",Saturday,08:30:00,22:00:00,False
+"Subway Trillium, Lake Fields",Sunday,08:30:00,22:00:00,False
+Subway Ikon Connaught,Monday,10:00:00,20:00:00,False
+Subway Ikon Connaught,Tuesday,10:00:00,20:00:00,False
+Subway Ikon Connaught,Wednesday,10:00:00,20:00:00,False
+Subway Ikon Connaught,Thursday,10:00:00,20:00:00,False
+Subway Ikon Connaught,Friday,10:00:00,20:00:00,False
+Subway Ikon Connaught,Saturday,10:00:00,20:00:00,False
+Subway Ikon Connaught,Sunday,10:00:00,20:00:00,False
+Subway Atria,Monday,10:00:00,22:00:00,False
+Subway Atria,Tuesday,10:00:00,22:00:00,False
+Subway Atria,Wednesday,10:00:00,22:00:00,False
+Subway Atria,Thursday,10:00:00,22:00:00,False
+Subway Atria,Friday,10:00:00,22:00:00,False
+Subway Atria,Saturday,10:00:00,22:00:00,False
+Subway Atria,Sunday,10:00:00,22:00:00,False
+Subway SS3,Saturday,08:00:00,22:00:00,False
+Subway SS3,Sunday,08:00:00,21:00:00,False
+Subway Ativo Plaza,Saturday,08:30:00,22:00:00,False
+Subway Ativo Plaza,Sunday,08:30:00,21:30:00,False
+Subway Sunway U,Monday,09:00:00,20:00:00,False
+Subway Sunway U,Tuesday,09:00:00,20:00:00,False
+Subway Sunway U,Wednesday,09:00:00,20:00:00,False
+Subway Sunway U,Thursday,09:00:00,20:00:00,False
+Subway Sunway U,Friday,09:00:00,20:00:00,False
+Subway Sunway U,Saturday,09:00:00,20:00:00,False
+Subway Sunway U,Sunday,09:00:00,20:00:00,False
+Subway Kota Damansara,Monday,08:00:00,20:00:00,False
+Subway Kota Damansara,Tuesday,08:00:00,20:00:00,False
+Subway Kota Damansara,Wednesday,08:00:00,20:00:00,False
+Subway Kota Damansara,Thursday,08:00:00,20:00:00,False
+Subway Kota Damansara,Friday,08:00:00,20:00:00,False
+Subway Kota Damansara,Saturday,08:00:00,20:00:00,False
+Subway Kota Damansara,Sunday,08:00:00,20:00:00,False
+Subway OUG,Monday,09:00:00,22:00:00,False
+Subway OUG,Tuesday,09:00:00,22:00:00,False
+Subway OUG,Wednesday,09:00:00,22:00:00,False
+Subway OUG,Thursday,09:00:00,22:00:00,False
+Subway OUG,Friday,09:00:00,22:00:00,False
+Subway OUG,Saturday,09:00:00,22:00:00,False
+Subway OUG,Sunday,09:00:00,22:00:00,False
+Subway Petronas Kesas,Saturday,07:30:00,22:00:00,False
+Subway Petronas Kesas,Sunday,08:00:00,22:00:00,False
+Subway Sri Petaling,Monday,08:00:00,22:00:00,False
+Subway Sri Petaling,Tuesday,08:00:00,22:00:00,False
+Subway Sri Petaling,Wednesday,08:00:00,22:00:00,False
+Subway Sri Petaling,Thursday,08:00:00,22:00:00,False
+Subway Sri Petaling,Friday,08:00:00,22:00:00,False
+Subway Sri Petaling,Saturday,08:00:00,22:00:00,False
+Subway Sri Petaling,Sunday,08:00:00,22:00:00,False
+Subway Puncak Jalil,Monday,09:00:00,22:00:00,False
+Subway Puncak Jalil,Tuesday,09:00:00,22:00:00,False
+Subway Puncak Jalil,Wednesday,09:00:00,22:00:00,False
+Subway Puncak Jalil,Thursday,09:00:00,22:00:00,False
+Subway Puncak Jalil,Friday,09:00:00,22:00:00,False
+Subway Puncak Jalil,Saturday,09:00:00,22:00:00,False
+Subway Puncak Jalil,Sunday,09:00:00,22:00:00,False
+Subway Aeon Alpha Angle,Monday,10:00:00,22:00:00,False
+Subway Aeon Alpha Angle,Tuesday,10:00:00,22:00:00,False
+Subway Aeon Alpha Angle,Wednesday,10:00:00,22:00:00,False
+Subway Aeon Alpha Angle,Thursday,10:00:00,22:00:00,False
+Subway Aeon Alpha Angle,Friday,10:00:00,22:00:00,False
+Subway Aeon Alpha Angle,Saturday,10:00:00,22:00:00,False
+Subway Aeon Alpha Angle,Sunday,10:00:00,22:00:00,False
+Subway My Town,Monday,10:00:00,22:00:00,False
+Subway My Town,Tuesday,10:00:00,22:00:00,False
+Subway My Town,Wednesday,10:00:00,22:00:00,False
+Subway My Town,Thursday,10:00:00,22:00:00,False
+Subway My Town,Friday,10:00:00,22:00:00,False
+Subway My Town,Saturday,10:00:00,22:00:00,False
+Subway My Town,Sunday,10:00:00,22:00:00,False
+Subway Utropolis,Monday,08:30:00,21:00:00,False
+Subway Utropolis,Tuesday,08:30:00,21:00:00,False
+Subway Utropolis,Wednesday,08:30:00,21:00:00,False
+Subway Utropolis,Thursday,08:30:00,21:00:00,False
+Subway Utropolis,Friday,08:30:00,21:00:00,False
+Subway Utropolis,Saturday,08:30:00,21:00:00,False
+Subway Utropolis,Sunday,08:30:00,21:00:00,False
+Subway Great Eastern Mall,Friday,08:30:00,20:30:00,False
+Subway Great Eastern Mall,Sunday,09:30:00,20:30:00,False
+Subway NU Sentral,Monday,09:00:00,21:00:00,False
+Subway NU Sentral,Tuesday,09:00:00,21:00:00,False
+Subway NU Sentral,Wednesday,09:00:00,21:00:00,False
+Subway NU Sentral,Thursday,09:00:00,21:00:00,False
+Subway NU Sentral,Friday,09:00:00,21:00:00,False
+Subway NU Sentral,Saturday,09:00:00,21:00:00,False
+Subway NU Sentral,Sunday,09:00:00,21:00:00,False
+Subway IOI City Mall,Monday,10:00:00,21:00:00,False
+Subway IOI City Mall,Tuesday,10:00:00,21:00:00,False
+Subway IOI City Mall,Wednesday,10:00:00,21:00:00,False
+Subway IOI City Mall,Thursday,10:00:00,21:00:00,False
+Subway IOI City Mall,Friday,10:00:00,21:00:00,False
+Subway IOI City Mall,Saturday,10:00:00,21:00:00,False
+Subway IOI City Mall,Sunday,10:00:00,21:00:00,False
+Subway Sunway Putra,Monday,10:00:00,22:00:00,False
+Subway Sunway Putra,Tuesday,10:00:00,22:00:00,False
+Subway Sunway Putra,Wednesday,10:00:00,22:00:00,False
+Subway Sunway Putra,Thursday,10:00:00,22:00:00,False
+Subway Sunway Putra,Friday,10:00:00,22:00:00,False
+Subway Sunway Putra,Saturday,10:00:00,22:00:00,False
+Subway Sunway Putra,Sunday,10:00:00,22:00:00,False
+Subway Sunway Pinnacle,Friday,08:00:00,20:00:00,False
+Subway Sunway Pinnacle,Saturday,09:00:00,18:00:00,False
+Subway Sunway Pinnacle,Sunday,,,True
+Subway Melawati Mall,Monday,10:00:00,22:00:00,False
+Subway Melawati Mall,Tuesday,10:00:00,22:00:00,False
+Subway Melawati Mall,Wednesday,10:00:00,22:00:00,False
+Subway Melawati Mall,Thursday,10:00:00,22:00:00,False
+Subway Melawati Mall,Friday,10:00:00,22:00:00,False
+Subway Melawati Mall,Saturday,10:00:00,22:00:00,False
+Subway Melawati Mall,Sunday,10:00:00,22:00:00,False
+Subway Sunway Medical,Monday,08:00:00,20:00:00,False
+Subway Sunway Medical,Tuesday,08:00:00,20:00:00,False
+Subway Sunway Medical,Wednesday,08:00:00,20:00:00,False
+Subway Sunway Medical,Thursday,08:00:00,20:00:00,False
+Subway Sunway Medical,Friday,08:00:00,20:00:00,False
+Subway Sunway Medical,Saturday,08:00:00,20:00:00,False
+Subway Sunway Medical,Sunday,08:00:00,20:00:00,False
+Subway Shell Melati,Monday,08:30:00,18:00:00,False
+Subway Shell Melati,Tuesday,08:30:00,18:00:00,False
+Subway Shell Melati,Wednesday,08:30:00,18:00:00,False
+Subway Shell Melati,Thursday,08:30:00,18:00:00,False
+Subway Shell Melati,Friday,08:30:00,18:00:00,False
+Subway Shell Melati,Saturday,08:30:00,18:00:00,False
+Subway Shell Melati,Sunday,08:30:00,18:00:00,False
+Subway Shell Karak,Monday,08:30:00,22:30:00,False
+Subway Shell Karak,Tuesday,08:30:00,22:30:00,False
+Subway Shell Karak,Wednesday,08:30:00,22:30:00,False
+Subway Shell Karak,Thursday,08:30:00,22:30:00,False
+Subway Shell Karak,Friday,08:30:00,22:30:00,False
+Subway Shell Karak,Saturday,08:30:00,22:30:00,False
+Subway Shell Karak,Sunday,08:30:00,22:30:00,False
+Subway Bukit Jalil,Monday,09:00:00,22:00:00,False
+Subway Bukit Jalil,Tuesday,09:00:00,22:00:00,False
+Subway Bukit Jalil,Wednesday,09:00:00,22:00:00,False
+Subway Bukit Jalil,Thursday,09:00:00,22:00:00,False
+Subway Bukit Jalil,Friday,09:00:00,22:00:00,False
+Subway Bukit Jalil,Saturday,09:00:00,22:00:00,False
+Subway Bukit Jalil,Sunday,09:00:00,22:00:00,False
+Subway Damansara Perdana,Friday,08:00:00,22:00:00,False
+Subway Damansara Perdana,Sunday,08:00:00,21:30:00,False
+Subway Pearl Point,Monday,09:00:00,22:00:00,False
+Subway Pearl Point,Tuesday,09:00:00,22:00:00,False
+Subway Pearl Point,Wednesday,09:00:00,22:00:00,False
+Subway Pearl Point,Thursday,09:00:00,22:00:00,False
+Subway Pearl Point,Friday,09:00:00,22:00:00,False
+Subway Pearl Point,Saturday,09:00:00,22:00:00,False
+Subway Pearl Point,Sunday,09:00:00,22:00:00,False
+Subway Gurney Mall (UTMKL),Monday,08:00:00,21:30:00,False
+Subway Gurney Mall (UTMKL),Sunday,10:00:00,21:30:00,False
+Subway KLTS,Monday,09:00:00,21:30:00,False
+Subway KLTS,Tuesday,09:00:00,21:30:00,False
+Subway KLTS,Wednesday,09:00:00,21:30:00,False
+Subway KLTS,Thursday,09:00:00,21:30:00,False
+Subway KLTS,Friday,09:00:00,21:30:00,False
+Subway KLTS,Saturday,09:00:00,21:30:00,False
+Subway KLTS,Sunday,09:00:00,21:30:00,False
+Subway Jaya One,Monday,10:30:00,21:00:00,False
+Subway Jaya One,Tuesday,10:30:00,21:00:00,False
+Subway Jaya One,Wednesday,10:30:00,21:00:00,False
+Subway Jaya One,Thursday,10:30:00,21:00:00,False
+Subway Jaya One,Friday,10:30:00,21:00:00,False
+Subway Jaya One,Saturday,10:30:00,21:00:00,False
+Subway Jaya One,Sunday,10:30:00,21:00:00,False
+Subway MSU,Monday,08:00:00,20:00:00,False
+Subway MSU,Tuesday,08:00:00,20:00:00,False
+Subway MSU,Wednesday,08:00:00,20:00:00,False
+Subway MSU,Thursday,08:00:00,20:00:00,False
+Subway MSU,Friday,08:00:00,20:00:00,False
+Subway MSU,Saturday,08:00:00,20:00:00,False
+Subway MSU,Sunday,08:00:00,20:00:00,False
+Subway Sungai Buloh,Monday,08:00:00,22:00:00,False
+Subway Sungai Buloh,Tuesday,08:00:00,22:00:00,False
+Subway Sungai Buloh,Wednesday,08:00:00,22:00:00,False
+Subway Sungai Buloh,Thursday,08:00:00,22:00:00,False
+Subway Sungai Buloh,Friday,08:00:00,22:00:00,False
+Subway Sungai Buloh,Saturday,08:00:00,22:00:00,False
+Subway Sungai Buloh,Sunday,08:00:00,22:00:00,False
+Subway Subang Parade,Monday,09:00:00,22:00:00,False
+Subway Subang Parade,Tuesday,09:00:00,22:00:00,False
+Subway Subang Parade,Wednesday,09:00:00,22:00:00,False
+Subway Subang Parade,Thursday,09:00:00,22:00:00,False
+Subway Subang Parade,Friday,09:00:00,22:00:00,False
+Subway Subang Parade,Saturday,09:00:00,22:00:00,False
+Subway Subang Parade,Sunday,09:00:00,22:00:00,False
+Subway KL East Mall,Thursday,10:00:00,20:00:00,False
+Subway KL East Mall,Saturday,09:00:00,20:00:00,False
+Subway Bandar Sri Permaisuri,Monday,10:00:00,21:00:00,False
+Subway Bandar Sri Permaisuri,Tuesday,10:00:00,21:00:00,False
+Subway Bandar Sri Permaisuri,Wednesday,10:00:00,21:00:00,False
+Subway Bandar Sri Permaisuri,Thursday,10:00:00,21:00:00,False
+Subway Bandar Sri Permaisuri,Friday,10:00:00,21:00:00,False
+Subway Bandar Sri Permaisuri,Saturday,10:00:00,21:00:00,False
+Subway Bandar Sri Permaisuri,Sunday,10:00:00,21:00:00,False
+Subway Mahkota Cheras,Monday,10:00:00,23:00:00,False
+Subway Mahkota Cheras,Tuesday,10:00:00,23:00:00,False
+Subway Mahkota Cheras,Wednesday,10:00:00,23:00:00,False
+Subway Mahkota Cheras,Thursday,10:00:00,23:00:00,False
+Subway Mahkota Cheras,Friday,10:00:00,23:00:00,False
+Subway Mahkota Cheras,Saturday,10:00:00,23:00:00,False
+Subway Mahkota Cheras,Sunday,10:00:00,23:00:00,False
+Subway KLCC,Monday,10:00:00,22:00:00,False
+Subway KLCC,Tuesday,10:00:00,22:00:00,False
+Subway KLCC,Wednesday,10:00:00,22:00:00,False
+Subway KLCC,Thursday,10:00:00,22:00:00,False
+Subway KLCC,Friday,10:00:00,22:00:00,False
+Subway KLCC,Saturday,10:00:00,22:00:00,False
+Subway KLCC,Sunday,10:00:00,22:00:00,False
+Subway Sri Serdang,Monday,08:00:00,22:00:00,False
+Subway Sri Serdang,Tuesday,08:00:00,22:00:00,False
+Subway Sri Serdang,Wednesday,08:00:00,22:00:00,False
+Subway Sri Serdang,Thursday,08:00:00,22:00:00,False
+Subway Sri Serdang,Friday,08:00:00,22:00:00,False
+Subway Sri Serdang,Saturday,08:00:00,22:00:00,False
+Subway Sri Serdang,Sunday,08:00:00,22:00:00,False
+Subway Kepong,Monday,08:00:00,20:30:00,False
+Subway Kepong,Tuesday,08:00:00,20:30:00,False
+Subway Kepong,Wednesday,08:00:00,20:30:00,False
+Subway Kepong,Thursday,08:00:00,20:30:00,False
+Subway Kepong,Friday,08:00:00,20:30:00,False
+Subway Kepong,Saturday,08:00:00,20:30:00,False
+Subway Kepong,Sunday,08:00:00,20:30:00,False
+Subway Damansara Damai,Monday,07:30:00,22:00:00,False
+Subway Damansara Damai,Tuesday,07:30:00,22:00:00,False
+Subway Damansara Damai,Wednesday,07:30:00,22:00:00,False
+Subway Damansara Damai,Thursday,07:30:00,22:00:00,False
+Subway Damansara Damai,Friday,07:30:00,22:00:00,False
+Subway Damansara Damai,Saturday,07:30:00,22:00:00,False
+Subway Damansara Damai,Sunday,07:30:00,22:00:00,False
+Subway Kidzania KL,Monday,,,False
+Subway Kidzania KL,Tuesday,,,False
+Subway Kidzania KL,Wednesday,,,False
+Subway Kidzania KL,Thursday,,,False
+Subway Kidzania KL,Friday,,,False
+Subway Kidzania KL,Saturday,,,False
+Subway Kidzania KL,Sunday,,,False
+Subway BTHO,Monday,07:30:00,22:00:00,False
+Subway BTHO,Tuesday,07:30:00,22:00:00,False
+Subway BTHO,Wednesday,07:30:00,22:00:00,False
+Subway BTHO,Thursday,07:30:00,22:00:00,False
+Subway BTHO,Friday,07:30:00,22:00:00,False
+Subway BTHO,Saturday,07:30:00,22:00:00,False
+Subway BTHO,Sunday,07:30:00,22:00:00,False
+Subway Thomson Hospital,Friday,08:00:00,21:00:00,False
+Subway Thomson Hospital,Sunday,09:00:00,19:00:00,False
+Subway BHP Jalan Kuching,Monday,07:30:00,22:00:00,False
+Subway BHP Jalan Kuching,Tuesday,07:30:00,22:00:00,False
+Subway BHP Jalan Kuching,Wednesday,07:30:00,22:00:00,False
+Subway BHP Jalan Kuching,Thursday,07:30:00,22:00:00,False
+Subway BHP Jalan Kuching,Friday,07:30:00,22:00:00,False
+Subway BHP Jalan Kuching,Saturday,07:30:00,22:00:00,False
+Subway BHP Jalan Kuching,Sunday,07:30:00,22:00:00,False
+Subway Hero Puchong,Monday,09:00:00,21:00:00,False
+Subway Hero Puchong,Tuesday,09:00:00,21:00:00,False
+Subway Hero Puchong,Wednesday,09:00:00,21:00:00,False
+Subway Hero Puchong,Thursday,09:00:00,21:00:00,False
+Subway Hero Puchong,Friday,09:00:00,21:00:00,False
+Subway Hero Puchong,Saturday,09:00:00,21:00:00,False
+Subway Hero Puchong,Sunday,09:00:00,21:00:00,False
+Subway Pavilion Bukit Jalil,Monday,09:30:00,22:00:00,False
+Subway Pavilion Bukit Jalil,Tuesday,09:30:00,22:00:00,False
+Subway Pavilion Bukit Jalil,Wednesday,09:30:00,22:00:00,False
+Subway Pavilion Bukit Jalil,Thursday,09:30:00,22:00:00,False
+Subway Pavilion Bukit Jalil,Friday,09:30:00,22:00:00,False
+Subway Pavilion Bukit Jalil,Saturday,09:30:00,22:00:00,False
+Subway Pavilion Bukit Jalil,Sunday,09:30:00,22:00:00,False
+Subway Petron Ukay Perdana,Monday,08:00:00,22:00:00,False
+Subway Petron Ukay Perdana,Tuesday,08:00:00,22:00:00,False
+Subway Petron Ukay Perdana,Wednesday,08:00:00,22:00:00,False
+Subway Petron Ukay Perdana,Thursday,08:00:00,22:00:00,False
+Subway Petron Ukay Perdana,Friday,08:00:00,22:00:00,False
+Subway Petron Ukay Perdana,Saturday,08:00:00,22:00:00,False
+Subway Petron Ukay Perdana,Sunday,08:00:00,22:00:00,False
+Subway Lotus Cheras,Monday,09:30:00,21:00:00,False
+Subway Lotus Cheras,Tuesday,09:30:00,21:00:00,False
+Subway Lotus Cheras,Wednesday,09:30:00,21:00:00,False
+Subway Lotus Cheras,Thursday,09:30:00,21:00:00,False
+Subway Lotus Cheras,Friday,09:30:00,21:00:00,False
+Subway Lotus Cheras,Saturday,09:30:00,21:00:00,False
+Subway Lotus Cheras,Sunday,09:30:00,21:00:00,False
+Subway Equine Park,Monday,08:00:00,22:00:00,False
+Subway Equine Park,Tuesday,08:00:00,22:00:00,False
+Subway Equine Park,Wednesday,08:00:00,22:00:00,False
+Subway Equine Park,Thursday,08:00:00,22:00:00,False
+Subway Equine Park,Friday,08:00:00,22:00:00,False
+Subway Equine Park,Saturday,08:00:00,22:00:00,False
+Subway Equine Park,Sunday,08:00:00,22:00:00,False
+Subway Syopz,Saturday,10:00:00,22:00:00,False
+Subway Syopz,Sunday,,,True
+Subway Matahari Mall,Monday,10:00:00,21:30:00,False
+Subway Matahari Mall,Tuesday,10:00:00,21:30:00,False
+Subway Matahari Mall,Wednesday,10:00:00,21:30:00,False
+Subway Matahari Mall,Thursday,10:00:00,21:30:00,False
+Subway Matahari Mall,Friday,10:00:00,21:30:00,False
+Subway Matahari Mall,Saturday,10:00:00,21:30:00,False
+Subway Matahari Mall,Sunday,10:00:00,21:30:00,False
+Subway SPARK,Monday,08:00:00,22:00:00,False
+Subway SPARK,Tuesday,08:00:00,22:00:00,False
+Subway SPARK,Wednesday,08:00:00,22:00:00,False
+Subway SPARK,Thursday,08:00:00,22:00:00,False
+Subway SPARK,Friday,08:00:00,22:00:00,False
+Subway SPARK,Saturday,08:00:00,22:00:00,False
+Subway SPARK,Sunday,08:00:00,22:00:00,False
+Subway Sunway Pyramid,Monday,10:00:00,22:00:00,False
+Subway Sunway Pyramid,Tuesday,10:00:00,22:00:00,False
+Subway Sunway Pyramid,Wednesday,10:00:00,22:00:00,False
+Subway Sunway Pyramid,Thursday,10:00:00,22:00:00,False
+Subway Sunway Pyramid,Friday,10:00:00,22:00:00,False
+Subway Sunway Pyramid,Saturday,10:00:00,22:00:00,False
+Subway Sunway Pyramid,Sunday,10:00:00,22:00:00,False
+Subway Caltex Serdang,Monday,08:00:00,22:00:00,False
+Subway Caltex Serdang,Tuesday,08:00:00,22:00:00,False
+Subway Caltex Serdang,Wednesday,08:00:00,22:00:00,False
+Subway Caltex Serdang,Thursday,08:00:00,22:00:00,False
+Subway Caltex Serdang,Friday,08:00:00,22:00:00,False
+Subway Caltex Serdang,Saturday,08:00:00,22:00:00,False
+Subway Caltex Serdang,Sunday,08:00:00,22:00:00,False
+Subway Subang Bestari,Monday,10:00:00,22:00:00,False
+Subway Subang Bestari,Tuesday,10:00:00,22:00:00,False
+Subway Subang Bestari,Wednesday,10:00:00,22:00:00,False
+Subway Subang Bestari,Thursday,10:00:00,22:00:00,False
+Subway Subang Bestari,Friday,10:00:00,22:00:00,False
+Subway Subang Bestari,Saturday,10:00:00,22:00:00,False
+Subway Subang Bestari,Sunday,10:00:00,22:00:00,False
+Subway Denai Alam,Monday,08:15:00,21:45:00,False
+Subway Denai Alam,Tuesday,08:15:00,21:45:00,False
+Subway Denai Alam,Wednesday,08:15:00,21:45:00,False
+Subway Denai Alam,Thursday,08:15:00,21:45:00,False
+Subway Denai Alam,Friday,08:15:00,21:45:00,False
+Subway Denai Alam,Saturday,08:15:00,21:45:00,False
+Subway Denai Alam,Sunday,08:15:00,21:45:00,False
+Subway Aeon Taman Maluri,Thursday,10:00:00,22:00:00,False
+Subway Aeon Taman Maluri,Saturday,10:00:00,22:30:00,False
+Subway Subang Perdana,Monday,08:00:00,22:00:00,False
+Subway Subang Perdana,Tuesday,08:00:00,22:00:00,False
+Subway Subang Perdana,Wednesday,08:00:00,22:00:00,False
+Subway Subang Perdana,Thursday,08:00:00,22:00:00,False
+Subway Subang Perdana,Friday,08:00:00,22:00:00,False
+Subway Subang Perdana,Saturday,08:00:00,22:00:00,False
+Subway Subang Perdana,Sunday,08:00:00,22:00:00,False
+Subway KL Gateway,Monday,08:00:00,22:00:00,False
+Subway KL Gateway,Tuesday,08:00:00,22:00:00,False
+Subway KL Gateway,Wednesday,08:00:00,22:00:00,False
+Subway KL Gateway,Thursday,08:00:00,22:00:00,False
+Subway KL Gateway,Friday,08:00:00,22:00:00,False
+Subway KL Gateway,Saturday,08:00:00,22:00:00,False
+Subway KL Gateway,Sunday,08:00:00,22:00:00,False
+Subway Lotuss Selayang,Monday,10:00:00,22:00:00,False
+Subway Lotuss Selayang,Tuesday,10:00:00,22:00:00,False
+Subway Lotuss Selayang,Wednesday,10:00:00,22:00:00,False
+Subway Lotuss Selayang,Thursday,10:00:00,22:00:00,False
+Subway Lotuss Selayang,Friday,10:00:00,22:00:00,False
+Subway Lotuss Selayang,Saturday,10:00:00,22:00:00,False
+Subway Lotuss Selayang,Sunday,10:00:00,22:00:00,False
+Subway Hartamas SC,Monday,10:00:00,22:00:00,False
+Subway Hartamas SC,Tuesday,10:00:00,22:00:00,False
+Subway Hartamas SC,Wednesday,10:00:00,22:00:00,False
+Subway Hartamas SC,Thursday,10:00:00,22:00:00,False
+Subway Hartamas SC,Friday,10:00:00,22:00:00,False
+Subway Hartamas SC,Saturday,10:00:00,22:00:00,False
+Subway Hartamas SC,Sunday,10:00:00,22:00:00,False
+Subway Paradigm Mall,Monday,10:00:00,22:00:00,False
+Subway Paradigm Mall,Tuesday,10:00:00,22:00:00,False
+Subway Paradigm Mall,Wednesday,10:00:00,22:00:00,False
+Subway Paradigm Mall,Thursday,10:00:00,22:00:00,False
+Subway Paradigm Mall,Friday,10:00:00,22:00:00,False
+Subway Paradigm Mall,Saturday,10:00:00,22:00:00,False
+Subway Paradigm Mall,Sunday,10:00:00,22:00:00,False
+Subway Damen,Monday,10:00:00,22:00:00,False
+Subway Damen,Tuesday,10:00:00,22:00:00,False
+Subway Damen,Wednesday,10:00:00,22:00:00,False
+Subway Damen,Thursday,10:00:00,22:00:00,False
+Subway Damen,Friday,10:00:00,22:00:00,False
+Subway Damen,Saturday,10:00:00,22:00:00,False
+Subway Damen,Sunday,10:00:00,22:00:00,False
+Subway Tropicana Garden,Monday,10:00:00,22:00:00,False
+Subway Tropicana Garden,Tuesday,10:00:00,22:00:00,False
+Subway Tropicana Garden,Wednesday,10:00:00,22:00:00,False
+Subway Tropicana Garden,Thursday,10:00:00,22:00:00,False
+Subway Tropicana Garden,Friday,10:00:00,22:00:00,False
+Subway Tropicana Garden,Saturday,10:00:00,22:00:00,False
+Subway Tropicana Garden,Sunday,10:00:00,22:00:00,False
+Subway Main Place,Monday,10:00:00,22:00:00,False
+Subway Main Place,Tuesday,10:00:00,22:00:00,False
+Subway Main Place,Wednesday,10:00:00,22:00:00,False
+Subway Main Place,Thursday,10:00:00,22:00:00,False
+Subway Main Place,Friday,10:00:00,22:00:00,False
+Subway Main Place,Saturday,10:00:00,22:00:00,False
+Subway Main Place,Sunday,10:00:00,22:00:00,False
+Subway Intermark Mall,Monday,10:00:00,22:00:00,False
+Subway Intermark Mall,Tuesday,10:00:00,22:00:00,False
+Subway Intermark Mall,Wednesday,10:00:00,22:00:00,False
+Subway Intermark Mall,Thursday,10:00:00,22:00:00,False
+Subway Intermark Mall,Friday,10:00:00,22:00:00,False
+Subway Intermark Mall,Saturday,10:00:00,22:00:00,False
+Subway Intermark Mall,Sunday,10:00:00,22:00:00,False
+Subway Central Square,Monday,09:00:00,22:00:00,False
+Subway Central Square,Tuesday,09:00:00,22:00:00,False
+Subway Central Square,Wednesday,09:00:00,22:00:00,False
+Subway Central Square,Thursday,09:00:00,22:00:00,False
+Subway Central Square,Friday,09:00:00,22:00:00,False
+Subway Central Square,Saturday,09:00:00,22:00:00,False
+Subway Central Square,Sunday,09:00:00,22:00:00,False
+Subway The Grand SS15,Monday,08:00:00,22:00:00,False
+Subway The Grand SS15,Tuesday,08:00:00,22:00:00,False
+Subway The Grand SS15,Wednesday,08:00:00,22:00:00,False
+Subway The Grand SS15,Thursday,08:00:00,22:00:00,False
+Subway The Grand SS15,Friday,08:00:00,22:00:00,False
+Subway The Grand SS15,Saturday,08:00:00,22:00:00,False
+Subway The Grand SS15,Sunday,08:00:00,22:00:00,False
+Subway Radia Bukit Jelutong,Monday,07:30:00,22:00:00,False
+Subway Radia Bukit Jelutong,Tuesday,07:30:00,22:00:00,False
+Subway Radia Bukit Jelutong,Wednesday,07:30:00,22:00:00,False
+Subway Radia Bukit Jelutong,Thursday,07:30:00,22:00:00,False
+Subway Radia Bukit Jelutong,Friday,07:30:00,22:00:00,False
+Subway Radia Bukit Jelutong,Saturday,07:30:00,22:00:00,False
+Subway Radia Bukit Jelutong,Sunday,07:30:00,22:00:00,False
+Subway Kelana Jaya (KJ),Monday,10:00:00,22:30:00,False
+Subway Kelana Jaya (KJ),Tuesday,10:00:00,22:30:00,False
+Subway Kelana Jaya (KJ),Wednesday,10:00:00,22:30:00,False
+Subway Kelana Jaya (KJ),Thursday,10:00:00,22:30:00,False
+Subway Kelana Jaya (KJ),Friday,10:00:00,22:30:00,False
+Subway Kelana Jaya (KJ),Saturday,10:00:00,22:30:00,False
+Subway Kelana Jaya (KJ),Sunday,10:00:00,22:30:00,False
+Subway Sierra 16 Puchong,Monday,08:00:00,22:00:00,False
+Subway Sierra 16 Puchong,Tuesday,08:00:00,22:00:00,False
+Subway Sierra 16 Puchong,Wednesday,08:00:00,22:00:00,False
+Subway Sierra 16 Puchong,Thursday,08:00:00,22:00:00,False
+Subway Sierra 16 Puchong,Friday,08:00:00,22:00:00,False
+Subway Sierra 16 Puchong,Saturday,08:00:00,22:00:00,False
+Subway Sierra 16 Puchong,Sunday,08:00:00,22:00:00,False
+Subway Caltex Bukit Indah Ampang,Monday,08:00:00,22:00:00,False
+Subway Caltex Bukit Indah Ampang,Tuesday,08:00:00,22:00:00,False
+Subway Caltex Bukit Indah Ampang,Wednesday,08:00:00,22:00:00,False
+Subway Caltex Bukit Indah Ampang,Thursday,08:00:00,22:00:00,False
+Subway Caltex Bukit Indah Ampang,Friday,08:00:00,22:00:00,False
+Subway Caltex Bukit Indah Ampang,Saturday,08:00:00,22:00:00,False
+Subway Caltex Bukit Indah Ampang,Sunday,08:00:00,22:00:00,False
+Subway Taman Danau Desa,Monday,08:00:00,22:00:00,False
+Subway Taman Danau Desa,Tuesday,08:00:00,22:00:00,False
+Subway Taman Danau Desa,Wednesday,08:00:00,22:00:00,False
+Subway Taman Danau Desa,Thursday,08:00:00,22:00:00,False
+Subway Taman Danau Desa,Friday,08:00:00,22:00:00,False
+Subway Taman Danau Desa,Saturday,08:00:00,22:00:00,False
+Subway Taman Danau Desa,Sunday,08:00:00,22:00:00,False
+Subway Setapak Central Mall,Monday,10:00:00,22:00:00,False
+Subway Setapak Central Mall,Tuesday,10:00:00,22:00:00,False
+Subway Setapak Central Mall,Wednesday,10:00:00,22:00:00,False
+Subway Setapak Central Mall,Thursday,10:00:00,22:00:00,False
+Subway Setapak Central Mall,Friday,10:00:00,22:00:00,False
+Subway Setapak Central Mall,Saturday,10:00:00,22:00:00,False
+Subway Setapak Central Mall,Sunday,10:00:00,22:00:00,False
+Subway Taman Ehsan,Monday,08:00:00,22:00:00,False
+Subway Taman Ehsan,Tuesday,08:00:00,22:00:00,False
+Subway Taman Ehsan,Wednesday,08:00:00,22:00:00,False
+Subway Taman Ehsan,Thursday,08:00:00,22:00:00,False
+Subway Taman Ehsan,Friday,08:00:00,22:00:00,False
+Subway Taman Ehsan,Saturday,08:00:00,22:00:00,False
+Subway Taman Ehsan,Sunday,08:00:00,22:00:00,False
+Subway Taman Sri Muda,Monday,08:00:00,22:00:00,False
+Subway Taman Sri Muda,Tuesday,08:00:00,22:00:00,False
+Subway Taman Sri Muda,Wednesday,08:00:00,22:00:00,False
+Subway Taman Sri Muda,Thursday,08:00:00,22:00:00,False
+Subway Taman Sri Muda,Friday,08:00:00,22:00:00,False
+Subway Taman Sri Muda,Saturday,08:00:00,22:00:00,False
+Subway Taman Sri Muda,Sunday,08:00:00,22:00:00,False
+Subway Mid Valley KL,Monday,08:00:00,22:00:00,False
+Subway Mid Valley KL,Tuesday,08:00:00,22:00:00,False
+Subway Mid Valley KL,Wednesday,08:00:00,22:00:00,False
+Subway Mid Valley KL,Thursday,08:00:00,22:00:00,False
+Subway Mid Valley KL,Friday,08:00:00,22:00:00,False
+Subway Mid Valley KL,Saturday,08:00:00,22:00:00,False
+Subway Mid Valley KL,Sunday,08:00:00,22:00:00,False
+Subway Lotus Ampang,Monday,10:00:00,22:00:00,False
+Subway Lotus Ampang,Tuesday,10:00:00,22:00:00,False
+Subway Lotus Ampang,Wednesday,10:00:00,22:00:00,False
+Subway Lotus Ampang,Thursday,10:00:00,22:00:00,False
+Subway Lotus Ampang,Friday,10:00:00,22:00:00,False
+Subway Lotus Ampang,Saturday,10:00:00,22:00:00,False
+Subway Lotus Ampang,Sunday,10:00:00,22:00:00,False
+Subway Razak City,Monday,,,False
+Subway Razak City,Tuesday,,,False
+Subway Razak City,Wednesday,,,False
+Subway Razak City,Thursday,,,False
+Subway Razak City,Friday,,,False
+Subway Razak City,Saturday,,,False
+Subway Razak City,Sunday,,,False
+Subway Aeon Cheras Selatan,Monday,10:00:00,22:00:00,False
+Subway Aeon Cheras Selatan,Sunday,10:00:00,22:00:00,False
+Subway Kiara Bay,Monday,10:00:00,22:00:00,False
+Subway Kiara Bay,Tuesday,10:00:00,22:00:00,False
+Subway Kiara Bay,Wednesday,10:00:00,22:00:00,False
+Subway Kiara Bay,Thursday,10:00:00,22:00:00,False
+Subway Kiara Bay,Friday,10:00:00,22:00:00,False
+Subway Kiara Bay,Saturday,10:00:00,22:00:00,False
+Subway Kiara Bay,Sunday,10:00:00,22:00:00,False
+Subway Putra Ampang,Monday,08:00:00,22:00:00,False
+Subway Putra Ampang,Tuesday,08:00:00,22:00:00,False
+Subway Putra Ampang,Wednesday,08:00:00,22:00:00,False
+Subway Putra Ampang,Thursday,08:00:00,22:00:00,False
+Subway Putra Ampang,Friday,08:00:00,22:00:00,False
+Subway Putra Ampang,Saturday,08:00:00,22:00:00,False
+Subway Putra Ampang,Sunday,08:00:00,22:00:00,False
+Subway SAMA Square,Monday,10:00:00,22:00:00,False
+Subway SAMA Square,Tuesday,10:00:00,22:00:00,False
+Subway SAMA Square,Wednesday,10:00:00,22:00:00,False
+Subway SAMA Square,Thursday,10:00:00,22:00:00,False
+Subway SAMA Square,Friday,10:00:00,22:00:00,False
+Subway SAMA Square,Saturday,10:00:00,22:00:00,False
+Subway SAMA Square,Sunday,10:00:00,22:00:00,False
+Subway IOI Mall Puchong,Monday,,,False
+Subway IOI Mall Puchong,Tuesday,,,False
+Subway IOI Mall Puchong,Wednesday,,,False
+Subway IOI Mall Puchong,Thursday,,,False
+Subway IOI Mall Puchong,Friday,,,False
+Subway IOI Mall Puchong,Saturday,,,False
+Subway IOI Mall Puchong,Sunday,,,False
+Subway VSQ,Monday,07:00:00,21:00:00,False
+Subway VSQ,Tuesday,07:00:00,21:00:00,False
+Subway VSQ,Wednesday,07:00:00,21:00:00,False
+Subway VSQ,Thursday,07:00:00,21:00:00,False
+Subway VSQ,Friday,07:00:00,21:00:00,False
+Subway VSQ,Saturday,07:00:00,21:00:00,False
+Subway VSQ,Sunday,07:00:00,21:00:00,False
+Subway IPC,Monday,10:00:00,22:00:00,False
+Subway IPC,Tuesday,10:00:00,22:00:00,False
+Subway IPC,Wednesday,10:00:00,22:00:00,False
+Subway IPC,Thursday,10:00:00,22:00:00,False
+Subway IPC,Friday,10:00:00,22:00:00,False
+Subway IPC,Saturday,10:00:00,22:00:00,False
+Subway IPC,Sunday,10:00:00,22:00:00,False
+Subway Alam Damai DT,Monday,10:00:00,20:00:00,False
+Subway Alam Damai DT,Tuesday,10:00:00,20:00:00,False
+Subway Alam Damai DT,Wednesday,10:00:00,20:00:00,False
+Subway Alam Damai DT,Thursday,10:00:00,20:00:00,False
+Subway Alam Damai DT,Friday,10:00:00,20:00:00,False
+Subway Alam Damai DT,Saturday,10:00:00,20:00:00,False
+Subway Alam Damai DT,Sunday,10:00:00,20:00:00,False
+Subway Monash University,Monday,10:00:00,22:00:00,False
+Subway Monash University,Tuesday,10:00:00,22:00:00,False
+Subway Monash University,Wednesday,10:00:00,22:00:00,False
+Subway Monash University,Thursday,10:00:00,22:00:00,False
+Subway Monash University,Friday,10:00:00,22:00:00,False
+Subway Monash University,Saturday,10:00:00,22:00:00,False
+Subway Monash University,Sunday,10:00:00,22:00:00,False
