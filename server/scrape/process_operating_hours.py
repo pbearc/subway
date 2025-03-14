@@ -46,6 +46,10 @@ class OperatingHoursParser:
         
         # Process each line and collect records
         for line in lines:
+            line = line.strip()
+            if not line:  # Skip empty lines
+                continue
+                
             parsed_records = self._parse_line(line)
             
             # Update day records with the latest information
@@ -75,6 +79,10 @@ class OperatingHoursParser:
             return records
             
         records = self._try_parse_day_range_with_time_range(line)
+        if records:
+            return records
+            
+        records = self._try_parse_day_range_pattern(line)
         if records:
             return records
             
@@ -136,6 +144,27 @@ class OperatingHoursParser:
             for day in days
         ]
     
+    def _try_parse_day_range_pattern(self, line: str) -> List[HourRecord]:
+        """Parse patterns like 'Monday - Saturday, 8:00 AM – 9:00PM'."""
+        pattern = re.compile(r"((?:Mon|Tues?|Wed(?:nes)?|Thur?s?|Fri|Sat(?:ur)?|Sun)(?:day)?)\s*-\s*((?:Mon|Tues?|Wed(?:nes)?|Thur?s?|Fri|Sat(?:ur)?|Sun)(?:day)?)\s*,\s*(\d{1,2}:\d{2}\s*[AP]M)\s*[-–]\s*(\d{1,2}:\d{2}\s*[AP]M)")
+        match = pattern.search(line)
+        
+        if not match:
+            return []
+            
+        start_day = self._clean_day(match.group(1))
+        end_day = self._clean_day(match.group(2))
+        start_time = self._parse_time(match.group(3))
+        end_time = self._parse_time(match.group(4))
+        
+        # Get all days in the range
+        days = self._get_day_range(start_day, end_day)
+        
+        return [
+            self._create_hour_record(day, start_time, end_time, False)
+            for day in days
+        ]
+    
     def _try_parse_specific_day_with_hours(self, line: str) -> List[HourRecord]:
         """Parse patterns like 'Friday, 9:00 AM – 9:00PM'."""
         pattern = re.compile(r"((?:Mon|Tues?|Wed(?:nes)?|Thur?s?|Fri|Sat(?:ur)?|Sun)(?:day)?)\s*,\s*(\d{1,2}:\d{2}\s*[AP]M)\s*[-–]\s*(\d{1,2}:\d{2}\s*[AP]M)")
@@ -152,55 +181,84 @@ class OperatingHoursParser:
         
     def _parse_generic_pattern(self, line: str) -> List[HourRecord]:
         """Parse using generic day and time patterns."""
-        day_pattern = re.compile(r"((?:(?:Mon|Tues?|Wed(?:nes)?|Thur?s?|Fri|Sat(?:ur)?|Sun)(?:day)?(?:\s*[,&-]\s*)?)+)")
+        # Check for day ranges and individual days
+        day_pattern = re.compile(r"((?:Mon|Tues?|Wed(?:nes)?|Thur?s?|Fri|Sat(?:ur)?|Sun)(?:day)?(?:\s*[-&]\s*(?:(?:Mon|Tues?|Wed(?:nes)?|Thur?s?|Fri|Sat(?:ur)?|Sun)(?:day)?)?)*)")
+        
+        # Match time patterns, both 12-hour and 24-hour formats
         time_pattern = re.compile(r"(\d{1,2}:\d{2}\s*[AP]M)\s*[-–to]\s*(\d{1,2}:\d{2}\s*[AP]M)")
         time_pattern_24h = re.compile(r"(\d{4})\s*-\s*(\d{4})")
         
-        days = day_pattern.findall(line)
-        times = time_pattern.findall(line) or time_pattern_24h.findall(line)
+        day_matches = day_pattern.findall(line)
+        time_matches = time_pattern.findall(line) or time_pattern_24h.findall(line)
         
         is_closed = 'close' in line.lower() or 'closed' in line.lower()
         
-        if times:
-            start_time, end_time = map(self._parse_time, times[0])
+        if time_matches:
+            start_time, end_time = map(self._parse_time, time_matches[0])
         else:
             start_time = end_time = None
         
         day_list = []
-        for day_group in days:
+        for day_group in day_matches:
             day_list.extend(self._parse_day_range(day_group))
+        
+        # Remove duplicates while preserving order
+        seen = set()
+        day_list = [day for day in day_list if not (day in seen or seen.add(day))]
         
         return [
             self._create_hour_record(day, start_time, end_time, is_closed)
             for day in day_list if day in self.all_days
         ]
         
+    def _get_day_range(self, start_day: str, end_day: str) -> List[str]:
+        """Get all days in a range from start_day to end_day."""
+        if start_day not in self.all_days or end_day not in self.all_days:
+            return []
+            
+        start_idx = self.all_days.index(start_day)
+        end_idx = self.all_days.index(end_day)
+        
+        # Handle case where end_day is earlier in week than start_day
+        if end_idx < start_idx:
+            return self.all_days[start_idx:] + self.all_days[:end_idx+1]
+        else:
+            return self.all_days[start_idx:end_idx+1]
+        
     def _parse_day_range(self, day_text: str) -> List[str]:
         """Parse a range of days like 'Mon-Fri' or 'Mon & Wed'."""
         day_list = []
         
-        # Handle day ranges with hyphens
-        if '-' in day_text:
-            parts = [p.strip() for p in day_text.split('-')]
-            if len(parts) == 2:
-                start_day = self._clean_day(parts[0])
-                end_day = self._clean_day(parts[1])
-                
-                if start_day in self.all_days and end_day in self.all_days:
-                    start_index = self.all_days.index(start_day)
-                    end_index = self.all_days.index(end_day)
-                    # Handle case where end day is earlier in week than start day (wrap around)
-                    if end_index < start_index:
-                        day_list.extend(self.all_days[start_index:] + self.all_days[:end_index+1])
-                    else:
-                        day_list.extend(self.all_days[start_index:end_index+1])
-        # Handle comma or ampersand separated days
-        else:
-            for day in re.split('[,&]', day_text):
-                clean_day = self._clean_day(day)
+        # Split by commas first to handle comma-separated entries
+        comma_parts = [p.strip() for p in day_text.split(',')]
+        
+        for part in comma_parts:
+            # Handle day ranges with hyphens
+            if '-' in part:
+                range_parts = [p.strip() for p in part.split('-')]
+                if len(range_parts) == 2:
+                    start_day = self._clean_day(range_parts[0])
+                    end_day = self._clean_day(range_parts[1])
+                    
+                    if start_day in self.all_days and end_day in self.all_days:
+                        day_list.extend(self._get_day_range(start_day, end_day))
+                else:
+                    # Handle single day with trailing hyphen
+                    day = self._clean_day(range_parts[0])
+                    if day in self.all_days:
+                        day_list.append(day)
+            # Handle ampersand separated days
+            elif '&' in part:
+                for day in part.split('&'):
+                    clean_day = self._clean_day(day)
+                    if clean_day in self.all_days:
+                        day_list.append(clean_day)
+            else:
+                # Handle single day
+                clean_day = self._clean_day(part)
                 if clean_day in self.all_days:
                     day_list.append(clean_day)
-                    
+                        
         return day_list
         
     def _clean_day(self, day: str) -> str:
