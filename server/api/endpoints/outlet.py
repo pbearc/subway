@@ -17,8 +17,6 @@ def get_db():
     finally:
         db_manager.close()
 
-
-
 @router.get("/search", response_model=List[outlet_models.OutletResponse])
 def search_outlets(query: str = Query(..., description="Search by outlet name or address"), db_manager: DatabaseManager = Depends(get_db)):
     """Search outlets by name or address."""
@@ -142,3 +140,28 @@ def get_outlet(outlet_id: int, db_manager: DatabaseManager = Depends(get_db)):
                 for oh in db_manager.session.query(OperatingHours).filter(OperatingHours.outlet_id == outlet.id).all()
             ]
         )
+
+@router.get("/{outlet_id}/operating-hours", response_model=List[outlet_models.OperatingHoursResponse])
+def get_outlet_operating_hours(outlet_id: int, db_manager: DatabaseManager = Depends(get_db)):
+    """Retrieve operating hours for a specific outlet."""
+    with db_manager:
+        # First check if the outlet exists
+        outlet = db_manager.session.query(Outlet).filter(Outlet.id == outlet_id).first()
+        if not outlet:
+            raise HTTPException(status_code=404, detail="Outlet not found")
+            
+        # Get all operating hours for this outlet
+        operating_hours = db_manager.session.query(OperatingHours).filter(
+            OperatingHours.outlet_id == outlet_id
+        ).all()
+        
+        # Transform to response model
+        return [
+            outlet_models.OperatingHoursResponse(
+                day_of_week=oh.day_of_week,
+                opening_time=oh.opening_time,
+                closing_time=oh.closing_time,
+                is_closed=oh.is_closed,
+            )
+            for oh in operating_hours
+        ]
