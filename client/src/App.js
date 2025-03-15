@@ -64,7 +64,10 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      style={{ height: "100vh", display: "flex", flexDirection: "column" }}
+    >
       <header className="app-header">
         <h1>Subway Outlets in Kuala Lumpur</h1>
         <div className="header-actions">
@@ -74,23 +77,44 @@ function App() {
         </div>
       </header>
 
-      <main className="app-content">
-        <div className="main-container">
-          {viewMode === "map" ? (
-            <div className="map-container">
-              <OutletMap onOutletSelect={handleOutletSelect} />
-            </div>
-          ) : (
-            <div className="list-container">
-              <OutletList
-                outlets={outlets}
-                onOutletSelect={handleOutletSelect}
-              />
-            </div>
-          )}
+      <main className="app-content" style={{ flex: 1, overflow: "hidden" }}>
+        <div
+          className="main-container"
+          style={{ height: "100%", display: "flex" }}
+        >
+          <div
+            className="content-area"
+            style={{ flex: 1, height: "100%", position: "relative" }}
+          >
+            {viewMode === "map" ? (
+              <div
+                className="map-container"
+                style={{ height: "100%", width: "100%" }}
+              >
+                <OutletMap onOutletSelect={handleOutletSelect} />
+              </div>
+            ) : (
+              <div className="list-container">
+                <OutletList
+                  outlets={outlets}
+                  onOutletSelect={handleOutletSelect}
+                />
+              </div>
+            )}
+          </div>
 
           {selectedOutlet && (
-            <div className="details-panel">
+            <div
+              className="details-panel"
+              style={{
+                width: "300px",
+                height: "100%",
+                overflowY: "auto",
+                borderLeft: "1px solid #e2e8f0",
+                backgroundColor: "white",
+                boxShadow: "-2px 0 10px rgba(0, 0, 0, 0.1)",
+              }}
+            >
               <OutletDetails
                 outlet={selectedOutlet}
                 onClose={handleCloseDetails}

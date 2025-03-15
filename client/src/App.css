@@ -52,8 +52,13 @@
   height: 100%;
 }
 
-.map-container {
+.content-area {
   flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+.map-container {
   position: relative;
   height: 100%;
   width: 100%;
@@ -66,15 +71,13 @@
 }
 
 .details-panel {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: white;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  max-height: 50%;
+  width: 300px;
+  height: 100%;
   overflow-y: auto;
-  z-index: 1000;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 1px solid #e2e8f0;
 }
 
 .app-footer {
@@ -129,20 +132,13 @@
   margin-top: 1rem;
 }
 
-/* Leaflet map specific styles */
-.leaflet-container {
-  height: 100%;
-  width: 100%;
-  z-index: 1;
+/* Make sure InfoWindow doesn't cover markers */
+.gm-style .gm-style-iw-c {
+  padding: 12px;
+  max-width: 300px !important;
 }
 
-/* Make sure Leaflet controls are visible */
-.leaflet-control-container .leaflet-top,
-.leaflet-control-container .leaflet-bottom {
-  z-index: 999;
-}
-
-/* Ensure map tiles load properly */
-.leaflet-tile {
-  visibility: inherit !important;
+.gm-style .gm-style-iw-d {
+  overflow: hidden !important;
+  max-width: 280px !important;
 }

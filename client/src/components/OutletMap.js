@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import api from "../services/api";
 import {
   GoogleMap,
   LoadScript,
   Marker,
-  Circle,
   InfoWindow,
 } from "@react-google-maps/api";
-import api from "../services/api";
 
 const containerStyle = {
   width: "100%",
@@ -23,128 +22,12 @@ const OutletMap = ({ onOutletSelect }) => {
   const [outlets, setOutlets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [intersections, setIntersections] = useState({});
-  const [selectedMarker, setSelectedMarker] = useState(null);
-  const [mapsLoaded, setMapsLoaded] = useState(false);
+  const [hoveredOutlet, setHoveredOutlet] = useState(null);
+  const [selectedOutlets, setSelectedOutlets] = useState([]);
+  const [map, setMap] = useState(null);
 
-  // Get the Google Maps API key from environment variables
-  const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
-  // 5km in meters
-  const radiusSize = 5000;
-
-  // Ensure latitude and longitude are valid numbers
-  const validateCoordinates = (data) => {
-    return data
-      .map((outlet) => {
-        // Ensure latitude and longitude are converted to numbers and validated
-        const lat = parseFloat(outlet.latitude);
-        const lng = parseFloat(outlet.longitude);
-
-        // Check if coordinates are valid numbers
-        const validLat = !isNaN(lat) && lat !== null;
-        const validLng = !isNaN(lng) && lng !== null;
-
-        return {
-          ...outlet,
-          latitude: validLat ? lat : null,
-          longitude: validLng ? lng : null,
-          hasValidCoordinates: validLat && validLng,
-        };
-      })
-      .filter((outlet) => outlet.hasValidCoordinates);
-  };
-
-  // Calculate intersections between outlets
-  const calculateIntersections = (outletData) => {
-    const intersectionMap = {};
-
-    outletData.forEach((outlet, i) => {
-      intersectionMap[outlet.id] = [];
-
-      outletData.forEach((otherOutlet, j) => {
-        if (i === j) return; // Skip same outlet
-
-        // Calculate distance between two points using Haversine formula
-        const distance = calculateDistance(
-          outlet.latitude,
-          outlet.longitude,
-          otherOutlet.latitude,
-          otherOutlet.longitude
-        );
-
-        // If distance is less than 2 * radius (10km), they intersect
-        if (distance < (2 * radiusSize) / 1000) {
-          intersectionMap[outlet.id].push(otherOutlet.id);
-        }
-      });
-    });
-
-    return intersectionMap;
-  };
-
-  // Haversine formula to calculate distance between two coordinates in km
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
-
-    const R = 6371; // Radius of the earth in km
-    const dLat = deg2rad(lat2 - lat1);
-    const dLon = deg2rad(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(deg2rad(lat1)) *
-        Math.cos(deg2rad(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in km
-    return distance;
-  };
-
-  const deg2rad = (deg) => {
-    return deg * (Math.PI / 180);
-  };
-
-  // Handle marker click
-  const handleMarkerClick = (outlet) => {
-    // If clicking the same outlet, deselect it
-    if (selectedMarker && selectedMarker.id === outlet.id) {
-      setSelectedMarker(null);
-      onOutletSelect(null); // Clear selection in parent component
-      return;
-    }
-
-    // Select the new outlet
-    setSelectedMarker(outlet);
-
-    const hasIntersection = intersections[outlet.id]?.length > 0;
-
-    onOutletSelect({
-      ...outlet,
-      hasIntersection,
-      intersectingWithIds: intersections[outlet.id] || [],
-      allOutlets: outlets,
-    });
-  };
-
-  // Close info window and clear selected marker
-  const handleCloseInfoWindow = () => {
-    setSelectedMarker(null);
-    onOutletSelect(null); // Clear selection in parent component
-  };
-
-  // Handle map click (to deselect markers when clicking elsewhere)
-  const handleMapClick = useCallback(() => {
-    if (selectedMarker) {
-      setSelectedMarker(null);
-      onOutletSelect(null); // Clear selection in parent component
-    }
-  }, [selectedMarker, onOutletSelect]);
-
-  // Handle map load event
-  const handleMapLoad = useCallback((map) => {
-    setMapsLoaded(true);
-  }, []);
+  // Store circle references
+  const circleRefs = useRef({});
 
   // Fetch outlets data from API
   useEffect(() => {
@@ -152,17 +35,7 @@ const OutletMap = ({ onOutletSelect }) => {
       try {
         setLoading(true);
         const data = await api.getAllOutlets();
-
-        // Process and validate the data
-        const validOutlets = validateCoordinates(data);
-
-        if (validOutlets.length === 0) {
-          setError("No outlets with valid coordinates found");
-        } else {
-          setOutlets(validOutlets);
-          setIntersections(calculateIntersections(validOutlets));
-        }
-
+        setOutlets(data);
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -173,6 +46,110 @@ const OutletMap = ({ onOutletSelect }) => {
     fetchOutlets();
   }, []);
 
+  // Helper to calculate distance between two points
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
+
+    const R = 6371; // Radius of the earth in km
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
+  };
+
+  // Get outlets within 5km radius
+  const getOverlappingOutlets = (outlet) => {
+    return outlets.filter((o) => {
+      if (o.id === outlet.id) return false;
+
+      const distance = calculateDistance(
+        parseFloat(outlet.latitude),
+        parseFloat(outlet.longitude),
+        parseFloat(o.latitude),
+        parseFloat(o.longitude)
+      );
+
+      return distance <= 5; // 5km radius
+    });
+  };
+
+  // Handle map load
+  const onMapLoad = (googleMap) => {
+    setMap(googleMap);
+  };
+
+  // Handle mouse over marker
+  const handleMouseOver = (outlet) => {
+    setHoveredOutlet(outlet);
+  };
+
+  // Handle mouse out marker
+  const handleMouseOut = () => {
+    setHoveredOutlet(null);
+  };
+
+  // Handle marker click
+  const handleMarkerClick = (outlet) => {
+    // Check if already selected
+    const isSelected = selectedOutlets.some((o) => o.id === outlet.id);
+
+    if (isSelected) {
+      // If already selected, remove it and clear the circle
+      setSelectedOutlets(selectedOutlets.filter((o) => o.id !== outlet.id));
+      if (circleRefs.current[outlet.id]) {
+        circleRefs.current[outlet.id].setMap(null);
+        delete circleRefs.current[outlet.id];
+      }
+    } else {
+      // Otherwise, add it and draw a circle
+      setSelectedOutlets([...selectedOutlets, outlet]);
+
+      if (map) {
+        // Create circle manually instead of using the Circle component
+        const overlappingOutlets = getOverlappingOutlets(outlet);
+        const hasOverlaps = overlappingOutlets.length > 0;
+
+        const circle = new window.google.maps.Circle({
+          map: map,
+          center: {
+            lat: parseFloat(outlet.latitude),
+            lng: parseFloat(outlet.longitude),
+          },
+          radius: 5000, // 5km in meters
+          strokeColor: hasOverlaps ? "#ff6b6b" : "#4dabf7",
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: hasOverlaps ? "#ff6b6b" : "#4dabf7",
+          fillOpacity: 0.2,
+        });
+
+        // Store reference to the circle
+        circleRefs.current[outlet.id] = circle;
+      }
+    }
+
+    // Update parent component
+    onOutletSelect(outlet);
+  };
+
+  // Handle clear all circles
+  const handleClearAllCircles = () => {
+    // Remove all circles from the map
+    Object.values(circleRefs.current).forEach((circle) => {
+      circle.setMap(null);
+    });
+
+    // Clear the references and selected outlets
+    circleRefs.current = {};
+    setSelectedOutlets([]);
+  };
+
   if (loading)
     return (
       <div className="flex justify-center items-center h-96">
@@ -181,92 +158,85 @@ const OutletMap = ({ onOutletSelect }) => {
     );
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
-  if (!googleMapsApiKey) {
-    return (
-      <div className="text-red-500 p-4 bg-red-50 rounded">
-        <h3 className="font-bold">Google Maps API Key Missing</h3>
-        <p>
-          Please set the REACT_APP_GOOGLE_MAPS_API_KEY environment variable.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <LoadScript googleMapsApiKey={googleMapsApiKey}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={12}
-        options={{
-          styles: [
-            {
-              featureType: "poi.business",
-              stylers: [{ visibility: "off" }], // Hide business POIs to make the map cleaner
-            },
-          ],
-        }}
-        onLoad={handleMapLoad}
-        onClick={handleMapClick} // Important: This handles clicks on the map itself
-      >
-        {mapsLoaded &&
-          outlets.map((outlet) => {
-            if (!outlet.hasValidCoordinates) return null;
+    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+      {Object.keys(circleRefs.current).length > 0 && (
+        <button
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: 1000,
+            padding: "8px 12px",
+            backgroundColor: "white",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+            cursor: "pointer",
+          }}
+          onClick={handleClearAllCircles}
+        >
+          Clear All Circles
+        </button>
+      )}
 
-            const hasIntersection = intersections[outlet.id]?.length > 0;
-            const isSelected =
-              selectedMarker && selectedMarker.id === outlet.id;
+      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={12}
+          onLoad={onMapLoad}
+        >
+          {outlets.map((outlet) => {
+            const lat = parseFloat(outlet.latitude);
+            const lng = parseFloat(outlet.longitude);
+
+            if (isNaN(lat) || isNaN(lng)) return null;
 
             return (
               <React.Fragment key={outlet.id}>
                 <Marker
-                  position={{
-                    lat: outlet.latitude,
-                    lng: outlet.longitude,
-                  }}
+                  position={{ lat, lng }}
                   onClick={() => handleMarkerClick(outlet)}
-                  icon={{
-                    url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                    scaledSize:
-                      mapsLoaded && window.google && window.google.maps
-                        ? new window.google.maps.Size(32, 32)
-                        : undefined,
-                  }}
+                  onMouseOver={() => handleMouseOver(outlet)}
+                  onMouseOut={handleMouseOut}
                 />
 
-                {/* Only show circle if this outlet is selected */}
-                {isSelected && (
-                  <Circle
-                    center={{
-                      lat: outlet.latitude,
-                      lng: outlet.longitude,
-                    }}
-                    radius={radiusSize}
-                    options={{
-                      strokeColor: hasIntersection ? "#ff6b6b" : "#4dabf7",
-                      strokeOpacity: 0.8,
-                      strokeWeight: 2,
-                      fillColor: hasIntersection ? "#ff6b6b" : "#4dabf7",
-                      fillOpacity: 0.2,
-                    }}
-                  />
-                )}
-
-                {isSelected && (
+                {hoveredOutlet && hoveredOutlet.id === outlet.id && (
                   <InfoWindow
                     position={{
-                      lat: outlet.latitude,
-                      lng: outlet.longitude,
+                      lat: lat,
+                      lng: lng + 0.006, // Offset to the right so it doesn't cover the marker
                     }}
-                    onCloseClick={handleCloseInfoWindow}
+                    onCloseClick={() => setHoveredOutlet(null)}
+                    options={{
+                      pixelOffset: new window.google.maps.Size(0, -30),
+                    }}
                   >
-                    <div className="info-window">
-                      <h3 className="font-medium text-lg">{outlet.name}</h3>
-                      <p className="text-sm">{outlet.address}</p>
-                      {hasIntersection && (
-                        <p className="text-sm text-red-500 mt-1">
-                          Overlaps with {intersections[outlet.id].length} other
-                          outlet(s)
+                    <div style={{ padding: "5px", maxWidth: "250px" }}>
+                      <h3
+                        style={{
+                          fontWeight: "bold",
+                          fontSize: "16px",
+                          marginBottom: "5px",
+                        }}
+                      >
+                        {outlet.name}
+                      </h3>
+                      <p style={{ fontSize: "14px", marginBottom: "5px" }}>
+                        {outlet.address}
+                      </p>
+
+                      {getOverlappingOutlets(outlet).length > 0 && (
+                        <p
+                          style={{
+                            color: "#ff6b6b",
+                            fontSize: "14px",
+                            marginTop: "5px",
+                          }}
+                        >
+                          Overlaps with {getOverlappingOutlets(outlet).length}{" "}
+                          other outlet(s)
                         </p>
                       )}
                     </div>
@@ -275,8 +245,9 @@ const OutletMap = ({ onOutletSelect }) => {
               </React.Fragment>
             );
           })}
-      </GoogleMap>
-    </LoadScript>
+        </GoogleMap>
+      </LoadScript>
+    </div>
   );
 };
 

@@ -12,12 +12,12 @@ const OutletDetails = ({ outlet, onClose }) => {
     if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
 
     const R = 6371; // Radius of the earth in km
-    const dLat = deg2rad(lat2 - lat1);
-    const dLon = deg2rad(lon2 - lon1);
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(deg2rad(lat1)) *
-        Math.cos(deg2rad(lat2)) *
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
         Math.sin(dLon / 2) *
         Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
@@ -25,8 +25,21 @@ const OutletDetails = ({ outlet, onClose }) => {
     return distance;
   };
 
-  const deg2rad = (deg) => {
-    return deg * (Math.PI / 180);
+  // Get outlets that are actually within 5km
+  const getActualIntersectingOutlets = () => {
+    if (!outlet || !outlet.allOutlets) return [];
+
+    return outlet.allOutlets
+      .filter((o) => o.id !== outlet.id)
+      .filter((o) => {
+        const distance = calculateDistance(
+          parseFloat(outlet.latitude),
+          parseFloat(outlet.longitude),
+          parseFloat(o.latitude),
+          parseFloat(o.longitude)
+        );
+        return distance <= 5; // 5km radius
+      });
   };
 
   useEffect(() => {
@@ -58,14 +71,11 @@ const OutletDetails = ({ outlet, onClose }) => {
 
   if (!outlet) return null;
 
-  // Find intersecting outlets
-  const intersectingOutlets =
-    outlet.allOutlets?.filter((o) =>
-      outlet.intersectingWithIds?.includes(o.id)
-    ) || [];
+  // Get actual intersecting outlets with accurate distance calculation
+  const intersectingOutlets = getActualIntersectingOutlets();
 
   return (
-    <div className="bg-white rounded shadow p-4">
+    <div className="p-4">
       <div className="flex justify-between items-start mb-3">
         <div>
           <h2 className="text-xl font-bold text-green-800">{outlet.name}</h2>
@@ -73,7 +83,7 @@ const OutletDetails = ({ outlet, onClose }) => {
         </div>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 text-2xl leading-none"
+          className="text-gray-500 hover:text-gray-700 text-xl leading-none"
           aria-label="Close"
         >
           &times;
@@ -81,8 +91,8 @@ const OutletDetails = ({ outlet, onClose }) => {
       </div>
 
       <div className="mt-2">
-        <p className="text-gray-700">{outlet.address}</p>
-        <div className="flex space-x-4 mt-2">
+        <p className="text-gray-700 text-sm">{outlet.address}</p>
+        <div className="flex flex-col space-y-2 mt-3">
           {outlet.waze_link && (
             <a
               href={outlet.waze_link}
@@ -151,7 +161,7 @@ const OutletDetails = ({ outlet, onClose }) => {
 
       {intersectingOutlets.length > 0 && (
         <div className="mt-4 bg-red-50 p-3 rounded">
-          <h3 className="font-semibold text-red-700 flex items-center">
+          <h3 className="font-semibold text-red-700 flex items-center text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4 mr-1"
@@ -168,23 +178,25 @@ const OutletDetails = ({ outlet, onClose }) => {
             </svg>
             Overlapping 5KM Catchment Areas:
           </h3>
-          <ul className="mt-2 text-sm space-y-1">
-            {intersectingOutlets.map((o) => (
-              <li key={o.id} className="text-gray-700">
-                • {o.name}{" "}
-                <span className="text-gray-500 text-xs">
-                  (
-                  {calculateDistance(
-                    outlet.latitude,
-                    outlet.longitude,
-                    o.latitude,
-                    o.longitude
-                  ).toFixed(2)}{" "}
-                  km away)
-                </span>
-              </li>
-            ))}
-          </ul>
+          <div className="mt-2 text-sm max-h-40 overflow-auto">
+            <ul className="space-y-1">
+              {intersectingOutlets.map((o) => (
+                <li key={o.id} className="text-gray-700 text-xs">
+                  • {o.name}{" "}
+                  <span className="text-gray-500">
+                    (
+                    {calculateDistance(
+                      parseFloat(outlet.latitude),
+                      parseFloat(outlet.longitude),
+                      parseFloat(o.latitude),
+                      parseFloat(o.longitude)
+                    ).toFixed(2)}{" "}
+                    km away)
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
           <p className="text-xs text-gray-500 mt-3">
             These outlets have 5KM catchment areas that overlap with this
             location.
