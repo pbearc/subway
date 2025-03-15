@@ -66,6 +66,18 @@ const api = {
       throw error;
     }
   },
+
+  queryChatbot: async (query) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/chatbot/query?q=${encodeURIComponent(query)}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error querying chatbot:", error);
+      throw error;
+    }
+  },
 };
 
 export default api;

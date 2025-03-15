@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import OutletMap from "./components/OutletMap";
 import OutletList from "./components/OutletList";
 import OutletDetails from "./components/OutletDetails";
+import ChatBot from "./components/ChatBot";
 import api from "./services/api";
 import "./App.css";
 
@@ -11,6 +12,16 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState("map"); // 'map' or 'list'
+  const [stylesLoaded, setStylesLoaded] = useState(false);
+
+  useEffect(() => {
+    // Give CSS time to load properly
+    const timer = setTimeout(() => {
+      setStylesLoaded(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const fetchOutlets = async () => {
@@ -39,6 +50,10 @@ function App() {
   const toggleViewMode = () => {
     setViewMode(viewMode === "map" ? "list" : "map");
   };
+
+  if (!stylesLoaded) {
+    return <div className="loading-screen">Loading...</div>;
+  }
 
   if (loading) {
     return (
@@ -127,6 +142,9 @@ function App() {
       <footer className="app-footer">
         <p>Subway Outlet Mapping Project &copy; {new Date().getFullYear()}</p>
       </footer>
+
+      {/* Add the ChatBot component */}
+      <ChatBot onOutletSelect={handleOutletSelect} />
     </div>
   );
 }
