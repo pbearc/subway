@@ -12,6 +12,7 @@ const ChatBot = ({ onOutletSelect }) => {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom of messages
@@ -33,56 +34,43 @@ const ChatBot = ({ onOutletSelect }) => {
     setMessages((prev) => [...prev, userMessage]);
 
     // Clear input and set loading
+    const userQuery = input; // Save the input before clearing
     setInput("");
     setIsLoading(true);
 
     try {
       // Call the chatbot API
-      // For now, mock the response since API isn't implemented
-      setTimeout(() => {
-        const mockResponse = {
-          answer:
-            "I found information about Subway outlets in Kuala Lumpur. There are several outlets you might be interested in.",
-          relevant_outlets: [
-            {
-              id: 1,
-              name: "Subway KLCC",
-              address: "Lot 107, First Floor Suria KLCC, Kuala Lumpur",
-            },
-            {
-              id: 2,
-              name: "Subway Pavilion",
-              address: "Lot 5.21.00, Level 5, Pavilion Kuala Lumpur",
-            },
-          ],
-        };
+      const response = await api.queryChatbot(userQuery, sessionId);
 
-        // Add assistant message
-        const assistantMessage = {
-          role: "assistant",
-          content: mockResponse.answer,
-          outlets: mockResponse.relevant_outlets,
-        };
+      // Add assistant message
+      const assistantMessage = {
+        role: "assistant",
+        content: response.answer,
+        outlets: response.relevant_outlets,
+      };
 
-        setMessages((prev) => [...prev, assistantMessage]);
-        setIsLoading(false);
+      setMessages((prev) => [...prev, assistantMessage]);
 
-        // If there are relevant outlets, select the first one
-        if (
-          mockResponse.relevant_outlets &&
-          mockResponse.relevant_outlets.length > 0
-        ) {
-          onOutletSelect(mockResponse.relevant_outlets[0]);
-        }
-      }, 1500);
+      // Store the session ID for continued conversation
+      if (response.session_id) {
+        setSessionId(response.session_id);
+      }
+
+      // If there are relevant outlets, select the first one
+      if (response.relevant_outlets && response.relevant_outlets.length > 0) {
+        onOutletSelect(response.relevant_outlets[0]);
+      }
     } catch (error) {
+      console.error("Error querying chatbot:", error);
       // Add error message
       const errorMessage = {
         role: "assistant",
-        content: "Sorry, I encountered an error while processing your request.",
+        content:
+          "Sorry, I encountered an error while processing your request. Please try again.",
       };
 
       setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
     }
   };

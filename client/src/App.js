@@ -97,6 +97,27 @@ function App() {
           className="main-container"
           style={{ height: "100%", display: "flex" }}
         >
+          {/* Details Panel - Now on the left side */}
+          {selectedOutlet && (
+            <div
+              className="details-panel"
+              style={{
+                width: "300px",
+                height: "100%",
+                overflowY: "auto",
+                borderRight: "1px solid #e2e8f0", // Changed from borderLeft to borderRight
+                backgroundColor: "white",
+                boxShadow: "2px 0 10px rgba(0, 0, 0, 0.1)", // Changed shadow direction
+              }}
+            >
+              <OutletDetails
+                outlet={selectedOutlet}
+                onClose={handleCloseDetails}
+              />
+            </div>
+          )}
+
+          {/* Content Area - Now on the right side */}
           <div
             className="content-area"
             style={{ flex: 1, height: "100%", position: "relative" }}
@@ -117,25 +138,6 @@ function App() {
               </div>
             )}
           </div>
-
-          {selectedOutlet && (
-            <div
-              className="details-panel"
-              style={{
-                width: "300px",
-                height: "100%",
-                overflowY: "auto",
-                borderLeft: "1px solid #e2e8f0",
-                backgroundColor: "white",
-                boxShadow: "-2px 0 10px rgba(0, 0, 0, 0.1)",
-              }}
-            >
-              <OutletDetails
-                outlet={selectedOutlet}
-                onClose={handleCloseDetails}
-              />
-            </div>
-          )}
         </div>
       </main>
 

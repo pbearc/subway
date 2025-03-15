@@ -13,6 +13,8 @@ DB_CONFIG = {
     "port": int(os.environ.get('DB_PORT', 5432))
 }
 
+HF_API_TOKEN = os.environ.get('HUGGINGFACE_API_TOKEN', '')
+
 # Scraper configuration
 SCRAPER_CONFIG = {
     "url": "https://subway.com.my/find-a-subway",

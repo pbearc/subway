@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000";
+// Change this to match your actual API URL
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:8000";
 
 const api = {
   // Get all outlets
@@ -67,14 +69,36 @@ const api = {
     }
   },
 
-  queryChatbot: async (query) => {
+  // Query the chatbot with a question (including session support)
+  queryChatbot: async (query, sessionId = null) => {
     try {
+      const queryParams = new URLSearchParams({
+        q: query,
+      });
+
+      if (sessionId) {
+        queryParams.append("session_id", sessionId);
+      }
+
       const response = await axios.get(
-        `${API_BASE_URL}/chatbot/query?q=${encodeURIComponent(query)}`
+        `${API_BASE_URL}/chatbot/query?${queryParams.toString()}`
       );
       return response.data;
     } catch (error) {
       console.error("Error querying chatbot:", error);
+      throw error;
+    }
+  },
+
+  // Delete a chat session
+  deleteChatSession: async (sessionId) => {
+    try {
+      const response = await axios.delete(
+        `${API_BASE_URL}/chatbot/session/${sessionId}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting chat session:", error);
       throw error;
     }
   },

@@ -1,0 +1,25 @@
+.outlet-suggestion-item {
+  cursor: pointer;
+  color: #006341;
+  padding: 5px 8px;
+  margin: 3px 0;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: block;
+  font-weight: 500;
+}
+
+.outlet-suggestion-item:hover {
+  background-color: #f0f0f0;
+  text-decoration: underline;
+}
+
+.outlet-suggestions h4 {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.outlet-suggestions ul {
+  padding-left: 10px;
+  list-style-type: none;
+}

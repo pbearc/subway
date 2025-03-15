@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from server.api.endpoints import outlet
+from server.api.endpoints import outlet, chatbot
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 # Include routers
 app.include_router(outlet.router)
+app.include_router(chatbot.router)
 
 app.add_middleware(
     CORSMiddleware,

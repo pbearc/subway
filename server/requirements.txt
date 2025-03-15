@@ -6,3 +6,8 @@ python-dotenv==1.0.1
 selenium==4.29.0
 server==0.0.0
 SQLAlchemy==1.4.54
+psycopg2-binary==2.9.6
+langchain==0.0.267
+chromadb==0.4.6
+sentence-transformers==2.2.2
+
