@@ -14,6 +14,7 @@ DB_CONFIG = {
 }
 
 HF_API_TOKEN = os.environ.get('HUGGINGFACE_API_TOKEN', '')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 
 # Scraper configuration
 SCRAPER_CONFIG = {

@@ -7,12 +7,18 @@ const ChatBot = ({ onOutletSelect }) => {
     {
       role: "assistant",
       content:
-        "Hello! I can help you find information about Subway outlets in Kuala Lumpur. What would you like to know?",
+        "Hello! I can help you find information about Subway outlets in Kuala Lumpur. You can ask me about locations, opening hours, or even questions like 'Which outlet closes the latest?' or 'How many outlets are in Bangsar?'",
     },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
+  const [suggestions, setSuggestions] = useState([
+    "Which Subway outlets are in Bangsar?",
+    "Is Subway KLCC open on Sundays?",
+    "Which outlet closes the latest?",
+    "How many Subway outlets are in KL?",
+  ]);
   const messagesEndRef = useRef(null);
 
   // Auto-scroll to bottom of messages
@@ -24,17 +30,83 @@ const ChatBot = ({ onOutletSelect }) => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = async (e) => {
+  // Generate new suggestions based on conversation
+  useEffect(() => {
+    if (messages.length > 1) {
+      generateNewSuggestions();
+    }
+  }, [messages]);
+
+  const generateNewSuggestions = () => {
+    // Last user message
+    const lastUserMessage =
+      [...messages].reverse().find((m) => m.role === "user")?.content || "";
+
+    // Last assistant message
+    const lastAssistantMessage = [...messages]
+      .reverse()
+      .find((m) => m.role === "assistant");
+
+    // Check if there are outlets in the last response
+    const mentionedOutlet = lastAssistantMessage?.outlets?.[0]?.name;
+
+    // New suggestions based on context
+    let newSuggestions = [];
+
+    if (mentionedOutlet) {
+      newSuggestions = [
+        `What are the operating hours for ${mentionedOutlet}?`,
+        `Where exactly is ${mentionedOutlet} located?`,
+        `Is ${mentionedOutlet} open on weekends?`,
+      ];
+    } else if (
+      lastUserMessage.toLowerCase().includes("open") ||
+      lastUserMessage.toLowerCase().includes("hour")
+    ) {
+      newSuggestions = [
+        "Which outlet is open the latest?",
+        "Are there any 24-hour Subway outlets?",
+        "Which outlets are open on Sundays?",
+      ];
+    } else if (
+      lastUserMessage.toLowerCase().includes("where") ||
+      lastUserMessage.toLowerCase().includes("location")
+    ) {
+      newSuggestions = [
+        "How many outlets are in Kuala Lumpur?",
+        "Which outlet is closest to KLCC?",
+        "Are there any Subway outlets in Bangsar?",
+      ];
+    } else {
+      // Default suggestions
+      newSuggestions = [
+        "Which Subway outlet is closest to me?",
+        "What are the busiest Subway locations?",
+        "Tell me about Subway outlets in KL",
+        "Which outlet has the best reviews?",
+      ];
+    }
+
+    setSuggestions(newSuggestions);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    setInput(suggestion);
+    // Optional: automatically submit
+    handleSubmit({ preventDefault: () => {} }, suggestion);
+  };
+
+  const handleSubmit = async (e, suggestedInput = null) => {
     e.preventDefault();
 
-    if (!input.trim()) return;
+    const userQuery = suggestedInput || input;
+    if (!userQuery.trim()) return;
 
     // Add user message
-    const userMessage = { role: "user", content: input };
+    const userMessage = { role: "user", content: userQuery };
     setMessages((prev) => [...prev, userMessage]);
 
     // Clear input and set loading
-    const userQuery = input; // Save the input before clearing
     setInput("");
     setIsLoading(true);
 
@@ -75,6 +147,31 @@ const ChatBot = ({ onOutletSelect }) => {
     }
   };
 
+  const clearChat = () => {
+    if (sessionId) {
+      // Delete the session on the server
+      api
+        .deleteChatSession(sessionId)
+        .catch((error) => console.error("Error deleting session:", error));
+    }
+
+    // Reset chat state
+    setMessages([
+      {
+        role: "assistant",
+        content:
+          "Hello! I can help you find information about Subway outlets in Kuala Lumpur. What would you like to know?",
+      },
+    ]);
+    setSessionId(null);
+    setSuggestions([
+      "Which Subway outlets are in Bangsar?",
+      "Is Subway KLCC open on Sundays?",
+      "Which outlet closes the latest?",
+      "How many Subway outlets are in KL?",
+    ]);
+  };
+
   return (
     <>
       {/* Chat button with robot emoji */}
@@ -94,13 +191,22 @@ const ChatBot = ({ onOutletSelect }) => {
               <span className="chatbot-emoji">🤖</span>
               <h3>Subway Assistant</h3>
             </div>
-            <button
-              className="chatbot-close"
-              onClick={() => setIsOpen(false)}
-              aria-label="Close chat"
-            >
-              &times;
-            </button>
+            <div className="chatbot-actions">
+              <button
+                className="clear-chat-button"
+                onClick={clearChat}
+                aria-label="Clear chat"
+              >
+                <span className="clear-icon">🗑️</span>
+              </button>
+              <button
+                className="chatbot-close"
+                onClick={() => setIsOpen(false)}
+                aria-label="Close chat"
+              >
+                &times;
+              </button>
+            </div>
           </div>
 
           <div className="chatbot-messages">
@@ -145,6 +251,19 @@ const ChatBot = ({ onOutletSelect }) => {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Dynamic suggestions */}
+          <div className="chatbot-suggestions">
+            {suggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                className="suggestion-pill"
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+
           <form className="chatbot-input" onSubmit={handleSubmit}>
             <input
               type="text"
@@ -152,8 +271,9 @@ const ChatBot = ({ onOutletSelect }) => {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about Subway outlets..."
               disabled={isLoading}
+              autoFocus
             />
-            <button type="submit" disabled={isLoading}>
+            <button type="submit" disabled={isLoading || !input.trim()}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -167,6 +287,60 @@ const ChatBot = ({ onOutletSelect }) => {
           </form>
         </div>
       )}
+
+      {/* Additional CSS */}
+      <style jsx>{`
+        /* Add these styles to your CSS */
+        .chatbot-suggestions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          padding: 10px;
+          border-top: 1px solid #e0e0e0;
+        }
+
+        .suggestion-pill {
+          background-color: #f0f0f0;
+          border: 1px solid #ddd;
+          border-radius: 16px;
+          padding: 6px 12px;
+          font-size: 12px;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 200px;
+        }
+
+        .suggestion-pill:hover {
+          background-color: #e0e0e0;
+          border-color: #ccc;
+        }
+
+        .chatbot-actions {
+          display: flex;
+          align-items: center;
+        }
+
+        .clear-chat-button {
+          background: none;
+          border: none;
+          color: #888;
+          font-size: 16px;
+          cursor: pointer;
+          margin-right: 10px;
+          padding: 0;
+        }
+
+        .clear-chat-button:hover {
+          color: #555;
+        }
+
+        .clear-icon {
+          font-size: 14px;
+        }
+      `}</style>
     </>
   );
 };
