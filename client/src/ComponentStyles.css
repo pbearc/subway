@@ -1,0 +1,121 @@
+/* ComponentStyles.css - Place this in your src directory and import it in your App.js */
+
+/* OutletDetails styling */
+.details-panel {
+  width: 300px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e2e8f0;
+}
+
+/* Operating Hours table styling */
+.operating-hours-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.operating-hours-table td {
+  padding: 4px 0;
+}
+
+.operating-hours-table td:first-child {
+  font-weight: 500;
+  width: 100px;
+}
+
+/* OutletList styling */
+.list-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.outlet-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.outlet-list-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.2s;
+}
+
+.outlet-list-item:hover {
+  background-color: #f8fafc;
+}
+
+.outlet-list-item h3 {
+  font-weight: 500;
+  color: #006341;
+  margin-bottom: 4px;
+}
+
+.outlet-list-item p {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Button styling */
+button.radius-button {
+  background-color: #3b82f6;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+button.radius-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button.radius-button.active {
+  background-color: #dc2626;
+}
+
+button.radius-button.active:hover {
+  background-color: #b91c1c;
+}
+
+/* Make sure the list view displays all outlets */
+.list-container {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-container .outlet-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Ensure scrolling works properly */
+.overflow-y-auto {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix for overlapping 5KM catchment list */
+.catchment-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.catchment-list li:before {
+  content: none !important;
+}

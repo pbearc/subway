@@ -3,11 +3,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import { GoogleMapsProvider } from "./contexts/GoogleMapsContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // Remove StrictMode temporarily as it causes double rendering in development
-  // <React.StrictMode>
-  <App />
-  // </React.StrictMode>
+  <GoogleMapsProvider>
+    <App />
+  </GoogleMapsProvider>
 );

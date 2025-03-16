@@ -1,55 +1,67 @@
 import React from "react";
 
 const OperatingHours = ({ hours }) => {
-  // Sort days of the week in order
-  const daysOrder = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  if (!hours || hours.length === 0) {
+    return (
+      <p className="text-sm text-gray-500">No operating hours available</p>
+    );
+  }
 
-  const sortedHours = [...hours].sort(
-    (a, b) =>
-      daysOrder.indexOf(a.day_of_week) - daysOrder.indexOf(b.day_of_week)
-  );
-
-  // Format time from "HH:MM:SS" to "HH:MM AM/PM"
-  const formatTime = (timeString) => {
-    if (!timeString) return "";
-
-    const [hours, minutes] = timeString.split(":");
-    let hour = parseInt(hours, 10);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    hour = hour % 12 || 12;
-    return `${hour}:${minutes} ${ampm}`;
-  };
+  // Sort days of the week in proper order
+  const sortedHours = [...hours].sort((a, b) => {
+    const days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    return days.indexOf(a.day_of_week) - days.indexOf(b.day_of_week);
+  });
 
   return (
-    <div className="mt-2">
-      {sortedHours.length === 0 ? (
-        <p className="text-sm text-gray-500">No operating hours available</p>
-      ) : (
-        <ul className="space-y-1">
+    <div className="text-sm mt-2">
+      <table className="w-full text-sm">
+        <tbody>
           {sortedHours.map((hour) => (
-            <li key={hour.day_of_week} className="flex justify-between text-sm">
-              <span className="font-medium">{hour.day_of_week}</span>
-              <span className="text-gray-700">
+            <tr
+              key={hour.day_of_week}
+              className="border-b border-gray-100 last:border-0"
+            >
+              <td className="py-1 pr-2 font-medium">{hour.day_of_week}</td>
+              <td className="py-1 text-gray-600">
                 {hour.is_closed
                   ? "Closed"
                   : `${formatTime(hour.opening_time)} - ${formatTime(
                       hour.closing_time
                     )}`}
-              </span>
-            </li>
+              </td>
+            </tr>
           ))}
-        </ul>
-      )}
+        </tbody>
+      </table>
     </div>
   );
+};
+
+// Helper function to format time
+const formatTime = (timeString) => {
+  if (!timeString) return "";
+
+  // If it's already in 12-hour format or doesn't have seconds, just return it
+  if (!timeString.includes(":") || timeString.length <= 5) {
+    return timeString;
+  }
+
+  // Convert from 24-hour format to 12-hour format
+  const [hours, minutes] = timeString.split(":");
+  const hour = parseInt(hours, 10);
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 || 12;
+
+  return `${hour12}:${minutes} ${ampm}`;
 };
 
 export default OperatingHours;

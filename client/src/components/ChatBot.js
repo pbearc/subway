@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import api from "../services/api";
+import "../ChatBot.css"; // Import the CSS file
 
 const ChatBot = ({ onOutletSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -287,60 +288,6 @@ const ChatBot = ({ onOutletSelect }) => {
           </form>
         </div>
       )}
-
-      {/* Additional CSS */}
-      <style jsx>{`
-        /* Add these styles to your CSS */
-        .chatbot-suggestions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          padding: 10px;
-          border-top: 1px solid #e0e0e0;
-        }
-
-        .suggestion-pill {
-          background-color: #f0f0f0;
-          border: 1px solid #ddd;
-          border-radius: 16px;
-          padding: 6px 12px;
-          font-size: 12px;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 200px;
-        }
-
-        .suggestion-pill:hover {
-          background-color: #e0e0e0;
-          border-color: #ccc;
-        }
-
-        .chatbot-actions {
-          display: flex;
-          align-items: center;
-        }
-
-        .clear-chat-button {
-          background: none;
-          border: none;
-          color: #888;
-          font-size: 16px;
-          cursor: pointer;
-          margin-right: 10px;
-          padding: 0;
-        }
-
-        .clear-chat-button:hover {
-          color: #555;
-        }
-
-        .clear-icon {
-          font-size: 14px;
-        }
-      `}</style>
     </>
   );
 };

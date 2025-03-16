@@ -1,0 +1,77 @@
+/* OverrideStyles.css - Add this to your src directory */
+
+.App {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+/* Header styles */
+.app-header {
+  background-color: #006341 !important; /* Subway green color */
+  color: white !important;
+  padding: 1rem !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  z-index: 1000 !important;
+}
+
+.app-header h1 {
+  margin: 0 !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+}
+
+.header-actions {
+  display: flex !important;
+  gap: 0.5rem !important;
+}
+
+.view-toggle-btn {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-size: 0.875rem !important;
+  transition: background-color 0.2s !important;
+  font-weight: 500 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Footer styles */
+.app-footer {
+  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  text-align: center !important;
+  padding: 0.75rem !important;
+  font-size: 0.875rem !important;
+  border-top: 1px solid #e9ecef !important;
+  z-index: 1000 !important;
+}
+
+/* Chatbot styles */
+.chatbot-button {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  background-color: #006341 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 60px !important;
+  height: 60px !important;
+  font-size: 26px !important;
+  cursor: pointer !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+  line-height: 1 !important;
+}
