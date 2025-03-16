@@ -1,8 +1,11 @@
+/* src/styles/index.css */
+
+/* Import Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Your custom CSS styles come AFTER Tailwind utilities */
+/* Base styles */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -24,5 +27,7 @@ body,
   height: 100%;
 }
 
-/* Import your App.css after Tailwind */
+/* Import component styles - this should happen after Tailwind */
 @import "./App.css";
+@import "./ChatBot.css";
+@import "./components.css";
