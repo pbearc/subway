@@ -5,7 +5,6 @@ import OutletMap from "./components/map/OutletMap";
 import OutletDetails from "./components/outlet/OutletDetails";
 import ChatBot from "./components/chatbot/ChatBot";
 import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
 import Loader from "./components/common/Loader";
 import useOutlets from "./hooks/useOutlets";
 import useSearch from "./hooks/useSearch";
@@ -31,18 +30,19 @@ const App = () => {
   const [stylesLoaded, setStylesLoaded] = useState(false);
   const mapRef = useRef(null);
 
-  // Search functionality
+  // Search functionality with modified behavior
   const {
     searchTerm,
+    setSearchTerm,
     isSearchOpen,
+    setIsSearchOpen,
     filteredData,
     sortOption,
     searchRef,
     handleSearchChange,
-    handleSelect,
     toggleSortOption,
     groupedData,
-  } = useSearch(outlets, (outlet) => handleOutletSelect(outlet));
+  } = useSearch(outlets, (outlet) => handleOutletSelect(outlet, true));
 
   // Give CSS time to load properly
   useEffect(() => {
@@ -56,8 +56,9 @@ const App = () => {
   /**
    * Handle outlet selection from any component
    * @param {Object} outlet - Selected outlet
+   * @param {boolean} updateSearch - Whether to update search term (default: false)
    */
-  const handleOutletSelect = (outlet) => {
+  const handleOutletSelect = (outlet, updateSearch = false) => {
     // Define the radius callback function
     const showRadiusCallback = (outletToShow) => {
       if (mapRef.current && mapRef.current.showRadius) {
@@ -68,10 +69,13 @@ const App = () => {
     // Select the outlet with radius callback
     selectOutlet(outlet, showRadiusCallback);
 
-    // Update search term for consistency
-    if (outlet?.name) {
-      handleSearchChange({ target: { value: outlet.name } });
+    // Only update search term if explicitly requested
+    if (updateSearch && outlet?.name) {
+      setSearchTerm(outlet.name);
     }
+
+    // Close search dropdown when selecting an outlet
+    setIsSearchOpen(false);
 
     // Trigger map's selection
     if (mapRef.current && mapRef.current.selectOutletFromExternal) {
@@ -112,9 +116,10 @@ const App = () => {
     <div className="App">
       <Header
         outlets={outlets}
-        onOutletSelect={handleOutletSelect}
+        onOutletSelect={(outlet) => handleOutletSelect(outlet, true)}
         searchTerm={searchTerm}
         isSearchOpen={isSearchOpen}
+        setIsSearchOpen={setIsSearchOpen}
         filteredOutlets={filteredData}
         sortOption={sortOption}
         searchRef={searchRef}
@@ -147,8 +152,6 @@ const App = () => {
           </div>
         </div>
       </main>
-
-      <Footer />
 
       {/* ChatBot component */}
       <ChatBot onOutletSelect={handleOutletSelect} />

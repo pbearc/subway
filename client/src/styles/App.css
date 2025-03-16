@@ -1,9 +1,31 @@
-/* Base app styles */
+/* src/styles/App.css */
+
+/* Reset and base styles */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: white;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* Base app structure */
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
   overflow: hidden;
+  background-color: white;
 }
 
 /* Header styles */
@@ -29,55 +51,45 @@
   gap: 0.5rem;
 }
 
-.view-toggle-btn {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: background-color 0.2s;
-  font-weight: 500;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* Search dropdown styles */
+.search-dropdown {
+  position: relative;
+  z-index: 50;
 }
 
-.view-toggle-btn:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
+.search-dropdown .dropdown-results {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
-.view-toggle-btn:active {
-  transform: translateY(1px);
-}
-
-/* Main content */
+/* Main content area */
 .app-content {
   flex: 1;
   overflow: hidden;
   position: relative;
+  background-color: white;
 }
 
 .main-container {
   display: flex;
   height: 100%;
+  background-color: white;
 }
 
 .content-area {
   flex: 1;
   position: relative;
   height: 100%;
+  background-color: white;
 }
 
-/* Map and list views */
+/* Map container */
 .map-container {
   height: 100%;
   width: 100%;
-}
-
-.list-container {
-  height: 100%;
-  overflow: auto;
+  background-color: white;
 }
 
 /* Details panel */
@@ -88,9 +100,61 @@
   background-color: white;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #e2e8f0;
+  z-index: 800;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
-/* Loading spinner */
+.details-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.details-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.details-panel::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+/* Drag handle for mobile */
+.drag-handle {
+  width: 40px;
+  height: 4px;
+  background-color: #cbd5e0;
+  border-radius: 2px;
+  margin: 0 auto 12px auto;
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Search results scrolling */
+.search-results-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.search-results-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search-results-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search-results-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+/* Loading state */
 .App.loading,
 .App.error {
   align-items: center;
@@ -132,7 +196,7 @@
   margin-top: 1rem;
 }
 
-/* Fix for InfoWindow positioning */
+/* Fix for Google Maps InfoWindow positioning */
 .gm-style .gm-style-iw-c {
   padding: 12px !important;
   max-width: 300px !important;
@@ -141,4 +205,96 @@
 .gm-style .gm-style-iw-d {
   overflow: hidden !important;
   max-width: 280px !important;
+}
+
+/* Loading screen */
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f5f7fa;
+  font-size: 1.25rem;
+  color: #6c757d;
+}
+
+/* Mobile specific styles */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-header h1 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Make search take full width on mobile */
+  .app-header .relative.z-50 {
+    width: 100% !important;
+    margin-top: 0.5rem;
+  }
+
+  /* Special handling for details panel on mobile */
+  .details-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70vh;
+    border-right: none;
+    border-top: 1px solid #e2e8f0;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    z-index: 950;
+  }
+
+  /* When details panel is open, adjust map height */
+  .details-panel ~ .content-area .map-container {
+    height: 30vh;
+  }
+
+  /* Fix viewport on mobile */
+  html {
+    overscroll-behavior: none;
+  }
+
+  body {
+    overscroll-behavior: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Fix map container on mobile */
+  .map-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Fix map size when details panel is shown */
+  .details-panel ~ .content-area {
+    height: 30vh !important;
+  }
+
+  @supports (-webkit-touch-callout: none) {
+    /* iOS-specific fixes */
+    .app-content {
+      height: -webkit-fill-available;
+    }
+
+    body,
+    #root,
+    .App {
+      height: -webkit-fill-available;
+    }
+  }
 }

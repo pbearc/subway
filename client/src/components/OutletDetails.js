@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from "react";
+// src/components/outlet/OutletDetails.jsx
+
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import PropTypes from "prop-types";
 import OperatingHours from "./OperatingHours";
-import api from "../services/api";
+import IntersectingOutlets from "./IntersectingOutlets";
+import StatusIndicator from "../common/StatusIndicator";
+import api from "../../services/api";
+import { calculateDistance } from "../../utils/distanceCalculator";
 
 const OutletDetails = ({ outlet, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [operatingHours, setOperatingHours] = useState([]);
   const [error, setError] = useState(null);
   const [showingRadius, setShowingRadius] = useState(false);
-
-  // Haversine formula to calculate distance between two coordinates in km
-  const calculateDistance = (lat1, lon1, lat2, lon2) => {
-    if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
-
-    const R = 6371; // Radius of the earth in km
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in km
-    return distance;
-  };
+  const [status, setStatus] = useState("Unknown");
 
   // Get outlets that are actually within 5km
-  const getActualIntersectingOutlets = () => {
+  const intersectingOutlets = useMemo(() => {
     if (!outlet || !outlet.allOutlets) return [];
 
     return (
@@ -59,7 +48,39 @@ const OutletDetails = ({ outlet, onClose }) => {
           return distA - distB;
         })
     );
-  };
+  }, [outlet]);
+
+  // Check if an outlet is currently open
+  const determineOutletStatus = useCallback((hours) => {
+    if (!hours || hours.length === 0) return "Unknown";
+
+    const now = new Date();
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const currentDay = days[now.getDay()];
+
+    const todayHours = hours.find((h) => h.day_of_week === currentDay);
+    if (!todayHours) return "Unknown";
+    if (todayHours.is_closed) return "Closed Today";
+
+    const currentTime = now.toTimeString().split(" ")[0];
+
+    if (
+      currentTime >= todayHours.opening_time &&
+      currentTime <= todayHours.closing_time
+    ) {
+      return "Open Now";
+    } else {
+      return "Closed Now";
+    }
+  }, []);
 
   useEffect(() => {
     const fetchOperatingHours = async () => {
@@ -68,6 +89,7 @@ const OutletDetails = ({ outlet, onClose }) => {
       // First check if operating hours are already included in the outlet data
       if (outlet.operating_hours && outlet.operating_hours.length > 0) {
         setOperatingHours(outlet.operating_hours);
+        setStatus(determineOutletStatus(outlet.operating_hours));
         setLoading(false);
         return;
       }
@@ -77,6 +99,7 @@ const OutletDetails = ({ outlet, onClose }) => {
         setLoading(true);
         const hours = await api.getOutletOperatingHours(outlet.id);
         setOperatingHours(hours);
+        setStatus(determineOutletStatus(hours));
         setLoading(false);
       } catch (error) {
         console.error("Error fetching operating hours:", error);
@@ -101,7 +124,7 @@ const OutletDetails = ({ outlet, onClose }) => {
         outlet.hideRadius();
       }
     };
-  }, [outlet?.id, outlet?.operating_hours]);
+  }, [outlet?.id, outlet?.operating_hours, determineOutletStatus]);
 
   // Update local state if map state changes (e.g., when clicking elsewhere)
   useEffect(() => {
@@ -115,9 +138,6 @@ const OutletDetails = ({ outlet, onClose }) => {
   }, [outlet, showingRadius]);
 
   if (!outlet) return null;
-
-  // Get actual intersecting outlets with accurate distance calculation
-  const intersectingOutlets = getActualIntersectingOutlets();
 
   // Toggle 5km radius display
   const toggleRadiusDisplay = () => {
@@ -137,15 +157,20 @@ const OutletDetails = ({ outlet, onClose }) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 overflow-y-auto max-h-full">
+      {/* Mobile handle for dragging */}
+      <div className="md:hidden drag-handle"></div>
+
       <div className="flex justify-between items-start mb-3">
         <div>
           <h2 className="text-xl font-bold text-green-800">{outlet.name}</h2>
-          {/* Removed ID display */}
+          <div className="mt-1">
+            <StatusIndicator status={status} />
+          </div>
         </div>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 text-xl leading-none"
+          className="text-gray-500 hover:text-gray-700 text-xl leading-none p-1 rounded-full hover:bg-gray-100"
           aria-label="Close"
         >
           &times;
@@ -154,13 +179,13 @@ const OutletDetails = ({ outlet, onClose }) => {
 
       <div className="mt-2">
         <p className="text-gray-700 text-sm">{outlet.address}</p>
-        <div className="flex flex-col space-y-2 mt-3">
+        <div className="flex flex-wrap gap-2 mt-3">
           {outlet.waze_link && (
             <a
               href={outlet.waze_link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:underline text-sm flex items-center"
+              className="text-blue-500 hover:underline text-sm flex items-center bg-blue-50 px-2 py-1 rounded"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -168,6 +193,7 @@ const OutletDetails = ({ outlet, onClose }) => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -183,7 +209,7 @@ const OutletDetails = ({ outlet, onClose }) => {
             href={`https://www.google.com/maps/search/?api=1&query=${outlet.latitude},${outlet.longitude}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline text-sm flex items-center"
+            className="text-blue-500 hover:underline text-sm flex items-center bg-blue-50 px-2 py-1 rounded"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -191,6 +217,7 @@ const OutletDetails = ({ outlet, onClose }) => {
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -210,11 +237,11 @@ const OutletDetails = ({ outlet, onClose }) => {
         </div>
       </div>
 
-      {/* 5km Radius Button - Removed border */}
+      {/* 5km Radius Button */}
       <div className="mt-4">
         <button
           onClick={toggleRadiusDisplay}
-          className={`py-2 px-3 rounded text-sm flex items-center shadow ${
+          className={`py-2 px-3 rounded text-sm flex items-center shadow-sm ${
             showingRadius
               ? "bg-red-500 text-white hover:bg-red-600"
               : "bg-blue-500 text-white hover:bg-blue-600"
@@ -227,6 +254,7 @@ const OutletDetails = ({ outlet, onClose }) => {
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -250,58 +278,35 @@ const OutletDetails = ({ outlet, onClose }) => {
         )}
       </div>
 
+      {/* Intersecting outlets - extracted to dedicated component */}
       {intersectingOutlets.length > 0 && (
-        <div className="mt-4 bg-gray-50 p-3 rounded border border-gray-200">
-          <h3 className="font-semibold text-gray-700 flex items-center text-sm">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-            Overlapping 5KM Catchment Areas ({intersectingOutlets.length})
-          </h3>
-          <div className="mt-2">
-            <ul className="space-y-1">
-              {intersectingOutlets.map((o) => (
-                <li key={o.id} className="text-gray-700 text-xs">
-                  {o.name}{" "}
-                  <span className="text-gray-500">
-                    (
-                    {calculateDistance(
-                      parseFloat(outlet.latitude),
-                      parseFloat(outlet.longitude),
-                      parseFloat(o.latitude),
-                      parseFloat(o.longitude)
-                    ).toFixed(2)}{" "}
-                    km away)
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <p className="text-xs text-gray-500 mt-3">
-            These outlets have 5KM catchment areas that overlap with this
-            location.
-          </p>
-        </div>
+        <IntersectingOutlets
+          currentOutlet={outlet}
+          intersectingOutlets={intersectingOutlets}
+        />
       )}
     </div>
   );
+};
+
+OutletDetails.propTypes = {
+  outlet: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    name: PropTypes.string.isRequired,
+    address: PropTypes.string,
+    latitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
+    longitude: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
+    waze_link: PropTypes.string,
+    operating_hours: PropTypes.array,
+    allOutlets: PropTypes.array,
+    showRadius: PropTypes.func,
+    hideRadius: PropTypes.func,
+    isRadiusActive: PropTypes.func,
+    setRadiusCallback: PropTypes.func,
+  }),
+  onClose: PropTypes.func.isRequired,
 };
 
 export default OutletDetails;

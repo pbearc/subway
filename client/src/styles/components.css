@@ -159,3 +159,23 @@ button.radius-button.active:hover {
     display: none !important;
   }
 }
+
+/* Drag handle for mobile details panel */
+.drag-handle {
+  width: 40px;
+  height: 4px;
+  background-color: #cbd5e0;
+  border-radius: 2px;
+  margin: 0 auto 12px auto;
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+@media (min-width: 769px) {
+  .drag-handle {
+    display: none;
+  }
+}

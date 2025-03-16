@@ -185,33 +185,35 @@ const ChatBot = ({ onOutletSelect }) => {
 
   return (
     <>
-      {/* Chat button with robot emoji */}
-      <button
-        className={`chatbot-button ${isOpen ? "open" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label={isOpen ? "Close chat" : "Chat with bot"}
-      >
-        {isOpen ? "✕" : "🤖"}
-      </button>
+      {/* Chat button with robot emoji - Only show when chat is closed */}
+      {!isOpen && (
+        <button
+          className="chatbot-button"
+          onClick={() => setIsOpen(true)}
+          aria-label="Chat with bot"
+        >
+          🤖
+        </button>
+      )}
 
       {/* Chat window */}
       {isOpen && (
-        <div className="chatbot-window fixed md:absolute bottom-0 right-0 w-full md:w-80 lg:w-96 h-[80vh] md:h-[500px] rounded-t-lg md:rounded-lg shadow-lg flex flex-col bg-white">
-          <div className="chatbot-header flex justify-between items-center p-3 bg-green-700 text-white rounded-t-lg">
-            <div className="chatbot-title flex items-center">
-              <span className="chatbot-emoji text-lg mr-2">🤖</span>
-              <h3 className="text-base font-medium">Subway Assistant</h3>
+        <div className="chatbot-window">
+          <div className="chatbot-header">
+            <div className="chatbot-title">
+              <span className="chatbot-emoji">🤖</span>
+              <h3>Subway Assistant</h3>
             </div>
-            <div className="chatbot-actions flex items-center">
+            <div className="chatbot-actions">
               <button
-                className="clear-chat-button mr-2 p-1 hover:bg-green-600 rounded"
+                className="clear-chat-button"
                 onClick={clearChat}
                 aria-label="Clear chat"
               >
                 <span className="clear-icon">🗑️</span>
               </button>
               <button
-                className="chatbot-close p-1 hover:bg-green-600 rounded text-xl leading-none"
+                className="chatbot-close"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close chat"
               >
@@ -220,7 +222,7 @@ const ChatBot = ({ onOutletSelect }) => {
             </div>
           </div>
 
-          <div className="chatbot-messages flex-1 p-3 overflow-y-auto">
+          <div className="chatbot-messages">
             {messages.map((msg, index) => (
               <ChatMessage
                 key={index}
@@ -243,17 +245,14 @@ const ChatBot = ({ onOutletSelect }) => {
           </div>
 
           {/* Dynamic suggestions */}
-          <div className="chatbot-suggestions-container p-2 border-t border-gray-200">
+          <div className="chatbot-suggestions-container">
             <SuggestionPills
               suggestions={suggestions}
               onSuggestionClick={handleSuggestionClick}
             />
           </div>
 
-          <form
-            className="chatbot-input p-2 border-t border-gray-200 flex items-center"
-            onSubmit={handleSubmit}
-          >
+          <form className="chatbot-input" onSubmit={handleSubmit}>
             <input
               type="text"
               value={input}

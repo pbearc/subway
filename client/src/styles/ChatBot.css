@@ -1,4 +1,4 @@
-/* src/styles/ChatBot.css - Mobile-friendly */
+/* src/styles/ChatBot.css */
 
 /* ChatBot Button */
 .chatbot-button {
@@ -27,49 +27,51 @@
   outline: none;
 }
 
-.chatbot-button.open {
-  background-color: #d9534f; /* Red for close */
-}
-
-/* ChatBot Window */
+/* ChatBot Window - Positioned at the bottom right */
 .chatbot-window {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 80vh;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  bottom: 20px; /* Same position as the button */
+  right: 20px; /* Same position as the button */
+  width: 400px;
+  height: 700px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   background-color: white;
   z-index: 999;
   overflow: hidden;
+  resize: both; /* Make it resizable */
+  min-width: 300px;
+  min-height: 400px;
+  max-width: 90vw;
+  max-height: 70vh;
 }
 
-@media (min-width: 768px) {
+/* Mobile styles */
+@media (max-width: 768px) {
   .chatbot-window {
-    position: absolute;
-    bottom: 80px;
-    right: 20px;
-    width: 350px;
-    height: 500px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: calc(100% - 40px); /* Full width minus margins */
+    height: 70vh;
+    max-width: none;
+    resize: vertical; /* Only allow vertical resizing on mobile */
   }
 }
 
 /* ChatBot Header */
+/* Update these parts in your ChatBot.css file */
+
+/* ChatBot Header - Thinner and lighter color */
 .chatbot-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background-color: #009743; /* Subway green */
-  color: white;
+  padding: 8px 12px; /* Reduced padding to make it thinner */
+  background-color: #f8f9fa; /* Light gray instead of green */
+  color: #333; /* Darker text for better contrast */
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  border-bottom: 1px solid #e9ecef; /* Light border at bottom */
 }
 
 .chatbot-title {
@@ -79,32 +81,41 @@
 
 .chatbot-title h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 14px; /* Smaller font size */
+  font-weight: 600;
 }
 
 .chatbot-emoji {
-  margin-right: 8px;
-  font-size: 20px;
+  margin-right: 6px;
+  font-size: 16px; /* Smaller emoji */
+}
+
+/* Actions in header - display in a row */
+.chatbot-actions {
+  display: flex;
+  align-items: center;
 }
 
 .chatbot-close,
 .clear-chat-button {
   background: none;
   border: none;
-  color: white;
+  color: #6c757d; /* Darker color for better visibility */
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 24px; /* Smaller buttons */
+  height: 24px;
   border-radius: 50%;
   transition: background-color 0.2s;
+  margin-left: 6px; /* Add spacing between buttons */
 }
 
 .chatbot-close:hover,
 .clear-chat-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.05); /* Lighter hover effect */
+  color: #495057; /* Darker on hover */
 }
 
 /* ChatBot Messages Area */
@@ -113,6 +124,21 @@
   padding: 16px;
   overflow-y: auto;
   background-color: #f8f9fa;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.chatbot-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
 }
 
 .chatbot-message {
@@ -324,57 +350,5 @@
 
   .outlet-suggestion-item {
     font-size: 12px;
-  }
-}
-
-/* For tablets and larger phones in landscape */
-@media (min-width: 576px) and (max-width: 767px) {
-  .chatbot-window {
-    width: 100%;
-    height: 70vh;
-  }
-}
-
-/* Main application styles */
-.outlet-details-panel {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60vh;
-  background-color: white;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  overflow-y: auto;
-  transition: transform 0.3s ease-in-out;
-}
-
-@media (min-width: 768px) {
-  .outlet-details-panel {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 350px;
-    height: 100%;
-    border-radius: 0;
-    border-left: 1px solid #e9ecef;
-  }
-}
-
-/* Map container adjustments for mobile */
-.map-container {
-  height: 100vh;
-  width: 100%;
-}
-
-@media (max-width: 767px) {
-  .map-container {
-    height: calc(100vh - 60vh); /* Adjust for outlet details panel */
-  }
-
-  .outlet-details-open .map-container {
-    height: 40vh;
   }
 }

@@ -62,6 +62,19 @@ const useOutlets = () => {
   }, []);
 
   /**
+   * Find an outlet by ID
+   * @param {string|number} outletId - ID of the outlet to find
+   * @returns {Object|null} The outlet or null if not found
+   */
+  const findOutletById = useCallback(
+    (outletId) => {
+      if (!outletId || !outlets.length) return null;
+      return outlets.find((outlet) => outlet.id === outletId) || null;
+    },
+    [outlets]
+  );
+
+  /**
    * Group outlets by area based on their address
    * @returns {Object} Outlets grouped by area
    */
@@ -106,6 +119,7 @@ const useOutlets = () => {
     selectedOutlet,
     selectOutlet,
     clearSelectedOutlet,
+    findOutletById,
     groupedByArea,
     refreshOutlets: fetchOutlets,
   };

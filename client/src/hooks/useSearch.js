@@ -23,18 +23,23 @@ const useSearch = (data = [], onSelect) => {
       return;
     }
 
+    // If there's no search term, we'll show all data in the dropdown
+    // but still keep the filtered data empty
+    if (!searchTerm.trim()) {
+      setFilteredData([]);
+      return;
+    }
+
     let results = [...data];
 
-    // Filter by search term if there is one
-    if (searchTerm.trim()) {
-      results = results.filter(
-        (item) =>
-          (item?.name &&
-            item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-          (item?.address &&
-            item.address.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    }
+    // Filter by search term
+    results = results.filter(
+      (item) =>
+        (item?.name &&
+          item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (item?.address &&
+          item.address.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
 
     // Sort results based on selected option
     if (sortOption === "name") {
@@ -88,13 +93,33 @@ const useSearch = (data = [], onSelect) => {
     };
   }, []);
 
+  // Sort all data (for when no search term is entered)
+  const sortedAllData = useMemo(() => {
+    if (!Array.isArray(data)) return [];
+
+    let sorted = [...data];
+
+    if (sortOption === "name") {
+      sorted.sort((a, b) => {
+        const nameA = a?.name || "";
+        const nameB = b?.name || "";
+        return nameA.localeCompare(nameB);
+      });
+    }
+
+    return sorted;
+  }, [data, sortOption]);
+
   // Group data by area
   const groupedData = useMemo(() => {
     if (sortOption !== "area") return null;
 
     const groupedItems = {};
+    const itemsToGroup = searchTerm.trim() ? filteredData : data;
 
-    filteredData.forEach((item) => {
+    if (!Array.isArray(itemsToGroup)) return {};
+
+    itemsToGroup.forEach((item) => {
       if (!item) return;
 
       let areaName = "Other";
@@ -118,12 +143,12 @@ const useSearch = (data = [], onSelect) => {
     });
 
     return groupedItems;
-  }, [filteredData, sortOption]);
+  }, [filteredData, data, sortOption, searchTerm]);
 
   // Handler for search input changes
   const handleSearchChange = useCallback((e) => {
     setSearchTerm(e.target.value);
-    setIsSearchOpen(Boolean(e.target.value.trim()));
+    setIsSearchOpen(true); // Always show dropdown when typing
   }, []);
 
   // Handler for item selection
@@ -132,7 +157,6 @@ const useSearch = (data = [], onSelect) => {
       if (onSelect && typeof onSelect === "function") {
         onSelect(item);
       }
-      setSearchTerm(item?.name || "");
       setIsSearchOpen(false);
     },
     [onSelect]
@@ -141,6 +165,12 @@ const useSearch = (data = [], onSelect) => {
   // Toggle sort option
   const toggleSortOption = useCallback((option) => {
     setSortOption(option);
+  }, []);
+
+  // Clear search term
+  const clearSearchTerm = useCallback(() => {
+    setSearchTerm("");
+    setIsSearchOpen(false);
   }, []);
 
   return {
@@ -156,6 +186,8 @@ const useSearch = (data = [], onSelect) => {
     handleSelect,
     toggleSortOption,
     groupedData,
+    clearSearchTerm,
+    sortedAllData,
   };
 };
 

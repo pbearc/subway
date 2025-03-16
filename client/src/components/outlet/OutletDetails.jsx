@@ -8,7 +8,7 @@ import StatusIndicator from "../common/StatusIndicator";
 import api from "../../services/api";
 
 /**
- * Calculates distance between two coordinates using Haversine formula
+ * Calculate distance between two coordinates using Haversine formula
  */
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
@@ -176,29 +176,58 @@ const OutletDetails = ({ outlet, onClose }) => {
   };
 
   return (
-    <div className="p-4 overflow-y-auto max-h-full">
-      <div className="flex justify-between items-start mb-3">
-        <div>
-          <h2 className="text-xl font-bold text-green-800">{outlet.name}</h2>
-          <div className="mt-1">
-            <StatusIndicator status={status} />
-          </div>
-        </div>
-        <button
-          onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 text-xl leading-none"
-          aria-label="Close"
-        >
-          &times;
-        </button>
-      </div>
+    <div className="outlet-details-wrapper h-full flex flex-col overflow-hidden">
+      {/* Mobile handle for dragging */}
+      <div className="md:hidden drag-handle"></div>
 
-      <div className="mt-2">
-        <p className="text-gray-700 text-sm">{outlet.address}</p>
-        <div className="flex flex-wrap gap-2 mt-3">
-          {outlet.waze_link && (
+      {/* Scrollable content area */}
+      <div className="outlet-details-content flex-1 overflow-y-auto px-4 pb-4">
+        <div className="flex justify-between items-start mb-3">
+          <div>
+            <h2 className="text-xl font-bold text-green-800">{outlet.name}</h2>
+            <div className="mt-1">
+              <StatusIndicator status={status} />
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 text-xl leading-none p-1 rounded-full hover:bg-gray-100"
+            aria-label="Close"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className="mt-2">
+          <p className="text-gray-700 text-sm">{outlet.address}</p>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {outlet.waze_link && (
+              <a
+                href={outlet.waze_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline text-sm flex items-center bg-blue-50 px-2 py-1 rounded"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                  />
+                </svg>
+                Open in Waze
+              </a>
+            )}
             <a
-              href={outlet.waze_link}
+              href={`https://www.google.com/maps/search/?api=1&query=${outlet.latitude},${outlet.longitude}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline text-sm flex items-center bg-blue-50 px-2 py-1 rounded"
@@ -215,17 +244,30 @@ const OutletDetails = ({ outlet, onClose }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
-              Open in Waze
+              View on Google Maps
             </a>
-          )}
-          <a
-            href={`https://www.google.com/maps/search/?api=1&query=${outlet.latitude},${outlet.longitude}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline text-sm flex items-center bg-blue-50 px-2 py-1 rounded"
+          </div>
+        </div>
+
+        {/* 5km Radius Button */}
+        <div className="mt-4">
+          <button
+            onClick={toggleRadiusDisplay}
+            className={`py-2 px-3 rounded text-sm flex items-center shadow-sm ${
+              showingRadius
+                ? "bg-red-500 text-white hover:bg-red-600"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+            style={{ outline: "none", border: "none" }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -239,68 +281,32 @@ const OutletDetails = ({ outlet, onClose }) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4"
               />
             </svg>
-            View on Google Maps
-          </a>
+            {showingRadius ? "Hide 5KM Radius" : "Show 5KM Radius"}
+          </button>
         </div>
-      </div>
 
-      {/* 5km Radius Button */}
-      <div className="mt-4">
-        <button
-          onClick={toggleRadiusDisplay}
-          className={`py-2 px-3 rounded text-sm flex items-center shadow-sm ${
-            showingRadius
-              ? "bg-red-500 text-white hover:bg-red-600"
-              : "bg-blue-500 text-white hover:bg-blue-600"
-          }`}
-          style={{ outline: "none", border: "none" }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-1"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4"
-            />
-          </svg>
-          {showingRadius ? "Hide 5KM Radius" : "Show 5KM Radius"}
-        </button>
-      </div>
+        <div className="mt-4">
+          <h3 className="font-semibold text-green-700">Operating Hours</h3>
+          {loading ? (
+            <p className="text-sm text-gray-500">Loading operating hours...</p>
+          ) : error ? (
+            <p className="text-sm text-red-500">{error}</p>
+          ) : (
+            <OperatingHours hours={operatingHours} />
+          )}
+        </div>
 
-      <div className="mt-4">
-        <h3 className="font-semibold text-green-700">Operating Hours</h3>
-        {loading ? (
-          <p className="text-sm text-gray-500">Loading operating hours...</p>
-        ) : error ? (
-          <p className="text-sm text-red-500">{error}</p>
-        ) : (
-          <OperatingHours hours={operatingHours} />
+        {/* Intersecting outlets - extracted to dedicated component */}
+        {intersectingOutlets.length > 0 && (
+          <IntersectingOutlets
+            currentOutlet={outlet}
+            intersectingOutlets={intersectingOutlets}
+          />
         )}
       </div>
-
-      {/* Intersecting outlets - extracted to dedicated component */}
-      {intersectingOutlets.length > 0 && (
-        <IntersectingOutlets
-          currentOutlet={outlet}
-          intersectingOutlets={intersectingOutlets}
-        />
-      )}
     </div>
   );
 };
