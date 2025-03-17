@@ -12,11 +12,11 @@ const SuggestionPills = ({ suggestions, onSuggestionClick }) => {
   }
 
   return (
-    <div className="chatbot-suggestions flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 overflow-x-auto pb-1 no-scrollbar">
       {suggestions.map((suggestion, index) => (
         <button
           key={index}
-          className="suggestion-pill text-xs md:text-sm px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full whitespace-nowrap overflow-hidden text-ellipsis max-w-full"
+          className="text-xs md:text-sm px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full whitespace-nowrap overflow-hidden text-ellipsis max-w-full transition-colors text-gray-700"
           onClick={() => onSuggestionClick(suggestion)}
           type="button"
         >

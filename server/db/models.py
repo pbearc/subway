@@ -25,7 +25,7 @@ class OperatingHours(Base):
     
     id = Column(Integer, primary_key=True)
     outlet_id = Column(Integer, ForeignKey('outlets.id'), nullable=False)
-    day_of_week = Column(String(10), nullable=False)
+    day_of_week = Column(String(20), nullable=False)
     opening_time = Column(String(10))
     closing_time = Column(String(10))
     is_closed = Column(Boolean, default=False)

@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 /**
- * A reusable loading component with different styles and sizes
+ * Loading component with different styles and sizes
  */
 const Loader = ({
   type = "spinner",
@@ -13,46 +13,68 @@ const Loader = ({
   showText = true,
   color = "green",
 }) => {
-  // Generate size classes
-  const sizeClasses = {
+  // Size mappings for different loader types
+  const sizeMap = {
     small: {
       spinner: "h-4 w-4",
       pulse: "h-6 w-6",
-      container: "text-xs",
+      text: "text-xs",
     },
     medium: {
       spinner: "h-8 w-8",
       pulse: "h-12 w-12",
-      container: "text-sm",
+      text: "text-sm",
     },
     large: {
       spinner: "h-12 w-12",
       pulse: "h-16 w-16",
-      container: "text-base",
+      text: "text-base",
     },
   };
 
-  // Generate color classes
-  const colorClasses = {
-    green: "border-green-500 text-green-600",
-    blue: "border-blue-500 text-blue-600",
-    gray: "border-gray-500 text-gray-600",
-    red: "border-red-500 text-red-600",
+  // Color mappings
+  const colorMap = {
+    green: {
+      border: "border-green-500",
+      text: "text-green-600",
+      bg: "bg-green-200",
+    },
+    blue: {
+      border: "border-blue-500",
+      text: "text-blue-600",
+      bg: "bg-blue-200",
+    },
+    gray: {
+      border: "border-gray-500",
+      text: "text-gray-600",
+      bg: "bg-gray-200",
+    },
+    red: {
+      border: "border-red-500",
+      text: "text-red-600",
+      bg: "bg-red-200",
+    },
   };
 
-  const spinnerClasses = `${sizeClasses[size].spinner} animate-spin rounded-full border-t-2 border-b-2 ${colorClasses[color]}`;
-  const pulseClasses = `${sizeClasses[size].pulse} animate-pulse bg-${color}-200 rounded-full`;
+  const selectedSize = sizeMap[size] || sizeMap.medium;
+  const selectedColor = colorMap[color] || colorMap.green;
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {type === "spinner" && <div className={spinnerClasses}></div>}
+      {type === "spinner" && (
+        <div
+          className={`${selectedSize.spinner} animate-spin rounded-full border-2 border-t-transparent ${selectedColor.border}`}
+        ></div>
+      )}
 
-      {type === "pulse" && <div className={pulseClasses}></div>}
+      {type === "pulse" && (
+        <div
+          className={`${selectedSize.pulse} animate-pulse rounded-full ${selectedColor.bg}`}
+        ></div>
+      )}
 
       {showText && (
-        <p className={`mt-2 ${sizeClasses[size].container} text-gray-600`}>
-          {text}
-        </p>
+        <p className={`mt-2 ${selectedSize.text} text-gray-600`}>{text}</p>
       )}
     </div>
   );

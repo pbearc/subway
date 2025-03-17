@@ -2,25 +2,29 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import Icon from "../common/Icon";
+import useSearch from "../../hooks/useSearch";
 
 /**
  * Header component with search functionality
  */
-const Header = ({
-  outlets,
-  onOutletSelect,
-  searchTerm,
-  isSearchOpen,
-  setIsSearchOpen,
-  filteredOutlets,
-  sortOption,
-  searchRef,
-  handleSearchChange,
-  toggleSortOption,
-  groupedData,
-}) => {
+const Header = ({ outlets, onOutletSelect }) => {
+  // Use the search hook to get all search related functions and state
+  const {
+    searchTerm,
+    isSearchOpen,
+    setIsSearchOpen,
+    filteredData: filteredOutlets,
+    sortOption,
+    searchRef,
+    handleSearchChange,
+    toggleSortOption,
+    groupedData,
+    handleSelect,
+  } = useSearch(outlets, onOutletSelect);
+
   return (
-    <header className="app-header">
+    <header className="bg-green-800 text-white px-4 py-3 flex justify-between items-center shadow-md z-30">
       <h1 className="text-xl font-bold">Subway Outlets in Kuala Lumpur</h1>
 
       {/* Search dropdown in the header - mobile friendly */}
@@ -32,25 +36,11 @@ const Header = ({
             className="w-full px-3 py-1.5 pl-8 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm bg-white text-gray-800"
             value={searchTerm}
             onChange={handleSearchChange}
-            onFocus={() => setIsSearchOpen(true)} // Show list immediately on focus
-            onClick={() => setIsSearchOpen(true)} // Also show list on click
+            onFocus={() => setIsSearchOpen(true)}
+            onClick={() => setIsSearchOpen(true)}
           />
           <div className="absolute left-2.5 top-2 text-gray-400">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+            <Icon name="search" size={4} />
           </div>
         </div>
 
@@ -83,8 +73,8 @@ const Header = ({
               </div>
             </div>
 
-            {/* Improved scrollable container with custom class for targeting with CSS */}
-            <div className="search-results-scroll">
+            {/* Improved scrollable container */}
+            <div className="max-h-[300px] overflow-y-auto overflow-x-hidden">
               {sortOption === "area" && groupedData ? (
                 // Group by area when sorting by area
                 Object.keys(groupedData)
@@ -99,7 +89,7 @@ const Header = ({
                           <li
                             key={outlet.id}
                             className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => onOutletSelect(outlet)}
+                            onClick={() => handleSelect(outlet)}
                           >
                             {/* Only show the outlet name */}
                             <div className="font-medium text-sm text-gray-800">
@@ -119,7 +109,7 @@ const Header = ({
                       <li
                         key={outlet.id}
                         className="px-3 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-0"
-                        onClick={() => onOutletSelect(outlet)}
+                        onClick={() => handleSelect(outlet)}
                       >
                         {/* Only show the outlet name */}
                         <div className="font-medium text-sm text-gray-800">
@@ -146,15 +136,6 @@ const Header = ({
 Header.propTypes = {
   outlets: PropTypes.array,
   onOutletSelect: PropTypes.func.isRequired,
-  searchTerm: PropTypes.string,
-  isSearchOpen: PropTypes.bool,
-  setIsSearchOpen: PropTypes.func.isRequired,
-  filteredOutlets: PropTypes.array,
-  sortOption: PropTypes.string,
-  searchRef: PropTypes.object,
-  handleSearchChange: PropTypes.func.isRequired,
-  toggleSortOption: PropTypes.func.isRequired,
-  groupedData: PropTypes.object,
 };
 
 export default Header;

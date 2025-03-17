@@ -131,7 +131,8 @@ Relationship: operating_hours.outlet_id references outlets.id
     7. Return only essential columns needed to answer the question.
     8. Limit large result sets to a reasonable number (10-20 rows).
     9. Include ordering where appropriate (ORDER BY).
-    10. Only generate valid PostgreSQL SQL - do not include any explanation, markdown formatting, or backticks. Return ONLY the raw SQL query.
+    10. In the SELECT statement, select all the columns that might be useful from the user's question, include more is better than include less.
+    11. Only generate valid PostgreSQL SQL - do not include any explanation, markdown formatting, or backticks. Return ONLY the raw SQL query.
 
     USER QUESTION: {question}
 
@@ -159,6 +160,7 @@ Relationship: operating_hours.outlet_id references outlets.id
                     sql_query = sql_query[:-3]
             
             sql_query = sql_query.strip()
+            print(f"Generated SQL: {sql_query}")
             
             # Basic validation
             if not sql_query.upper().startswith("SELECT"):
@@ -181,7 +183,7 @@ Relationship: operating_hours.outlet_id references outlets.id
         # Check for dangerous operations (more comprehensive)
         dangerous_patterns = [
             "DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "TRUNCATE", 
-            "GRANT", "REVOKE", "--", "/*", "*/", "EXEC", "EXECUTE",
+            "GRANT", "REVOKE", "EXEC", "EXECUTE",
             "UNION", "INTO OUTFILE", "LOAD_FILE"
         ]
         
@@ -252,6 +254,8 @@ Relationship: operating_hours.outlet_id references outlets.id
         """Generate a natural language response from query results using Gemini"""
         if not self.model:
             raise ValueError("Gemini model not initialized")
+        
+        print(f"Database query results: {query_results}")
         
         # Format query results
         formatted_results = self._format_query_results(query_results)

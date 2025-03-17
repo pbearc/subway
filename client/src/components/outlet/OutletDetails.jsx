@@ -1,31 +1,17 @@
 // src/components/outlet/OutletDetails.jsx
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import OperatingHours from "./OperatingHours";
 import IntersectingOutlets from "./IntersectingOutlets";
 import StatusIndicator from "../common/StatusIndicator";
 import api from "../../services/api";
-
-/**
- * Calculate distance between two coordinates using Haversine formula
- */
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
-
-  const R = 6371; // Radius of the earth in km
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distance = R * c; // Distance in km
-  return distance;
-};
+import { determineOutletStatus } from "../../utils/formatters";
+import {
+  findOutletsWithinRadius,
+  sortOutletsByDistance,
+} from "../../utils/distanceCalculator";
+import Icon from "../common/Icon";
 
 const OutletDetails = ({ outlet, onClose }) => {
   const [loading, setLoading] = useState(true);
@@ -34,72 +20,24 @@ const OutletDetails = ({ outlet, onClose }) => {
   const [showingRadius, setShowingRadius] = useState(false);
   const [status, setStatus] = useState("Unknown");
 
-  // Get outlets that are actually within 5km
+  // Get outlets that are actually within 5km - using the utility function
   const intersectingOutlets = useMemo(() => {
     if (!outlet || !outlet.allOutlets) return [];
 
-    return (
-      outlet.allOutlets
-        .filter((o) => o.id !== outlet.id)
-        .filter((o) => {
-          const distance = calculateDistance(
-            parseFloat(outlet.latitude),
-            parseFloat(outlet.longitude),
-            parseFloat(o.latitude),
-            parseFloat(o.longitude)
-          );
-          return distance <= 5; // 5km radius
-        })
-        // Sort by distance - closest first
-        .sort((a, b) => {
-          const distA = calculateDistance(
-            parseFloat(outlet.latitude),
-            parseFloat(outlet.longitude),
-            parseFloat(a.latitude),
-            parseFloat(a.longitude)
-          );
-          const distB = calculateDistance(
-            parseFloat(outlet.latitude),
-            parseFloat(outlet.longitude),
-            parseFloat(b.latitude),
-            parseFloat(b.longitude)
-          );
-          return distA - distB;
-        })
+    // Get outlets within 5km radius
+    const outletsInRadius = findOutletsWithinRadius(
+      outlet,
+      outlet.allOutlets,
+      5
+    );
+
+    // Sort by distance from the current outlet
+    return sortOutletsByDistance(
+      outletsInRadius,
+      parseFloat(outlet.latitude),
+      parseFloat(outlet.longitude)
     );
   }, [outlet]);
-
-  // Check if an outlet is currently open
-  const determineOutletStatus = useCallback((hours) => {
-    if (!hours || hours.length === 0) return "Unknown";
-
-    const now = new Date();
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const currentDay = days[now.getDay()];
-
-    const todayHours = hours.find((h) => h.day_of_week === currentDay);
-    if (!todayHours) return "Unknown";
-    if (todayHours.is_closed) return "Closed Today";
-
-    const currentTime = now.toTimeString().split(" ")[0];
-
-    if (
-      currentTime >= todayHours.opening_time &&
-      currentTime <= todayHours.closing_time
-    ) {
-      return "Open Now";
-    } else {
-      return "Closed Now";
-    }
-  }, []);
 
   useEffect(() => {
     const fetchOperatingHours = async () => {
@@ -143,7 +81,7 @@ const OutletDetails = ({ outlet, onClose }) => {
         outlet.hideRadius();
       }
     };
-  }, [outlet?.id, outlet?.operating_hours, determineOutletStatus]);
+  }, [outlet?.id, outlet?.operating_hours]);
 
   // Update local state if map state changes (e.g., when clicking elsewhere)
   useEffect(() => {
@@ -176,12 +114,12 @@ const OutletDetails = ({ outlet, onClose }) => {
   };
 
   return (
-    <div className="outlet-details-wrapper h-full flex flex-col overflow-hidden">
+    <div className="h-full flex flex-col overflow-hidden bg-white">
       {/* Mobile handle for dragging */}
-      <div className="md:hidden drag-handle"></div>
+      <div className="md:hidden w-10 h-1 bg-gray-300 rounded mx-auto mb-3"></div>
 
       {/* Scrollable content area */}
-      <div className="outlet-details-content flex-1 overflow-y-auto px-4 pb-4">
+      <div className="flex-1 overflow-y-auto px-4 pb-4">
         <div className="flex justify-between items-start mb-3">
           <div>
             <h2 className="text-xl font-bold text-green-800">{outlet.name}</h2>
@@ -208,21 +146,7 @@ const OutletDetails = ({ outlet, onClose }) => {
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:underline text-sm flex items-center bg-blue-50 px-2 py-1 rounded"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 mr-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-                  />
-                </svg>
+                <Icon name="map" size={4} className="mr-1" />
                 Open in Waze
               </a>
             )}
@@ -232,27 +156,7 @@ const OutletDetails = ({ outlet, onClose }) => {
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline text-sm flex items-center bg-blue-50 px-2 py-1 rounded"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 mr-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+              <Icon name="location" size={4} className="mr-1" />
               View on Google Maps
             </a>
           </div>
@@ -269,21 +173,7 @@ const OutletDetails = ({ outlet, onClose }) => {
             }`}
             style={{ outline: "none", border: "none" }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4"
-              />
-            </svg>
+            <Icon name="map" size={4} className="mr-1" />
             {showingRadius ? "Hide 5KM Radius" : "Show 5KM Radius"}
           </button>
         </div>

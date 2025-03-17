@@ -2,50 +2,43 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import Icon from "../common/Icon";
 
 const ChatMessage = ({ message, onOutletSelect }) => {
   const { role, content, outlets } = message;
 
   return (
-    <div className={`chatbot-message ${role}`}>
-      <div className="message-content">{content}</div>
+    <div
+      className={`clear-both ${
+        role === "user"
+          ? "float-right bg-blue-50 rounded-lg rounded-br-none"
+          : "float-left bg-white border border-gray-200 rounded-lg rounded-bl-none"
+      } p-3 max-w-[85%]`}
+    >
+      <div className="text-sm leading-relaxed break-words">{content}</div>
 
       {outlets && outlets.length > 0 && (
-        <div className="outlet-suggestions bg-gray-50 rounded-md p-2 mt-2">
-          <h4 className="text-xs font-medium text-gray-700 mb-1">
+        <div className="mt-2 bg-gray-50 rounded p-2 text-xs">
+          <h4 className="font-medium text-gray-700 mb-1 text-xs">
             Related Outlets:
           </h4>
-          <ul>
+          <ul className="space-y-1">
             {outlets.slice(0, 3).map((outlet) => (
               <li
                 key={outlet.id}
                 onClick={() => onOutletSelect(outlet)}
-                className="outlet-suggestion-item text-sm py-1 px-2 hover:bg-gray-200 rounded cursor-pointer flex items-center"
+                className="py-1 px-2 hover:bg-gray-200 rounded cursor-pointer flex items-center"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-3 w-3 mr-1 text-green-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
+                <Icon
+                  name="location"
+                  size={3}
+                  className="mr-1 text-green-600"
+                />
                 {outlet.name}
               </li>
             ))}
             {outlets.length > 3 && (
-              <li className="more-outlets text-xs text-gray-500 mt-1 pl-2">
+              <li className="mt-1 pl-2 text-gray-500 text-xs">
                 +{outlets.length - 3} more outlets
               </li>
             )}

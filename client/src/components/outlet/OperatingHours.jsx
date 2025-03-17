@@ -2,28 +2,7 @@
 
 import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-
-/**
- * Formats time string to 12-hour format
- * @param {string} timeString - Time string in HH:MM:SS or HH:MM format
- * @returns {string} Formatted time string
- */
-const formatTime = (timeString) => {
-  if (!timeString) return "";
-
-  // If it's already in 12-hour format or doesn't have seconds, just return it
-  if (!timeString.includes(":") || timeString.length <= 5) {
-    return timeString;
-  }
-
-  // Convert from 24-hour format to 12-hour format
-  const [hours, minutes] = timeString.split(":");
-  const hour = parseInt(hours, 10);
-  const ampm = hour >= 12 ? "PM" : "AM";
-  const hour12 = hour % 12 || 12;
-
-  return `${hour12}:${minutes} ${ampm}`;
-};
+import { formatTime } from "../../utils/formatters";
 
 const OperatingHours = ({ hours }) => {
   // Sort days of the week in proper order using useMemo to avoid unnecessary re-sorts

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import api from "../services/api";
+import { extractAreaFromAddress } from "../utils/formatters";
 
 /**
  * Custom hook for managing outlet data and operations
@@ -82,24 +83,10 @@ const useOutlets = () => {
     const groupedOutlets = {};
 
     outlets.forEach((outlet) => {
-      if (!outlet || !outlet.address) {
-        // Handle outlets with no address
-        if (!groupedOutlets["Other"]) {
-          groupedOutlets["Other"] = [];
-        }
-        groupedOutlets["Other"].push(outlet);
-        return;
-      }
+      if (!outlet) return;
 
-      // Extract area from address
-      let areaName = "Other";
-      const parts = outlet.address.split(",");
-
-      if (parts.length >= 2) {
-        areaName = parts[parts.length - 2].trim();
-      } else if (parts.length === 1) {
-        areaName = parts[0].trim();
-      }
+      // Use the utility function to extract area
+      const areaName = extractAreaFromAddress(outlet.address);
 
       // Create group if it doesn't exist
       if (!groupedOutlets[areaName]) {

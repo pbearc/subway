@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 /**
- * A reusable status indicator component
+ * Status indicator component
  * Used to show open/closed status of outlets
  */
 const StatusIndicator = ({ status, size = "normal" }) => {
@@ -12,40 +12,45 @@ const StatusIndicator = ({ status, size = "normal" }) => {
   const getStatusColor = () => {
     switch (status.toLowerCase()) {
       case "open now":
-        return { bg: "#10b981", text: "#10b981" };
+        return "bg-green-500 text-green-500";
       case "closed now":
       case "closed today":
       case "closed":
-        return { bg: "#ef4444", text: "#ef4444" };
+        return "bg-red-500 text-red-500";
       default:
-        return { bg: "#9ca3af", text: "#6b7280" };
+        return "bg-gray-400 text-gray-600";
     }
   };
 
   // Determine size based on prop
-  const getDotSize = () => {
+  const getSizeClasses = () => {
     switch (size) {
       case "small":
-        return { dot: "w-2 h-2", text: "text-xs" };
+        return "w-2 h-2 text-xs";
       case "large":
-        return { dot: "w-3 h-3", text: "text-base" };
+        return "w-3 h-3 text-base";
       case "normal":
       default:
-        return { dot: "w-2.5 h-2.5", text: "text-sm" };
+        return "w-2.5 h-2.5 text-sm";
     }
   };
 
-  const { bg, text } = getStatusColor();
-  const { dot, text: textSize } = getDotSize();
+  const colorClasses = getStatusColor();
+  const sizeClasses = getSizeClasses();
 
   return (
     <div className="flex items-center">
       <div
-        className={`${dot} rounded-full mr-1.5`}
-        style={{ backgroundColor: bg }}
+        className={`${sizeClasses.split(" ")[0]} ${
+          sizeClasses.split(" ")[1]
+        } rounded-full mr-1.5 ${colorClasses.split(" ")[0]}`}
         aria-hidden="true"
       ></div>
-      <span className={`${textSize} font-medium`} style={{ color: text }}>
+      <span
+        className={`${sizeClasses.split(" ")[2]} font-medium ${
+          colorClasses.split(" ")[1]
+        }`}
+      >
         {status}
       </span>
     </div>

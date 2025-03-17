@@ -1,6 +1,7 @@
 // src/hooks/useSearch.js
 
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { extractAreaFromAddress } from "../utils/formatters";
 
 /**
  * Custom hook for search functionality
@@ -23,8 +24,6 @@ const useSearch = (data = [], onSelect) => {
       return;
     }
 
-    // If there's no search term, we'll show all data in the dropdown
-    // but still keep the filtered data empty
     if (!searchTerm.trim()) {
       setFilteredData([]);
       return;
@@ -50,28 +49,9 @@ const useSearch = (data = [], onSelect) => {
       });
     } else if (sortOption === "area") {
       results.sort((a, b) => {
-        // Add null checks for addresses
-        let areaA = "Unknown";
-        let areaB = "Unknown";
-
-        if (a?.address) {
-          const parts = a.address.split(",");
-          if (parts.length >= 2) {
-            areaA = parts[parts.length - 2].trim();
-          } else if (parts.length === 1) {
-            areaA = parts[0].trim();
-          }
-        }
-
-        if (b?.address) {
-          const parts = b.address.split(",");
-          if (parts.length >= 2) {
-            areaB = parts[parts.length - 2].trim();
-          } else if (parts.length === 1) {
-            areaB = parts[0].trim();
-          }
-        }
-
+        // Use the utility function to extract area names
+        const areaA = extractAreaFromAddress(a?.address);
+        const areaB = extractAreaFromAddress(b?.address);
         return areaA.localeCompare(areaB);
       });
     }
@@ -122,17 +102,8 @@ const useSearch = (data = [], onSelect) => {
     itemsToGroup.forEach((item) => {
       if (!item) return;
 
-      let areaName = "Other";
-
-      // Handle case where address might be null or undefined
-      if (item.address) {
-        const parts = item.address.split(",");
-        if (parts.length >= 2) {
-          areaName = parts[parts.length - 2].trim();
-        } else if (parts.length === 1) {
-          areaName = parts[0].trim();
-        }
-      }
+      // Use the utility function to extract area
+      const areaName = extractAreaFromAddress(item.address);
 
       // Create group if it doesn't exist
       if (!groupedItems[areaName]) {

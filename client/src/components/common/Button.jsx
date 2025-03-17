@@ -4,7 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 /**
- * A reusable button component with multiple variants and sizes
+ * Button component with multiple variants and sizes
  */
 const Button = ({
   children,
@@ -61,9 +61,7 @@ const Button = ({
       {...props}
     >
       {icon && iconPosition === "left" && <span className="mr-2">{icon}</span>}
-
       {children}
-
       {icon && iconPosition === "right" && <span className="ml-2">{icon}</span>}
     </button>
   );

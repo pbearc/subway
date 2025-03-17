@@ -3,18 +3,18 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import api from "../../services/api";
-import "../../styles/ChatBot.css";
 import ChatMessage from "./ChatMessage";
 import SuggestionPills from "./SuggestionPills";
+import Icon from "../common/Icon";
+import useClickOutside from "../../hooks/useClickOutside";
 
 const DEFAULT_WELCOME_MESSAGE =
-  "Hello! I can help you find information about Subway outlets in Kuala Lumpur. You can ask me about locations, opening hours, or even questions like 'Which outlet closes the latest?' or 'How many outlets are in Bangsar?'";
+  "Hello! I can help you find Subway outlets in KL, including their locations and opening hours. Just ask!";
 
 const DEFAULT_SUGGESTIONS = [
   "Which Subway outlets are in Bangsar?",
   "Is Subway KLCC open on Sundays?",
   "Which outlet closes the latest?",
-  "How many Subway outlets are in KL?",
 ];
 
 const ChatBot = ({ onOutletSelect }) => {
@@ -30,6 +30,11 @@ const ChatBot = ({ onOutletSelect }) => {
   const [sessionId, setSessionId] = useState(null);
   const [suggestions, setSuggestions] = useState(DEFAULT_SUGGESTIONS);
   const messagesEndRef = useRef(null);
+
+  // Use the custom hook for the chat window
+  const chatWindowRef = useClickOutside(() => {
+    if (isOpen) setIsOpen(false);
+  }, false); // Disabled by default, enable based on UI needs
 
   // Auto-scroll to bottom of messages
   const scrollToBottom = useCallback(() => {
@@ -76,7 +81,6 @@ const ChatBot = ({ onOutletSelect }) => {
     ) {
       newSuggestions = [
         "Which outlet is open the latest?",
-        "Are there any 24-hour Subway outlets?",
         "Which outlets are open on Sundays?",
       ];
     } else if (
@@ -91,10 +95,9 @@ const ChatBot = ({ onOutletSelect }) => {
     } else {
       // Default suggestions
       newSuggestions = [
-        "Which Subway outlet is closest to me?",
-        "What are the busiest Subway locations?",
-        "Tell me about Subway outlets in KL",
-        "Which outlet has the best reviews?",
+        "How to navigate to Subway Monash Outlet?",
+        "How many Subway outlets are there in Bangsar area?",
+        "Is Subway KLCC open on Sundays?",
       ];
     }
 
@@ -188,7 +191,7 @@ const ChatBot = ({ onOutletSelect }) => {
       {/* Chat button with robot emoji - Only show when chat is closed */}
       {!isOpen && (
         <button
-          className="chatbot-button"
+          className="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-green-600 text-white border-none shadow-md flex items-center justify-center text-2xl z-50 hover:scale-105 transition-transform focus:outline-none"
           onClick={() => setIsOpen(true)}
           aria-label="Chat with bot"
         >
@@ -198,31 +201,36 @@ const ChatBot = ({ onOutletSelect }) => {
 
       {/* Chat window */}
       {isOpen && (
-        <div className="chatbot-window">
-          <div className="chatbot-header">
-            <div className="chatbot-title">
-              <span className="chatbot-emoji">🤖</span>
-              <h3>Subway Assistant</h3>
+        <div
+          className="fixed bottom-5 right-5 w-[90vw] h-[500px] sm:w-96 sm:h-[600px] md:h-[700px] lg:h-[800px] max-w-[90vw] max-h-[80vh] sm:max-h-[80vh] min-w-[300px] min-h-[400px] rounded-lg shadow-lg flex flex-col bg-white z-40 overflow-hidden resize"
+          ref={chatWindowRef}
+        >
+          <div className="flex justify-between items-center p-2 bg-gray-50 border-b border-gray-200 rounded-t-lg">
+            <div className="flex items-center">
+              <span className="mr-2 text-base">🤖</span>
+              <h3 className="text-sm font-semibold text-gray-700 m-0">
+                Subway Assistant
+              </h3>
             </div>
-            <div className="chatbot-actions">
+            <div className="flex items-center">
               <button
-                className="clear-chat-button"
+                className="p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full focus:outline-none ml-1"
                 onClick={clearChat}
                 aria-label="Clear chat"
               >
-                <span className="clear-icon">🗑️</span>
+                <Icon name="trash" size={4} />
               </button>
               <button
-                className="chatbot-close"
+                className="p-1 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full focus:outline-none ml-1"
                 onClick={() => setIsOpen(false)}
                 aria-label="Close chat"
               >
-                &times;
+                <Icon name="close" size={4} />
               </button>
             </div>
           </div>
 
-          <div className="chatbot-messages">
+          <div className="flex-1 p-4 overflow-y-auto bg-gray-50 space-y-4">
             {messages.map((msg, index) => (
               <ChatMessage
                 key={index}
@@ -232,11 +240,11 @@ const ChatBot = ({ onOutletSelect }) => {
             ))}
 
             {isLoading && (
-              <div className="chatbot-message assistant loading">
-                <div className="typing-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+              <div className="float-left clear-both bg-white border border-gray-200 rounded-lg rounded-bl-none p-3 max-w-[85%]">
+                <div className="flex items-center space-x-1">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse delay-150"></div>
+                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-pulse delay-300"></div>
                 </div>
               </div>
             )}
@@ -245,38 +253,32 @@ const ChatBot = ({ onOutletSelect }) => {
           </div>
 
           {/* Dynamic suggestions */}
-          <div className="chatbot-suggestions-container">
+          <div className="p-2 border-t border-gray-200 bg-white">
             <SuggestionPills
               suggestions={suggestions}
               onSuggestionClick={handleSuggestionClick}
             />
           </div>
 
-          <form className="chatbot-input" onSubmit={handleSubmit}>
+          <form
+            className="flex p-2 border-t border-gray-200 bg-white"
+            onSubmit={handleSubmit}
+          >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about Subway outlets..."
               disabled={isLoading}
-              className="flex-1 p-2 border rounded-l-lg focus:outline-none focus:ring-1 focus:ring-green-500"
+              className="flex-1 px-3 py-2 border border-gray-300 border-r-0 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-green-500 text-sm disabled:bg-gray-100"
               autoFocus
             />
             <button
               type="submit"
               disabled={isLoading || !input.trim()}
-              className="p-2 bg-green-600 text-white rounded-r-lg disabled:bg-gray-300"
+              className="px-3 py-2 bg-green-600 text-white rounded-r-lg disabled:bg-gray-300 hover:bg-green-700"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-                aria-hidden="true"
-              >
-                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
-              </svg>
+              <Icon name="send" size={4} />
             </button>
           </form>
         </div>

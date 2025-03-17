@@ -3,17 +3,25 @@
 import React, {
   useState,
   useEffect,
-  useRef,
   forwardRef,
   useImperativeHandle,
   useCallback,
-  useMemo,
 } from "react";
 import PropTypes from "prop-types";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useGoogleMaps } from "../../contexts/GoogleMapsContext";
 import api from "../../services/api";
 import MarkerInfoWindow from "./MarkerInfoWindow";
+// Import utility functions
+import {
+  calculateDistance,
+  findOutletsWithinRadius,
+} from "../../utils/distanceCalculator";
+import {
+  formatTime,
+  determineOutletStatus,
+  getTodayHours,
+} from "../../utils/formatters";
 
 const containerStyle = {
   width: "100%",
@@ -24,25 +32,6 @@ const containerStyle = {
 const center = {
   lat: 3.139003,
   lng: 101.686855,
-};
-
-/**
- * Calculates distance between two coordinates using Haversine formula
- */
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
-
-  const R = 6371; // Radius of the earth in km
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // Distance in km
 };
 
 const OutletMap = forwardRef(
@@ -73,79 +62,28 @@ const OutletMap = forwardRef(
       isRadiusActive: () => Boolean(activeCircle),
     }));
 
-    // Format time safely
-    const formatTime = useCallback((timeString) => {
-      if (!timeString) return "N/A";
-      if (typeof timeString === "string" && timeString.includes(":")) {
-        return timeString.slice(0, 5);
-      }
-      return timeString;
-    }, []);
-
-    // Get today's operating hours as a formatted string
-    const getTodayHours = useCallback(
+    // Get today's operating hours as a formatted string using the utility function
+    const getOutletTodayHours = useCallback(
       (outletId) => {
         if (!outletId) return "Hours not available";
 
         const hours = operatingHours[outletId];
         if (!hours || hours.length === 0) return "Hours not available";
 
-        const days = [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ];
-        const currentDay = days[new Date().getDay()];
-        const todayHours = hours.find((h) => h.day_of_week === currentDay);
-
-        if (!todayHours) return "Hours not available";
-        if (todayHours.is_closed) return "Closed today";
-
-        return `Today: ${formatTime(todayHours.opening_time)} - ${formatTime(
-          todayHours.closing_time
-        )}`;
+        return getTodayHours(hours);
       },
-      [operatingHours, formatTime]
+      [operatingHours]
     );
 
-    // Check if an outlet is currently open
-    const isOutletOpen = useCallback(
+    // Check if an outlet is open using the utility function
+    const getOutletStatus = useCallback(
       (outletId) => {
         if (!outletId) return "Unknown";
 
         const hours = operatingHours[outletId];
         if (!hours || hours.length === 0) return "Unknown";
 
-        const now = new Date();
-        const days = [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ];
-        const currentDay = days[now.getDay()];
-
-        const todayHours = hours.find((h) => h.day_of_week === currentDay);
-        if (!todayHours) return "Unknown";
-        if (todayHours.is_closed) return "Closed Today";
-
-        const currentTime = now.toTimeString().split(" ")[0];
-
-        if (
-          currentTime >= todayHours.opening_time &&
-          currentTime <= todayHours.closing_time
-        ) {
-          return "Open Now";
-        } else {
-          return "Closed Now";
-        }
+        return determineOutletStatus(hours);
       },
       [operatingHours]
     );
@@ -216,24 +154,12 @@ const OutletMap = forwardRef(
       fetchOutlets();
     }, []);
 
-    // Get outlets within 5km radius
+    // Get outlets within 5km radius using the utility function
     const getOverlappingOutlets = useCallback(
       (outlet) => {
         if (!outlet || !outlet.latitude || !outlet.longitude) return [];
 
-        return outlets.filter((o) => {
-          if (!o || o.id === outlet.id) return false;
-          if (!o.latitude || !o.longitude) return false;
-
-          const distance = calculateDistance(
-            parseFloat(outlet.latitude),
-            parseFloat(outlet.longitude),
-            parseFloat(o.latitude),
-            parseFloat(o.longitude)
-          );
-
-          return distance <= 5; // 5km radius
-        });
+        return findOutletsWithinRadius(outlet, outlets, 5);
       },
       [outlets]
     );
@@ -477,62 +403,14 @@ const OutletMap = forwardRef(
                     outlet={outlet}
                     position={{ lat, lng }}
                     onClose={() => setHoveredOutlet(null)}
-                    outletStatus={isOutletOpen(outlet.id)}
-                    todayHours={getTodayHours(outlet.id)}
+                    outletStatus={getOutletStatus(outlet.id)}
+                    todayHours={getOutletTodayHours(outlet.id)}
                   />
                 )}
               </React.Fragment>
             );
           })}
         </GoogleMap>
-
-        {/* Mobile-friendly zoom controls */}
-        <div className="absolute bottom-4 right-4 flex flex-col space-y-2 md:hidden">
-          <button
-            onClick={() =>
-              mapInstance?.setZoom((mapInstance?.getZoom() || 12) + 1)
-            }
-            className="bg-white rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700"
-            aria-label="Zoom in"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-          </button>
-          <button
-            onClick={() =>
-              mapInstance?.setZoom((mapInstance?.getZoom() || 12) - 1)
-            }
-            className="bg-white rounded-full w-10 h-10 shadow-md flex items-center justify-center text-gray-700"
-            aria-label="Zoom out"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M20 12H4"
-              />
-            </svg>
-          </button>
-        </div>
       </div>
     );
   }
