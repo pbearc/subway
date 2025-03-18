@@ -7,9 +7,7 @@ import { formatDistance } from "../../utils/formatters";
 import Icon from "../common/Icon";
 
 const IntersectingOutlets = ({ currentOutlet, intersectingOutlets }) => {
-  if (!intersectingOutlets || intersectingOutlets.length === 0) {
-    return null;
-  }
+  if (!intersectingOutlets?.length) return null;
 
   return (
     <div className="mt-4 bg-gray-50 p-3 rounded border border-gray-200">
@@ -20,7 +18,6 @@ const IntersectingOutlets = ({ currentOutlet, intersectingOutlets }) => {
       <div className="mt-2">
         <ul className="space-y-1">
           {intersectingOutlets.map((outlet) => {
-            // Calculate the distance between the current outlet and this one
             const distance = calculateDistance(
               parseFloat(currentOutlet.latitude),
               parseFloat(currentOutlet.longitude),

@@ -1,10 +1,10 @@
 // src/components/outlet/OutletDetails.jsx
-
 import React, { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
 import OperatingHours from "./OperatingHours";
 import IntersectingOutlets from "./IntersectingOutlets";
 import StatusIndicator from "../common/StatusIndicator";
+import Button from "../common/Button";
 import api from "../../services/api";
 import { determineOutletStatus } from "../../utils/formatters";
 import {
@@ -115,8 +115,16 @@ const OutletDetails = ({ outlet, onClose }) => {
 
   return (
     <div className="h-full flex flex-col overflow-hidden bg-white">
-      {/* Mobile handle for dragging */}
-      <div className="md:hidden w-10 h-1 bg-gray-300 rounded mx-auto mb-3"></div>
+      {/* Mobile close button in top right */}
+      <div className="flex justify-end md:hidden pt-2 pr-2">
+        <button
+          onClick={onClose}
+          className="text-gray-500 hover:text-gray-700 bg-white rounded-full p-2 hover:bg-gray-100 shadow-sm"
+          aria-label="Close"
+        >
+          <Icon name="close" size={5} />
+        </button>
+      </div>
 
       {/* Scrollable content area */}
       <div className="flex-1 overflow-y-auto px-4 pb-4">
@@ -127,9 +135,11 @@ const OutletDetails = ({ outlet, onClose }) => {
               <StatusIndicator status={status} />
             </div>
           </div>
+
+          {/* Only show this close button on desktop */}
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-xl leading-none p-1 rounded-full hover:bg-gray-100"
+            className="text-gray-500 hover:text-gray-700 text-xl leading-none p-1 rounded-full hover:bg-gray-100 hidden md:block"
             aria-label="Close"
           >
             &times;
@@ -162,20 +172,21 @@ const OutletDetails = ({ outlet, onClose }) => {
           </div>
         </div>
 
-        {/* 5km Radius Button */}
+        {/* 5km Radius Button - using blue color */}
         <div className="mt-4">
-          <button
+          <Button
             onClick={toggleRadiusDisplay}
-            className={`py-2 px-3 rounded text-sm flex items-center shadow-sm ${
-              showingRadius
-                ? "bg-red-500 text-white hover:bg-red-600"
-                : "bg-blue-500 text-white hover:bg-blue-600"
+            variant={showingRadius ? "danger" : "primary"}
+            className={`py-2 px-3 text-sm shadow-sm ${
+              !showingRadius
+                ? "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"
+                : ""
             }`}
-            style={{ outline: "none", border: "none" }}
+            icon={<Icon name="map" size={4} />}
+            iconPosition="left"
           >
-            <Icon name="map" size={4} className="mr-1" />
             {showingRadius ? "Hide 5KM Radius" : "Show 5KM Radius"}
-          </button>
+          </Button>
         </div>
 
         <div className="mt-4">
@@ -196,6 +207,9 @@ const OutletDetails = ({ outlet, onClose }) => {
             intersectingOutlets={intersectingOutlets}
           />
         )}
+
+        {/* Extra padding at the bottom for mobile devices with home indicators */}
+        <div className="md:hidden h-8"></div>
       </div>
     </div>
   );

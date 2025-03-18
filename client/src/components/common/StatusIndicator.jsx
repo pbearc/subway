@@ -3,54 +3,68 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-/**
- * Status indicator component
- * Used to show open/closed status of outlets
- */
-const StatusIndicator = ({ status, size = "normal" }) => {
-  // Determine color based on status
-  const getStatusColor = () => {
-    switch (status.toLowerCase()) {
-      case "open now":
-        return "bg-green-500 text-green-500";
-      case "closed now":
-      case "closed today":
-      case "closed":
-        return "bg-red-500 text-red-500";
-      default:
-        return "bg-gray-400 text-gray-600";
+const SIZE_VARIANTS = {
+  SMALL: "small",
+  NORMAL: "normal",
+  LARGE: "large",
+};
+
+const StatusIndicator = ({ status, size = SIZE_VARIANTS.NORMAL }) => {
+  // Standardized status categories
+  const getStatusClasses = () => {
+    const normalizedStatus = status.toLowerCase();
+
+    if (normalizedStatus === "open now") {
+      return {
+        dot: "bg-green-500",
+        text: "text-green-500",
+      };
+    } else if (
+      ["closed now", "closed today", "closed"].includes(normalizedStatus)
+    ) {
+      return {
+        dot: "bg-red-500",
+        text: "text-red-500",
+      };
+    } else {
+      return {
+        dot: "bg-gray-400",
+        text: "text-gray-600",
+      };
     }
   };
 
-  // Determine size based on prop
+  // Responsive sizing
   const getSizeClasses = () => {
     switch (size) {
-      case "small":
-        return "w-2 h-2 text-xs";
-      case "large":
-        return "w-3 h-3 text-base";
-      case "normal":
+      case SIZE_VARIANTS.SMALL:
+        return {
+          dot: "w-2 h-2",
+          text: "text-xs",
+        };
+      case SIZE_VARIANTS.LARGE:
+        return {
+          dot: "w-3 h-3",
+          text: "text-base",
+        };
       default:
-        return "w-2.5 h-2.5 text-sm";
+        return {
+          dot: "w-2.5 h-2.5",
+          text: "text-sm",
+        };
     }
   };
 
-  const colorClasses = getStatusColor();
+  const statusClasses = getStatusClasses();
   const sizeClasses = getSizeClasses();
 
   return (
     <div className="flex items-center">
       <div
-        className={`${sizeClasses.split(" ")[0]} ${
-          sizeClasses.split(" ")[1]
-        } rounded-full mr-1.5 ${colorClasses.split(" ")[0]}`}
+        className={`${sizeClasses.dot} ${statusClasses.dot} rounded-full mr-1.5`}
         aria-hidden="true"
       ></div>
-      <span
-        className={`${sizeClasses.split(" ")[2]} font-medium ${
-          colorClasses.split(" ")[1]
-        }`}
-      >
+      <span className={`${sizeClasses.text} ${statusClasses.text} font-medium`}>
         {status}
       </span>
     </div>
@@ -59,7 +73,7 @@ const StatusIndicator = ({ status, size = "normal" }) => {
 
 StatusIndicator.propTypes = {
   status: PropTypes.string.isRequired,
-  size: PropTypes.oneOf(["small", "normal", "large"]),
+  size: PropTypes.oneOf(Object.values(SIZE_VARIANTS)),
 };
 
 export default StatusIndicator;

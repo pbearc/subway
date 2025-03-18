@@ -3,6 +3,11 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { extractAreaFromAddress } from "../utils/formatters";
 
+const SORT_OPTIONS = {
+  NAME: "name",
+  AREA: "area",
+};
+
 /**
  * Custom hook for search functionality
  * @param {Array} data - The data array to search within
@@ -12,44 +17,28 @@ import { extractAreaFromAddress } from "../utils/formatters";
 const useSearch = (data = [], onSelect) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [sortOption, setSortOption] = useState("name");
+  const [sortOption, setSortOption] = useState(SORT_OPTIONS.NAME);
   const [filteredData, setFilteredData] = useState([]);
   const searchRef = useRef(null);
 
   // Filter and sort data when search term changes
   useEffect(() => {
-    // Skip if data is not an array
-    if (!Array.isArray(data)) {
+    if (!Array.isArray(data) || !searchTerm.trim()) {
       setFilteredData([]);
       return;
     }
 
-    if (!searchTerm.trim()) {
-      setFilteredData([]);
-      return;
-    }
-
-    let results = [...data];
-
-    // Filter by search term
-    results = results.filter(
+    const results = data.filter(
       (item) =>
-        (item?.name &&
-          item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item?.address &&
-          item.address.toLowerCase().includes(searchTerm.toLowerCase()))
+        item?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item?.address?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Sort results based on selected option
-    if (sortOption === "name") {
+    if (sortOption === SORT_OPTIONS.NAME) {
+      results.sort((a, b) => (a?.name || "").localeCompare(b?.name || ""));
+    } else if (sortOption === SORT_OPTIONS.AREA) {
       results.sort((a, b) => {
-        const nameA = a?.name || "";
-        const nameB = b?.name || "";
-        return nameA.localeCompare(nameB);
-      });
-    } else if (sortOption === "area") {
-      results.sort((a, b) => {
-        // Use the utility function to extract area names
         const areaA = extractAreaFromAddress(a?.address);
         const areaB = extractAreaFromAddress(b?.address);
         return areaA.localeCompare(areaB);
@@ -77,22 +66,18 @@ const useSearch = (data = [], onSelect) => {
   const sortedAllData = useMemo(() => {
     if (!Array.isArray(data)) return [];
 
-    let sorted = [...data];
-
-    if (sortOption === "name") {
-      sorted.sort((a, b) => {
-        const nameA = a?.name || "";
-        const nameB = b?.name || "";
-        return nameA.localeCompare(nameB);
-      });
+    if (sortOption === SORT_OPTIONS.NAME) {
+      return [...data].sort((a, b) =>
+        (a?.name || "").localeCompare(b?.name || "")
+      );
     }
 
-    return sorted;
+    return [...data];
   }, [data, sortOption]);
 
   // Group data by area
   const groupedData = useMemo(() => {
-    if (sortOption !== "area") return null;
+    if (sortOption !== SORT_OPTIONS.AREA) return null;
 
     const groupedItems = {};
     const itemsToGroup = searchTerm.trim() ? filteredData : data;
@@ -102,10 +87,8 @@ const useSearch = (data = [], onSelect) => {
     itemsToGroup.forEach((item) => {
       if (!item) return;
 
-      // Use the utility function to extract area
       const areaName = extractAreaFromAddress(item.address);
 
-      // Create group if it doesn't exist
       if (!groupedItems[areaName]) {
         groupedItems[areaName] = [];
       }
@@ -116,16 +99,15 @@ const useSearch = (data = [], onSelect) => {
     return groupedItems;
   }, [filteredData, data, sortOption, searchTerm]);
 
-  // Handler for search input changes
+  // Handlers
   const handleSearchChange = useCallback((e) => {
     setSearchTerm(e.target.value);
-    setIsSearchOpen(true); // Always show dropdown when typing
+    setIsSearchOpen(true);
   }, []);
 
-  // Handler for item selection
   const handleSelect = useCallback(
     (item) => {
-      if (onSelect && typeof onSelect === "function") {
+      if (typeof onSelect === "function") {
         onSelect(item);
       }
       setIsSearchOpen(false);
@@ -133,12 +115,10 @@ const useSearch = (data = [], onSelect) => {
     [onSelect]
   );
 
-  // Toggle sort option
   const toggleSortOption = useCallback((option) => {
     setSortOption(option);
   }, []);
 
-  // Clear search term
   const clearSearchTerm = useCallback(() => {
     setSearchTerm("");
     setIsSearchOpen(false);

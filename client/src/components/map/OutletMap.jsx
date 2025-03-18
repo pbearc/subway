@@ -12,33 +12,31 @@ import { GoogleMap, Marker } from "@react-google-maps/api";
 import { useGoogleMaps } from "../../contexts/GoogleMapsContext";
 import api from "../../services/api";
 import MarkerInfoWindow from "./MarkerInfoWindow";
-// Import utility functions
+import Loader from "../common/Loader";
+import Button from "../common/Button";
 import {
   calculateDistance,
   findOutletsWithinRadius,
 } from "../../utils/distanceCalculator";
-import {
-  formatTime,
-  determineOutletStatus,
-  getTodayHours,
-} from "../../utils/formatters";
+import { determineOutletStatus, getTodayHours } from "../../utils/formatters";
 
-const containerStyle = {
-  width: "100%",
-  height: "100%",
-};
-
-// Center of Kuala Lumpur
-const center = {
-  lat: 3.139003,
-  lng: 101.686855,
+const MAP_CONSTANTS = {
+  containerStyle: {
+    width: "100%",
+    height: "100%",
+  },
+  center: {
+    lat: 3.139003,
+    lng: 101.686855,
+  },
+  zoom: 12,
+  radius: 5, // in km
 };
 
 const OutletMap = forwardRef(
   ({ onOutletSelect, hideSearchFilter = true }, ref) => {
     const { isLoaded, loadError, mapInstance, setMapInstance } =
       useGoogleMaps();
-
     const [outlets, setOutlets] = useState([]);
     const [operatingHours, setOperatingHours] = useState({});
     const [loading, setLoading] = useState(true);
@@ -47,42 +45,42 @@ const OutletMap = forwardRef(
     const [selectedOutlet, setSelectedOutlet] = useState(null);
     const [activeCircle, setActiveCircle] = useState(null);
     const [highlightedOutlets, setHighlightedOutlets] = useState([]);
+    const [mapOptions, setMapOptions] = useState({
+      fullscreenControl: false,
+      streetViewControl: false,
+      mapTypeControl: false,
+      gestureHandling: "greedy",
+      disableDefaultUI: false,
+    });
 
     // Expose methods to parent component
     useImperativeHandle(ref, () => ({
+      // When selected from external source (like a list), center the map without zooming
       selectOutletFromExternal: (outlet) => {
-        handleOutletSelect(outlet, true);
+        handleOutletSelect(outlet, true, true); // true for skipCallback, true for forceCenter
       },
-      showRadius: (outlet) => {
-        showRadiusCircle(outlet);
-      },
-      hideRadius: () => {
-        clearRadiusCircle();
-      },
+      showRadius: (outlet) => showRadiusCircle(outlet),
+      hideRadius: () => clearRadiusCircle(),
       isRadiusActive: () => Boolean(activeCircle),
     }));
 
-    // Get today's operating hours as a formatted string using the utility function
+    // Get today's operating hours
     const getOutletTodayHours = useCallback(
       (outletId) => {
         if (!outletId) return "Hours not available";
-
         const hours = operatingHours[outletId];
-        if (!hours || hours.length === 0) return "Hours not available";
-
+        if (!hours?.length) return "Hours not available";
         return getTodayHours(hours);
       },
       [operatingHours]
     );
 
-    // Check if an outlet is open using the utility function
+    // Check if an outlet is open
     const getOutletStatus = useCallback(
       (outletId) => {
         if (!outletId) return "Unknown";
-
         const hours = operatingHours[outletId];
-        if (!hours || hours.length === 0) return "Unknown";
-
+        if (!hours?.length) return "Unknown";
         return determineOutletStatus(hours);
       },
       [operatingHours]
@@ -97,7 +95,7 @@ const OutletMap = forwardRef(
 
           // Process data with additional fields
           const processedData = data.map((outlet) => {
-            if (!outlet || !outlet.latitude || !outlet.longitude) {
+            if (!outlet?.latitude || !outlet?.longitude) {
               return { ...outlet, hasIntersection: false };
             }
 
@@ -112,13 +110,10 @@ const OutletMap = forwardRef(
                 parseFloat(otherOutlet.longitude)
               );
 
-              return distance <= 5; // 5km radius
+              return distance <= MAP_CONSTANTS.radius;
             });
 
-            return {
-              ...outlet,
-              hasIntersection,
-            };
+            return { ...outlet, hasIntersection };
           });
 
           setOutlets(processedData);
@@ -127,9 +122,9 @@ const OutletMap = forwardRef(
           const hoursData = {};
           for (const outlet of processedData) {
             try {
-              if (!outlet || !outlet.id) continue;
+              if (!outlet?.id) continue;
 
-              if (outlet.operating_hours && outlet.operating_hours.length > 0) {
+              if (outlet.operating_hours?.length > 0) {
                 hoursData[outlet.id] = outlet.operating_hours;
               } else {
                 const hours = await api.getOutletOperatingHours(outlet.id);
@@ -137,7 +132,7 @@ const OutletMap = forwardRef(
               }
             } catch (err) {
               console.error(
-                `Failed to fetch operating hours for outlet ${outlet?.id}:`,
+                `Failed to fetch hours for outlet ${outlet?.id}:`,
                 err
               );
             }
@@ -154,12 +149,11 @@ const OutletMap = forwardRef(
       fetchOutlets();
     }, []);
 
-    // Get outlets within 5km radius using the utility function
+    // Get outlets within radius
     const getOverlappingOutlets = useCallback(
       (outlet) => {
-        if (!outlet || !outlet.latitude || !outlet.longitude) return [];
-
-        return findOutletsWithinRadius(outlet, outlets, 5);
+        if (!outlet?.latitude || !outlet?.longitude) return [];
+        return findOutletsWithinRadius(outlet, outlets, MAP_CONSTANTS.radius);
       },
       [outlets]
     );
@@ -168,16 +162,21 @@ const OutletMap = forwardRef(
     const onMapLoad = useCallback(
       (googleMap) => {
         setMapInstance(googleMap);
+
+        // Set the map bounds padding to create space for the InfoWindow
+        if (googleMap) {
+          googleMap.setOptions({
+            paddingBottomRight: new window.google.maps.Point(0, 150), // Space for InfoWindow
+          });
+        }
       },
       [setMapInstance]
     );
 
-    // Handle mouse over marker
     const handleMouseOver = useCallback((outlet) => {
       setHoveredOutlet(outlet);
     }, []);
 
-    // Handle mouse out marker
     const handleMouseOut = useCallback(() => {
       setHoveredOutlet(null);
     }, []);
@@ -194,11 +193,9 @@ const OutletMap = forwardRef(
     // Draw radius circle around an outlet
     const showRadiusCircle = useCallback(
       (outlet) => {
-        // Clear any existing circle first
         clearRadiusCircle();
 
-        if (!mapInstance || !outlet || !outlet.latitude || !outlet.longitude)
-          return;
+        if (!mapInstance || !outlet?.latitude || !outlet?.longitude) return;
 
         // Find overlapping outlets
         const overlappingOutlets = getOverlappingOutlets(outlet);
@@ -211,7 +208,7 @@ const OutletMap = forwardRef(
             lat: parseFloat(outlet.latitude),
             lng: parseFloat(outlet.longitude),
           },
-          radius: 5000, // 5km in meters
+          radius: MAP_CONSTANTS.radius * 1000, // convert km to meters
           strokeColor: hasOverlaps ? "#ff6b6b" : "#4dabf7",
           strokeOpacity: 0.8,
           strokeWeight: 2,
@@ -220,8 +217,6 @@ const OutletMap = forwardRef(
         });
 
         setActiveCircle(circle);
-
-        // Highlight overlapping outlets on map
         setHighlightedOutlets(overlappingOutlets.map((o) => o.id));
       },
       [clearRadiusCircle, getOverlappingOutlets, mapInstance]
@@ -229,24 +224,33 @@ const OutletMap = forwardRef(
 
     // Handle marker click
     const handleOutletSelect = useCallback(
-      (outlet, skipCallback = false) => {
-        if (!outlet || !outlet.latitude || !outlet.longitude) return;
+      (outlet, skipCallback = false, forceCenter = false) => {
+        if (!outlet?.latitude || !outlet?.longitude) return;
 
-        // Update local state
         setSelectedOutlet(outlet);
 
-        // Pan to the outlet location without zooming in
         if (mapInstance) {
-          mapInstance.panTo({
-            lat: parseFloat(outlet.latitude),
-            lng: parseFloat(outlet.longitude),
-          });
+          const latLng = new window.google.maps.LatLng(
+            parseFloat(outlet.latitude),
+            parseFloat(outlet.longitude)
+          );
+
+          // Center map if:
+          // 1. forceCenter is true (selected from list)
+          // 2. Marker is outside the current map bounds
+          const bounds = mapInstance.getBounds();
+          if (forceCenter || !bounds || !bounds.contains(latLng)) {
+            // Center the map on the marker without changing zoom level
+            mapInstance.panTo({
+              lat: parseFloat(outlet.latitude),
+              lng: parseFloat(outlet.longitude),
+            });
+
+            // Don't change zoom level, keep current zoom
+          }
         }
 
-        // If skipCallback is true, don't notify parent component (for internal use)
-        if (skipCallback) {
-          return;
-        }
+        if (skipCallback) return;
 
         // Add utility functions to the outlet object for the parent component
         const enhancedOutlet = {
@@ -258,7 +262,6 @@ const OutletMap = forwardRef(
           setRadiusCallback: (state) => setSelectedOutlet(state),
         };
 
-        // Notify parent component
         onOutletSelect(enhancedOutlet);
       },
       [
@@ -280,7 +283,6 @@ const OutletMap = forwardRef(
       };
     }, [activeCircle]);
 
-    // Render loading and error states
     if (loadError) {
       return (
         <div className="flex justify-center items-center h-full text-red-500 p-4">
@@ -292,30 +294,10 @@ const OutletMap = forwardRef(
       );
     }
 
-    if (!isLoaded) {
+    if (!isLoaded || loading) {
       return (
         <div className="flex justify-center items-center h-full">
-          <div className="animate-pulse flex space-x-4">
-            <div className="rounded-full bg-gray-200 h-12 w-12"></div>
-            <div className="flex-1 space-y-4 py-1">
-              <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-              <div className="space-y-2">
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
-    if (loading) {
-      return (
-        <div className="flex justify-center items-center h-full">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500 mx-auto"></div>
-            <p className="mt-2 text-gray-600">Loading outlets data...</p>
-          </div>
+          <Loader type="spinner" size="medium" text="Loading..." />
         </div>
       );
     }
@@ -326,12 +308,14 @@ const OutletMap = forwardRef(
           <div className="bg-red-50 p-4 rounded-lg max-w-md">
             <h3 className="font-bold mb-2">Error</h3>
             <p>{error}</p>
-            <button
-              className="mt-3 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            <Button
+              variant="danger"
+              size="small"
+              className="mt-3"
               onClick={() => window.location.reload()}
             >
               Retry
-            </button>
+            </Button>
           </div>
         </div>
       );
@@ -340,24 +324,18 @@ const OutletMap = forwardRef(
     return (
       <div className="relative h-full w-full">
         <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={12}
+          mapContainerStyle={MAP_CONSTANTS.containerStyle}
+          center={MAP_CONSTANTS.center}
+          zoom={MAP_CONSTANTS.zoom}
           onLoad={onMapLoad}
           onClick={() => {
-            // Clear radius when clicking elsewhere on the map
             clearRadiusCircle();
             setHoveredOutlet(null);
           }}
-          options={{
-            fullscreenControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            gestureHandling: "greedy", // Better for mobile
-          }}
+          options={mapOptions}
         >
           {outlets.map((outlet) => {
-            if (!outlet || !outlet.latitude || !outlet.longitude) return null;
+            if (!outlet?.latitude || !outlet?.longitude) return null;
 
             const lat = parseFloat(outlet.latitude);
             const lng = parseFloat(outlet.longitude);
@@ -366,17 +344,16 @@ const OutletMap = forwardRef(
 
             // Determine marker appearance
             const isHighlighted = highlightedOutlets.includes(outlet.id);
-            const isSelected =
-              selectedOutlet && selectedOutlet.id === outlet.id;
-            let markerOptions = {};
+            const isSelected = selectedOutlet?.id === outlet.id;
 
+            let markerOptions = {};
             if (isSelected) {
               markerOptions = {
                 icon: {
                   url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png",
                   scaledSize: new window.google.maps.Size(38, 38),
                 },
-                zIndex: 1000, // Ensure it's on top
+                zIndex: 1000,
                 animation: window.google.maps.Animation.BOUNCE,
               };
             } else if (isHighlighted) {
@@ -398,7 +375,7 @@ const OutletMap = forwardRef(
                   {...markerOptions}
                 />
 
-                {hoveredOutlet && hoveredOutlet.id === outlet.id && (
+                {hoveredOutlet?.id === outlet.id && (
                   <MarkerInfoWindow
                     outlet={outlet}
                     position={{ lat, lng }}

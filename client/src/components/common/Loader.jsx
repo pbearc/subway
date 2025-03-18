@@ -3,73 +3,49 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-/**
- * Loading component with different styles and sizes
- */
+const LOADER_TYPES = {
+  SPINNER: "spinner",
+  PULSE: "pulse",
+};
+
+const LOADER_SIZES = {
+  SMALL: "small",
+  MEDIUM: "medium",
+  LARGE: "large",
+};
+
 const Loader = ({
-  type = "spinner",
-  size = "medium",
+  type = LOADER_TYPES.SPINNER,
+  size = LOADER_SIZES.MEDIUM,
   text = "Loading...",
   showText = true,
-  color = "green",
 }) => {
-  // Size mappings for different loader types
-  const sizeMap = {
-    small: {
-      spinner: "h-4 w-4",
-      pulse: "h-6 w-6",
+  const sizeClasses = {
+    [LOADER_SIZES.SMALL]: {
+      container: "h-4 w-4",
       text: "text-xs",
     },
-    medium: {
-      spinner: "h-8 w-8",
-      pulse: "h-12 w-12",
+    [LOADER_SIZES.MEDIUM]: {
+      container: "h-8 w-8",
       text: "text-sm",
     },
-    large: {
-      spinner: "h-12 w-12",
-      pulse: "h-16 w-16",
+    [LOADER_SIZES.LARGE]: {
+      container: "h-12 w-12",
       text: "text-base",
     },
   };
 
-  // Color mappings
-  const colorMap = {
-    green: {
-      border: "border-green-500",
-      text: "text-green-600",
-      bg: "bg-green-200",
-    },
-    blue: {
-      border: "border-blue-500",
-      text: "text-blue-600",
-      bg: "bg-blue-200",
-    },
-    gray: {
-      border: "border-gray-500",
-      text: "text-gray-600",
-      bg: "bg-gray-200",
-    },
-    red: {
-      border: "border-red-500",
-      text: "text-red-600",
-      bg: "bg-red-200",
-    },
-  };
-
-  const selectedSize = sizeMap[size] || sizeMap.medium;
-  const selectedColor = colorMap[color] || colorMap.green;
+  const selectedSize = sizeClasses[size] || sizeClasses[LOADER_SIZES.MEDIUM];
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {type === "spinner" && (
+      {type === LOADER_TYPES.SPINNER ? (
         <div
-          className={`${selectedSize.spinner} animate-spin rounded-full border-2 border-t-transparent ${selectedColor.border}`}
+          className={`${selectedSize.container} animate-spin rounded-full border-2 border-gray-200 border-t-green-500`}
         ></div>
-      )}
-
-      {type === "pulse" && (
+      ) : (
         <div
-          className={`${selectedSize.pulse} animate-pulse rounded-full ${selectedColor.bg}`}
+          className={`${selectedSize.container} animate-pulse rounded-full bg-green-200`}
         ></div>
       )}
 
@@ -81,11 +57,10 @@ const Loader = ({
 };
 
 Loader.propTypes = {
-  type: PropTypes.oneOf(["spinner", "pulse"]),
-  size: PropTypes.oneOf(["small", "medium", "large"]),
+  type: PropTypes.oneOf(Object.values(LOADER_TYPES)),
+  size: PropTypes.oneOf(Object.values(LOADER_SIZES)),
   text: PropTypes.string,
   showText: PropTypes.bool,
-  color: PropTypes.oneOf(["green", "blue", "gray", "red"]),
 };
 
 export default Loader;

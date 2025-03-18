@@ -20,11 +20,9 @@ const useClickOutside = (handler, enabled = true) => {
       }
     };
 
-    // Add event listeners
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
 
-    // Clean up
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);

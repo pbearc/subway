@@ -19,6 +19,11 @@ module.exports = {
           light: "#FFD133",
           dark: "#DDA800",
         },
+        blue: {
+          500: "#3B82F6",
+          600: "#2563EB",
+          700: "#1D4ED8",
+        },
       },
       fontFamily: {
         sans: [
@@ -45,6 +50,18 @@ module.exports = {
           "0%, 100%": { transform: "translateY(-5%)" },
           "50%": { transform: "translateY(0)" },
         },
+      },
+      spacing: {
+        "safe-area-inset-top": "env(safe-area-inset-top)",
+        "safe-area-inset-bottom": "env(safe-area-inset-bottom)",
+        "safe-area-inset-left": "env(safe-area-inset-left)",
+        "safe-area-inset-right": "env(safe-area-inset-right)",
+      },
+      padding: {
+        "safe-area-inset-top": "env(safe-area-inset-top)",
+        "safe-area-inset-bottom": "env(safe-area-inset-bottom)",
+        "safe-area-inset-left": "env(safe-area-inset-left)",
+        "safe-area-inset-right": "env(safe-area-inset-right)",
       },
     },
   },

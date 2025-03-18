@@ -3,21 +3,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Icon from "../common/Icon";
+import ReactMarkdown from "react-markdown";
 
 const ChatMessage = ({ message, onOutletSelect }) => {
   const { role, content, outlets } = message;
+  const isUser = role === "user";
 
   return (
     <div
-      className={`clear-both ${
-        role === "user"
+      className={`clear-both mb-2 ${
+        isUser
           ? "float-right bg-blue-50 rounded-lg rounded-br-none"
           : "float-left bg-white border border-gray-200 rounded-lg rounded-bl-none"
       } p-3 max-w-[85%]`}
     >
-      <div className="text-sm leading-relaxed break-words">{content}</div>
+      {isUser ? (
+        <div className="text-sm leading-relaxed break-words">{content}</div>
+      ) : (
+        <div className="text-sm leading-relaxed chatbot-message">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
+      )}
 
-      {outlets && outlets.length > 0 && (
+      {outlets?.length > 0 && (
         <div className="mt-2 bg-gray-50 rounded p-2 text-xs">
           <h4 className="font-medium text-gray-700 mb-1 text-xs">
             Related Outlets:

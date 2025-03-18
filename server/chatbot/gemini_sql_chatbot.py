@@ -83,26 +83,28 @@ Database Schema:
 
 Table: outlets
 - id (integer, primary key)
-- name (varchar, unique)
+- name (varchar(100), unique, not null)
 - address (text)
 - waze_link (text)
-- latitude (numeric)
-- longitude (numeric)
-- created_at (timestamp)
-- updated_at (timestamp)
+- latitude (numeric(10,8))
+- longitude (numeric(11,8))
+- created_at (timestamp with time zone)
+- updated_at (timestamp with time zone)
 - raw_operating_hours (text)
 
 Table: operating_hours
 - id (integer, primary key)
-- outlet_id (integer, foreign key to outlets.id)
-- day_of_week (varchar) - Contains values like 'Monday', 'Tuesday', etc.
-- opening_time (time)
-- closing_time (time)
-- is_closed (boolean)
-- created_at (timestamp)
-- updated_at (timestamp)
+- outlet_id (integer, foreign key to outlets.id with ON DELETE CASCADE)
+- day_of_week (varchar(20), not null) - Contains values like 'Monday', 'Tuesday', etc.
+- opening_time (time without time zone)
+- closing_time (time without time zone)
+- is_closed (boolean, default false)
 
-Relationship: operating_hours.outlet_id references outlets.id
+Relationship: operating_hours.outlet_id references outlets.id (with CASCADE delete)
+
+Example Query Patterns:
+- When querying by time, use NOW()::time for comparison with opening_time and closing_time
+- For day of week comparison, use trim(to_char(NOW(), 'Day')) to match day_of_week values
 """
         return schema
     
@@ -129,7 +131,8 @@ Relationship: operating_hours.outlet_id references outlets.id
     8. Limit large result sets to a reasonable number (10-20 rows).
     9. Include ordering where appropriate (ORDER BY).
     10. In the SELECT statement, select all the columns that might be useful from the user's question, include more is better than include less.
-    11. Only generate valid PostgreSQL SQL - do not include any explanation, markdown formatting, or backticks. Return ONLY the raw SQL query.
+    11. Take note of the column data type when comparing values.
+    12. Only generate valid PostgreSQL SQL - do not include any explanation, markdown formatting, or backticks. Return ONLY the raw SQL query.
 
     USER QUESTION: {question}
 
@@ -157,7 +160,6 @@ Relationship: operating_hours.outlet_id references outlets.id
                     sql_query = sql_query[:-3]
             
             sql_query = sql_query.strip()
-            print(f"Generated SQL: {sql_query}")
             
             # Basic validation
             if not sql_query.upper().startswith("SELECT"):
@@ -246,13 +248,11 @@ Relationship: operating_hours.outlet_id references outlets.id
             output += " | ".join(str(row[k] if row[k] is not None else "NULL") for k in keys) + "\n"
             
         return output
-    
+
     def _generate_response_with_gemini(self, question, query_results, chat_history):
         """Generate a natural language response from query results using Gemini"""
         if not self.model:
             raise ValueError("Gemini model not initialized")
-        
-        print(f"Database query results: {query_results}")
         
         # Format query results
         formatted_results = self._format_query_results(query_results)
@@ -263,7 +263,7 @@ Relationship: operating_hours.outlet_id references outlets.id
             for i, message in enumerate(chat_history[-3:]):  # Only last 3 messages
                 formatted_history += f"{message['role'].upper()}: {message['content']}\n"
         
-        # Create prompt
+        # Create prompt - simplified to request plain text instead of HTML
         prompt = f"""You are a helpful assistant for Subway restaurants in Kuala Lumpur.
 
 User Question: {question}
@@ -275,6 +275,8 @@ Previous Conversation:
 {formatted_history}
 
 Please provide a helpful, conversational answer based on the database results. If the results include outlet names, mention them specifically. If the results include counts, provide the exact number. If the results include times, format them nicely. If the results are empty, say you couldn't find information matching the query. Keep your answer concise but complete.
+
+Use markdown format to return the answer.
 
 Your response:"""
         

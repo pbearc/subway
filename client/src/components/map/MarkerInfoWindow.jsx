@@ -20,6 +20,10 @@ const MarkerInfoWindow = ({
       onCloseClick={onClose}
       options={{
         pixelOffset: new window.google.maps.Size(0, -30),
+        // Disable auto pan to prevent map movement
+        disableAutoPan: true,
+        // Make sure InfoWindow is always on top
+        zIndex: 9999,
       }}
     >
       <div className="p-1 max-w-[250px]">
@@ -29,16 +33,10 @@ const MarkerInfoWindow = ({
         <p className="text-sm mb-1 text-gray-700 break-words">
           {outlet.address || "No address available"}
         </p>
-
-        {/* Status indicator */}
         <div className="mt-2">
           <StatusIndicator status={outletStatus} size="small" />
         </div>
-
-        {/* Today's operating hours */}
         <div className="text-xs text-gray-600 mt-1">{todayHours}</div>
-
-        {/* View details hint */}
         <div className="text-xs text-blue-500 mt-2 italic">
           Click on the marker for more details
         </div>

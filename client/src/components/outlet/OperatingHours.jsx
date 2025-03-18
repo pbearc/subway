@@ -4,27 +4,27 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import { formatTime } from "../../utils/formatters";
 
+const DAYS_OF_WEEK = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
 const OperatingHours = ({ hours }) => {
-  // Sort days of the week in proper order using useMemo to avoid unnecessary re-sorts
   const sortedHours = useMemo(() => {
-    if (!hours || hours.length === 0) return [];
-
-    const days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
-
+    if (!hours?.length) return [];
     return [...hours].sort(
-      (a, b) => days.indexOf(a.day_of_week) - days.indexOf(b.day_of_week)
+      (a, b) =>
+        DAYS_OF_WEEK.indexOf(a.day_of_week) -
+        DAYS_OF_WEEK.indexOf(b.day_of_week)
     );
   }, [hours]);
 
-  if (!hours || hours.length === 0) {
+  if (!hours?.length) {
     return (
       <p className="text-sm text-gray-500">No operating hours available</p>
     );

@@ -5,11 +5,12 @@ import PropTypes from "prop-types";
 import Icon from "../common/Icon";
 import useSearch from "../../hooks/useSearch";
 
-/**
- * Header component with search functionality
- */
+const SORT_OPTIONS = {
+  NAME: "name",
+  AREA: "area",
+};
+
 const Header = ({ outlets, onOutletSelect }) => {
-  // Use the search hook to get all search related functions and state
   const {
     searchTerm,
     isSearchOpen,
@@ -23,12 +24,23 @@ const Header = ({ outlets, onOutletSelect }) => {
     handleSelect,
   } = useSearch(outlets, onOutletSelect);
 
-  return (
-    <header className="bg-green-800 text-white px-4 py-3 flex justify-between items-center shadow-md z-30">
-      <h1 className="text-xl font-bold">Subway Outlets in Kuala Lumpur</h1>
+  if (!outlets?.length)
+    return (
+      <header className="bg-green-800 text-white px-4 py-3 flex justify-between items-center shadow-md z-30">
+        <h1 className="text-xl font-bold">Subway Outlets in Kuala Lumpur</h1>
+      </header>
+    );
 
-      {/* Search dropdown in the header - mobile friendly */}
-      <div className="relative z-50 w-80 md:w-96 max-w-full" ref={searchRef}>
+  return (
+    <header className="bg-green-800 text-white px-4 py-3 flex flex-col sm:flex-row justify-between items-center shadow-md z-30">
+      <h1 className="text-xl font-bold mb-2 sm:mb-0">
+        Subway Outlets in Kuala Lumpur
+      </h1>
+
+      <div
+        className="relative z-50 w-full sm:w-80 md:w-96 max-w-full"
+        ref={searchRef}
+      >
         <div className="relative">
           <input
             type="text"
@@ -44,7 +56,6 @@ const Header = ({ outlets, onOutletSelect }) => {
           </div>
         </div>
 
-        {/* Dropdown results - shows on all screen sizes */}
         {isSearchOpen && outlets.length > 0 && (
           <div className="absolute mt-1 w-full bg-white rounded-lg shadow-lg overflow-hidden max-h-[80vh]">
             <div className="p-2 flex justify-end bg-gray-50 border-b">
@@ -52,31 +63,29 @@ const Header = ({ outlets, onOutletSelect }) => {
                 <span className="text-gray-600 mr-1">Sort by:</span>
                 <button
                   className={`mr-2 ${
-                    sortOption === "name"
+                    sortOption === SORT_OPTIONS.NAME
                       ? "text-green-600 font-medium"
                       : "text-gray-600"
                   }`}
-                  onClick={() => toggleSortOption("name")}
+                  onClick={() => toggleSortOption(SORT_OPTIONS.NAME)}
                 >
                   Name
                 </button>
                 <button
                   className={`${
-                    sortOption === "area"
+                    sortOption === SORT_OPTIONS.AREA
                       ? "text-green-600 font-medium"
                       : "text-gray-600"
                   }`}
-                  onClick={() => toggleSortOption("area")}
+                  onClick={() => toggleSortOption(SORT_OPTIONS.AREA)}
                 >
                   Area
                 </button>
               </div>
             </div>
 
-            {/* Improved scrollable container */}
             <div className="max-h-[300px] overflow-y-auto overflow-x-hidden">
-              {sortOption === "area" && groupedData ? (
-                // Group by area when sorting by area
+              {sortOption === SORT_OPTIONS.AREA && groupedData ? (
                 Object.keys(groupedData)
                   .sort()
                   .map((area) => (
@@ -91,7 +100,6 @@ const Header = ({ outlets, onOutletSelect }) => {
                             className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
                             onClick={() => handleSelect(outlet)}
                           >
-                            {/* Only show the outlet name */}
                             <div className="font-medium text-sm text-gray-800">
                               {outlet.name || "Unnamed Outlet"}
                             </div>
@@ -101,9 +109,7 @@ const Header = ({ outlets, onOutletSelect }) => {
                     </div>
                   ))
               ) : (
-                // Simple list when sorting by name
                 <ul>
-                  {/* Show all outlets when search is empty, otherwise show filtered */}
                   {(searchTerm.trim() === "" ? outlets : filteredOutlets).map(
                     (outlet) => (
                       <li
@@ -111,7 +117,6 @@ const Header = ({ outlets, onOutletSelect }) => {
                         className="px-3 py-2 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-0"
                         onClick={() => handleSelect(outlet)}
                       >
-                        {/* Only show the outlet name */}
                         <div className="font-medium text-sm text-gray-800">
                           {outlet.name || "Unnamed Outlet"}
                         </div>

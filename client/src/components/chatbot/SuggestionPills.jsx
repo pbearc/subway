@@ -3,16 +3,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-/**
- * Renders a set of suggestion pills for the chatbot
- */
 const SuggestionPills = ({ suggestions, onSuggestionClick }) => {
-  if (!suggestions || suggestions.length === 0) {
-    return null;
-  }
+  if (!suggestions?.length) return null;
 
   return (
-    <div className="flex flex-wrap gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
       {suggestions.map((suggestion, index) => (
         <button
           key={index}
