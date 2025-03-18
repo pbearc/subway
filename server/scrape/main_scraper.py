@@ -23,7 +23,18 @@ logger = logging.getLogger(__name__)
 
 def scrape_subway_outlets():
     logger.info("Starting the scraping process")
-    driver = webdriver.Chrome()
+    # Configure Chrome options for headless operation in Render
+    from selenium.webdriver.chrome.options import Options
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
+    # Use a unique user data directory
+    chrome_options.add_argument("--user-data-dir=/tmp/chrome-user-data")
+    
+    driver = webdriver.Chrome(options=chrome_options)
     driver.get(SCRAPER_CONFIG['url'])
     logger.info(f"Opened URL: {SCRAPER_CONFIG['url']}")
     
