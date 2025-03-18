@@ -3,13 +3,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Any truly global styles that can't be handled by Tailwind */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Optional: Define any custom CSS for no-scrollbar utility */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.fixed {
+  max-width: 100vw;
+}
+
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -85,4 +106,54 @@ body {
 
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+/* * {
+  max-width: 100%;
+  box-sizing: border-box;
+} */
+
+/* Ensure map container is responsive */
+.map-container,
+.leaflet-container {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+/* Force body and all major containers to respect viewport dimensions */
+body,
+#root,
+.app-container,
+main {
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ensure all images and media are responsive */
+img,
+video,
+iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure tables don't cause horizontal overflow */
+table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* Ensure no fixed widths on small screens */
+@media (max-width: 640px) {
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
 }

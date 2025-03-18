@@ -117,16 +117,11 @@ const OutletDetails = ({ outlet, onClose }) => {
     };
   }, [outlet?.id, outlet?.operating_hours]);
 
-  // Toggle 5km radius display
-  const toggleRadiusDisplay = useCallback(() => {
-    if (showingRadius) {
-      outlet?.hideRadius?.();
-      setShowingRadius(false);
-    } else {
-      outlet?.showRadius?.(outlet);
-      setShowingRadius(true);
-    }
-  }, [outlet, showingRadius]);
+  // Show 5km radius only (no toggle functionality)
+  const showRadiusDisplay = useCallback(() => {
+    outlet?.showRadius?.(outlet);
+    setShowingRadius(true);
+  }, [outlet]);
 
   // Render nothing if no outlet
   if (!outlet) return null;
@@ -209,13 +204,13 @@ const OutletDetails = ({ outlet, onClose }) => {
         {/* 5KM Radius Button */}
         <div>
           <Button
-            onClick={toggleRadiusDisplay}
-            variant={showingRadius ? "danger" : "blue"}
+            onClick={showRadiusDisplay}
+            variant="blue"
             className="w-full"
             icon={<Icon name="map" size={4} />}
             iconPosition="left"
           >
-            {showingRadius ? "Hide 5KM Radius" : "Show 5KM Radius"}
+            Show 5KM Radius
           </Button>
         </div>
 
@@ -291,13 +286,13 @@ const OutletDetails = ({ outlet, onClose }) => {
         {/* 5KM Radius Button */}
         <div>
           <Button
-            onClick={toggleRadiusDisplay}
-            variant={showingRadius ? "danger" : "blue"}
+            onClick={showRadiusDisplay}
+            variant="blue"
             className="w-full"
             icon={<Icon name="map" size={4} />}
             iconPosition="left"
           >
-            {showingRadius ? "Hide 5KM Radius" : "Show 5KM Radius"}
+            Show 5KM Radius
           </Button>
         </div>
 
