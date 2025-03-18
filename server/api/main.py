@@ -30,9 +30,6 @@ app.add_middleware(
 async def startup_event():
     # Create tables and populate data if needed
     try:
-        # Skip Alembic migrations for now since you don't have it configured
-        # and directly use SQLAlchemy to create tables
-        
         from server.db.db_manager import DatabaseManager
         from server.db.models import Outlet, Base
         from server.config import DB_CONFIG
@@ -52,8 +49,9 @@ async def startup_event():
             if outlet_count == 0:
                 print("No data found, running scraper...")
                 # Import and run scraper
-                from server.scrape.main_scraper import run_scraper
-                run_scraper()
+                from server.scrape.main_scraper import scrape_subway_outlets, save_to_database
+                outlets_data, operating_hours_data = scrape_subway_outlets()
+                save_to_database(outlets_data, operating_hours_data)
                 print("Data population completed")
             else:
                 print("Database already has data, skipping scraper")
