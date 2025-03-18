@@ -13,6 +13,9 @@ class GeminiSQLChatbot:
         """Initialize the Gemini-powered SQL Chatbot system"""
         print("Initializing Gemini SQL Chatbot System...")
         
+        # Start timing initialization
+        start_time = datetime.now()
+        
         # Set up database connection
         self.db_engine = create_engine(db_url)
         self.test_db_connection()
@@ -33,7 +36,10 @@ class GeminiSQLChatbot:
         # Pre-load some common data
         self.outlet_count = self._get_total_outlet_count()
         
-        print("Gemini SQL Chatbot system initialized successfully")
+        # Calculate initialization time
+        end_time = datetime.now()
+        init_duration = (end_time - start_time).total_seconds()
+        print(f"Gemini SQL Chatbot system initialized successfully in {init_duration:.2f} seconds")
     
     def test_db_connection(self):
         """Test the database connection"""
@@ -52,6 +58,7 @@ class GeminiSQLChatbot:
     def _setup_gemini(self):
         """Set up Gemini model"""
         try:
+            print("Setting up Gemini API...")
             # Configure the Gemini API
             genai.configure(api_key=self.gemini_api_key)
             
@@ -59,6 +66,7 @@ class GeminiSQLChatbot:
             self.model = genai.GenerativeModel('gemini-1.5-pro')
             
             # Test the model with a simple query
+            print("Testing Gemini API with a simple query...")
             response = self.model.generate_content("Hello")
             print("Gemini API setup successful")
         except Exception as e:
@@ -69,9 +77,12 @@ class GeminiSQLChatbot:
     def _get_total_outlet_count(self):
         """Get the total number of outlets"""
         try:
+            print("Pre-loading outlet count...")
             with self.db_engine.connect() as conn:
                 result = conn.execute(text("SELECT COUNT(*) FROM outlets"))
-                return result.scalar()
+                count = result.scalar()
+                print(f"Found {count} outlets in the database")
+                return count
         except SQLAlchemyError as e:
             print(f"Error getting outlet count: {str(e)}")
             return 0

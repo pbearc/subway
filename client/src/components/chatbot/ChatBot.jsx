@@ -52,16 +52,34 @@ const ChatBot = ({ onOutletSelect }) => {
     });
   }, []);
 
+  // Scroll to bottom when messages change or when loading state changes
   useEffect(() => {
-    scrollToBottom();
-    const scrollTimer1 = setTimeout(scrollToBottom, 100);
-    const scrollTimer2 = setTimeout(scrollToBottom, 300);
+    if (isOpen) {
+      scrollToBottom();
+      // Add multiple timers to ensure scrolling works properly across different browsers/scenarios
+      const scrollTimer1 = setTimeout(scrollToBottom, 100);
+      const scrollTimer2 = setTimeout(scrollToBottom, 300);
 
-    return () => {
-      clearTimeout(scrollTimer1);
-      clearTimeout(scrollTimer2);
-    };
-  }, [messages, isLoading, scrollToBottom]);
+      return () => {
+        clearTimeout(scrollTimer1);
+        clearTimeout(scrollTimer2);
+      };
+    }
+  }, [messages, isLoading, scrollToBottom, isOpen]);
+
+  // Scroll to bottom when the chat window is opened
+  useEffect(() => {
+    if (isOpen) {
+      // Multiple timeouts at different intervals to ensure scrolling works reliably
+      const scrollTimers = [50, 100, 200, 300, 500].map((delay) =>
+        setTimeout(scrollToBottom, delay)
+      );
+
+      return () => {
+        scrollTimers.forEach((timer) => clearTimeout(timer));
+      };
+    }
+  }, [isOpen, scrollToBottom]);
 
   useEffect(() => {
     if (messages.length > 1) {
@@ -101,7 +119,10 @@ const ChatBot = ({ onOutletSelect }) => {
         addErrorMessage(CONSTANTS.ERROR_MESSAGE);
       } finally {
         setIsLoading(false);
-        setTimeout(scrollToBottom, 100);
+        // Force multiple scroll attempts to ensure it works reliably
+        setTimeout(scrollToBottom, 50);
+        setTimeout(scrollToBottom, 150);
+        setTimeout(scrollToBottom, 300);
       }
     },
     [
@@ -127,12 +148,20 @@ const ChatBot = ({ onOutletSelect }) => {
     resetSuggestions();
   }, [sessionId, resetMessages, resetSuggestions]);
 
+  const handleChatOpen = useCallback(() => {
+    setIsOpen(true);
+    // Schedule multiple scroll attempts after the chat is opened
+    setTimeout(scrollToBottom, 50);
+    setTimeout(scrollToBottom, 150);
+    setTimeout(scrollToBottom, 300);
+  }, [scrollToBottom]);
+
   // When chat is closed, show the chat button
   if (!isOpen) {
     return (
       <button
         className="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-green-600 text-white shadow-md flex items-center justify-center text-2xl z-50 hover:scale-105 transition-transform focus:outline-none"
-        onClick={() => setIsOpen(true)}
+        onClick={handleChatOpen}
         aria-label="Chat with bot"
       >
         🤖

@@ -14,6 +14,11 @@ def initialize_chatbot():
     """Initialize the Gemini SQL Chatbot system."""
     global chatbot_system
     
+    # Skip if already initialized
+    if chatbot_system is not None:
+        print("Chatbot system already initialized")
+        return "Chatbot system already initialized"
+    
     print("Starting Gemini SQL Chatbot system initialization...")
     
     # Create DB connection string from config
@@ -31,18 +36,21 @@ class ChatbotResponse(BaseModel):
     relevant_outlets: List[Dict[str, Any]]
     session_id: str
 
-# Dependency to ensure chatbot system is initialized
-async def get_chatbot_system():
+# Dependency to get the initialized chatbot system
+def get_chatbot_system():
     global chatbot_system
     if chatbot_system is None:
-        initialize_chatbot()
+        raise HTTPException(
+            status_code=503, 
+            detail="Chatbot system not initialized. Please wait a moment and try again."
+        )
     return chatbot_system
 
 @router.get("/initialize")
-def init_chatbot_endpoint(background_tasks: BackgroundTasks):
-    """Initialize the chatbot system (can take time, so run in background)."""
-    background_tasks.add_task(initialize_chatbot)
-    return {"message": "Initializing Gemini SQL Chatbot system in the background. This may take a few moments."}
+def init_chatbot_endpoint():
+    """Initialize the chatbot system (now runs synchronously since it's likely already initialized)."""
+    result = initialize_chatbot()
+    return {"message": result}
 
 @router.get("/query", response_model=ChatbotResponse)
 def query_chatbot(

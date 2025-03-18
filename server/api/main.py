@@ -55,6 +55,11 @@ async def startup_event():
                 print("Data population completed")
             else:
                 print("Database already has data, skipping scraper")
+                
+        # Initialize the chatbot at startup
+        from server.api.endpoints.chatbot import initialize_chatbot
+        initialize_chatbot()
+                
     except Exception as e:
         print(f"Error during startup: {e}")
         print("Detailed traceback:")
