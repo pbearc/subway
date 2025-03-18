@@ -2,8 +2,6 @@
 
 This is the frontend component of the Subway Outlet Finder application, providing an interactive user interface for exploring Subway restaurant outlets.
 
----
-
 ## Features
 
 - **Interactive Map**: Visualizes all Subway outlets with markers and info windows.
@@ -13,8 +11,6 @@ This is the frontend component of the Subway Outlet Finder application, providin
 - **AI-Powered Chatbot**: Provides natural language query support for finding outlets.
 - **Responsive Design**: Works on both mobile and desktop devices.
 
----
-
 ## Architecture
 
 The frontend follows a **component-based architecture** using React:
@@ -23,8 +19,6 @@ The frontend follows a **component-based architecture** using React:
 2. **Custom Hooks**: Encapsulated logic for data fetching and state management.
 3. **Context Providers**: Global state management for application data.
 4. **Services**: Handles API integration and external service communication.
-
----
 
 ## Key Technical Decisions
 
@@ -37,8 +31,6 @@ The frontend follows a **component-based architecture** using React:
 - **Virtual DOM**: Ensures efficient UI updates.
 - **Large Ecosystem**: Access to a wide range of libraries and community support.
 
----
-
 ### Google Maps Integration
 
 **Choice**: Google Maps API over alternatives like Mapbox or Leaflet.  
@@ -47,8 +39,6 @@ The frontend follows a **component-based architecture** using React:
 - **Global Coverage**: Comprehensive map data, particularly important for Malaysia.
 - **Familiar Interface**: Most users are already accustomed to Google Maps.
 - **Rich Features**: Includes markers, info windows, and geocoding.
-
----
 
 ### Tailwind CSS
 
@@ -59,8 +49,6 @@ The frontend follows a **component-based architecture** using React:
 - **Customizability**: Highly configurable without overriding pre-built components.
 - **Smaller Bundle Size**: Purges unused styles for optimized performance.
 
----
-
 ### Axios
 
 **Choice**: Axios over the Fetch API.  
@@ -69,8 +57,6 @@ The frontend follows a **component-based architecture** using React:
 - **Automatic JSON Transformation**: Simplifies data handling.
 - **Interceptors**: Allows global request/response handling.
 - **Request Cancellation**: Supports cancellation of ongoing requests.
-
----
 
 ### React Router
 
@@ -81,8 +67,6 @@ The frontend follows a **component-based architecture** using React:
 - **Nested Routes**: Supports complex UI structures.
 - **Programmatic Navigation**: Enables dynamic navigation.
 
----
-
 ### Context API
 
 **Choice**: React Context API for state management.  
@@ -92,10 +76,9 @@ The frontend follows a **component-based architecture** using React:
 - **Avoids Prop Drilling**: Reduces the need to pass props through multiple components.
 - **Custom Hooks Integration**: Works well with custom hooks for state management.
 
----
-
 ## Project Structure
 
+```
 client/
 ├── public/ # Static files
 │ ├── index.html # HTML entry point for the React app
@@ -138,3 +121,4 @@ client/
 │ └── formatter.js # Utility for formatting data (e.g., dates, times)
 ├── App.js # Main application component (root component)
 └── index.js # JavaScript entry point for the React app
+```

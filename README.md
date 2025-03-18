@@ -137,22 +137,27 @@ The frontend will be available at http://localhost:3000.
 
 ## Project Structure
 
+```
 subway-outlet/
 ├── client/ # Frontend React application
 │ ├── public/ # Static files
 │ └── src/ # Source code
 │ ├── components/ # UI components
 │ ├── hooks/ # Custom React hooks
-│ ├── pages/ # Page components
 │ ├── services/ # API service functions
 │ └── context/ # React context providers
 │
 ├── server/ # Backend FastAPI application
+│ ├── alembic/ # For data migration
 │ ├── api/ # API endpoints
 │ │ ├── endpoints/ # API route handlers
+│ │ ├── models/ # Models for database tables
 │ │ └── main.py # FastAPI app initialization
 │ ├── chatbot/ # Chatbot implementation
 │ ├── db/ # Database models and manager
 │ └── scrape/ # Web scraping functionality
 │
+├── config.py # Configuration settings
+├── alembic.ini # Alembic configuration file
 └── requirements.txt # Python dependencies
+```

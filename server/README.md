@@ -67,8 +67,6 @@ The database consists of two main tables: `outlets` and `operating_hours`. Below
 - Primary key: `id`
 - Foreign key: `outlet_id` references `outlets.id` (with `ON DELETE CASCADE`).
 
----
-
 ## Key Technical Decisions
 
 ### FastAPI Framework
@@ -81,8 +79,6 @@ The database consists of two main tables: `outlets` and `operating_hours`. Below
 - **Type Safety**: Native support for Python type hints and Pydantic models.
 - **Modern Features**: Includes dependency injection, background tasks, and WebSocket support.
 
----
-
 ### SQLAlchemy ORM
 
 **Choice**: SQLAlchemy with PostgreSQL.  
@@ -93,8 +89,6 @@ The database consists of two main tables: `outlets` and `operating_hours`. Below
 - **Transaction Management**: Ensures data integrity during complex operations.
 - **Connection Pooling**: Improves performance by reusing database connections.
 
----
-
 ### PostgreSQL Database
 
 **Choice**: PostgreSQL over alternatives like MySQL or MongoDB.  
@@ -103,8 +97,6 @@ The database consists of two main tables: `outlets` and `operating_hours`. Below
 - **Geospatial Support**: Essential for location-based queries (e.g., finding nearby outlets).
 - **ACID Compliance**: Ensures data reliability and integrity.
 - **Scalability**: Handles large datasets and complex queries efficiently.
-
----
 
 ### Google Gemini API
 
@@ -115,8 +107,6 @@ The database consists of two main tables: `outlets` and `operating_hours`. Below
 - **Speed**: Runs on Google’s infrastructure, eliminating the need for local GPU resources.
 - **Natural Language Understanding**: Generates accurate SQL queries from natural language questions.
 
----
-
 ### Selenium Web Scraping
 
 **Choice**: Selenium over alternatives like Beautiful Soup.  
@@ -124,8 +114,6 @@ The database consists of two main tables: `outlets` and `operating_hours`. Below
 
 - **Dynamic Content**: Handles JavaScript-rendered websites.
 - **Automation**: Simulates browser interactions for complex scraping tasks.
-
----
 
 ## Initialization Process
 
@@ -146,8 +134,6 @@ When the `main.py` file is executed, the following steps occur:
 
 4. **API Endpoints**:
    - Routers for `outlet` and `chatbot` endpoints are included, handling requests related to Subway outlets and chatbot interactions.
-
----
 
 ## API Endpoints
 
@@ -171,8 +157,6 @@ When the `main.py` file is executed, the following steps occur:
 | `/chatbot/session/{session_id}` | DELETE | Delete a specific chat session.       |
 | `/chatbot/maintenance/cleanup`  | GET    | Clean up old sessions to free memory. |
 | `/chatbot/status`               | GET    | Get the status of the chatbot system. |
-
----
 
 ## Chatbot Features
 
@@ -199,16 +183,13 @@ When the `main.py` file is executed, the following steps occur:
 6. **Relevant Outlet Extraction**:
    - Extracts relevant outlets from query results for display on a map.
 
----
-
 ## Deployment
 
 The backend is deployed on **Render** as a Web Service, with automatic deployments from the `main` branch. The PostgreSQL database is hosted as a **Render PostgreSQL** service.
 
----
-
 ## Project Structure
 
+```
 server/
 ├── alembic/ # Database migration scripts
 │ ├── versions/ # Migration version files
@@ -234,3 +215,4 @@ server/
 ├── config.py # Configuration settings (e.g., database credentials, API keys)
 ├── alembic.ini # Alembic configuration file for database migrations
 └── requirements.txt # Python dependencies for the backend
+```
