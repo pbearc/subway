@@ -18,7 +18,7 @@ from process_operating_hours import process_operating_hours
 
 # Import config from project root
 sys.path.insert(0, str(project_root))
-from config import DB_CONFIG
+from server.config import DB_CONFIG
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

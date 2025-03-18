@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 
 from server.chatbot.gemini_sql_chatbot import GeminiSQLChatbot
-from config import DB_CONFIG, GEMINI_API_KEY
+from server.config import DB_CONFIG, GEMINI_API_KEY
 
 router = APIRouter(prefix="/chatbot", tags=["chatbot"])
 

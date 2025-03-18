@@ -10,7 +10,7 @@ sys.path.insert(0, project_root)
 from sqlalchemy import engine_from_config, pool
 from dotenv import load_dotenv
 
-from config import DB_CONFIG
+from server.config import DB_CONFIG
 from server.db.models import Base
 
 from alembic import context

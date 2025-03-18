@@ -176,7 +176,7 @@ const OutletDetails = ({ outlet, onClose }) => {
         <div className="mt-4">
           <Button
             onClick={toggleRadiusDisplay}
-            variant={showingRadius ? "danger" : "primary"}
+            variant={showingRadius ? "danger" : "blue"}
             className={`py-2 px-3 text-sm shadow-sm ${
               !showingRadius
                 ? "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500"

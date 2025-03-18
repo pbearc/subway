@@ -3,7 +3,7 @@ from typing import List, Optional
 from server.db.db_manager import DatabaseManager
 from server.db.models import Outlet, OperatingHours
 from server.api.models import outlet as outlet_models # Import Pydantic models
-from config import DB_CONFIG
+from server.config import DB_CONFIG
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/outlets", tags=["outlets"])

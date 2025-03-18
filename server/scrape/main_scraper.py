@@ -15,7 +15,7 @@ from server.scrape.geocoding import geocode_address_google
 from server.scrape.process_operating_hours import process_operating_hours
 from server.db.db_manager import DatabaseManager
 
-from config import DB_CONFIG, SCRAPER_CONFIG
+from server.config import DB_CONFIG, SCRAPER_CONFIG
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
