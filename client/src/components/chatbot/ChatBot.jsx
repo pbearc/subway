@@ -140,37 +140,37 @@ const ChatBot = ({ onOutletSelect }) => {
     );
   }
 
-  // Full-screen chat window for mobile, normal size for desktop
+  // Mobile-first approach: full screen on small screens, fixed size on larger screens
   return (
     <div
       className="fixed inset-0 md:inset-auto md:bottom-5 md:right-5 md:w-96 md:h-[600px] md:max-h-[80vh] md:min-w-[300px] md:min-h-[400px] md:rounded-lg shadow-lg flex flex-col bg-white z-50 overflow-hidden"
       ref={chatWindowRef}
     >
-      {/* Header with larger buttons on mobile */}
-      <div className="flex justify-between items-center p-3 bg-green-600 text-white md:bg-gray-50 md:text-gray-800 border-b border-gray-200">
+      {/* Header with full-width layout */}
+      <div className="flex justify-between items-center p-3 bg-green-600 text-white">
         <div className="flex items-center">
           <span className="mr-2 text-lg">🤖</span>
           <h3 className="text-base font-semibold m-0">Subway Assistant</h3>
         </div>
         <div className="flex items-center">
           <button
-            className="p-2 text-white md:text-gray-500 bg-green-700 md:bg-transparent hover:bg-green-800 md:hover:bg-gray-100 rounded-full focus:outline-none ml-1"
+            className="p-2 text-white bg-green-700 hover:bg-green-800 rounded-full focus:outline-none ml-1"
             onClick={clearChat}
             aria-label="Clear chat"
           >
-            <Icon name="trash" size={5} className="md:h-4 md:w-4" />
+            <Icon name="trash" size={5} />
           </button>
           <button
-            className="p-2 text-white md:text-gray-500 bg-green-700 md:bg-transparent hover:bg-green-800 md:hover:bg-gray-100 rounded-full focus:outline-none ml-1"
+            className="p-2 text-white bg-green-700 hover:bg-green-800 rounded-full focus:outline-none ml-1"
             onClick={() => setIsOpen(false)}
             aria-label="Close chat"
           >
-            <Icon name="close" size={5} className="md:h-4 md:w-4" />
+            <Icon name="close" size={5} />
           </button>
         </div>
       </div>
 
-      {/* Messages area */}
+      {/* Messages area with full height consideration */}
       <div
         className="flex-1 p-4 overflow-y-auto bg-gray-50"
         ref={messagesContainerRef}
@@ -207,7 +207,7 @@ const ChatBot = ({ onOutletSelect }) => {
         />
       </div>
 
-      {/* Input area with larger input on mobile */}
+      {/* Input area with mobile-friendly sizing */}
       <form
         className="flex p-2 border-t border-gray-200 bg-white"
         onSubmit={handleSubmit}
@@ -218,15 +218,15 @@ const ChatBot = ({ onOutletSelect }) => {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about Subway outlets..."
           disabled={isLoading}
-          className="flex-1 px-3 py-3 md:py-2 border border-gray-300 border-r-0 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-green-500 text-sm disabled:bg-gray-100"
+          className="flex-1 px-3 py-3 border border-gray-300 border-r-0 rounded-l-lg focus:outline-none focus:ring-1 focus:ring-green-500 text-sm disabled:bg-gray-100"
           autoFocus
         />
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="px-4 md:px-3 py-3 md:py-2 bg-green-600 text-white rounded-r-lg disabled:bg-gray-300 hover:bg-green-700"
+          className="px-4 py-3 bg-green-600 text-white rounded-r-lg disabled:bg-gray-300 hover:bg-green-700"
         >
-          <Icon name="send" size={5} className="md:h-4 md:w-4" />
+          <Icon name="send" size={5} />
         </button>
       </form>
     </div>
