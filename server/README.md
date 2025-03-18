@@ -2,8 +2,6 @@
 
 This is the backend component of the Subway Outlet Finder application, providing a robust API for accessing Subway restaurant outlet data across Kuala Lumpur and surrounding areas.
 
----
-
 ## Features
 
 - **RESTful API endpoints** for Subway outlet data
@@ -13,8 +11,6 @@ This is the backend component of the Subway Outlet Finder application, providing
 - **Geospatial queries** for finding nearby outlets
 - **Detailed operating hours** information
 
----
-
 ## Architecture
 
 The backend follows a **layered architecture** pattern:
@@ -23,8 +19,6 @@ The backend follows a **layered architecture** pattern:
 2. **Business Logic Layer**: Service components implementing core functionality.
 3. **Data Access Layer**: Database interaction through SQLAlchemy ORM.
 4. **External Integration Layer**: Gemini API integration and web scraping.
-
----
 
 ## Database Structure
 

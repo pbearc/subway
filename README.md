@@ -2,7 +2,11 @@
 
 An interactive web application to find and explore Subway restaurant outlets across Kuala Lumpur and surrounding areas.
 
+📚 For more comprehensive documentation, please visit the /client and /server for their README.md
+
 ## Demo
+
+(Wait for a moment to be loaded)
 
 ![Demo Video](./assets/demo.gif)
 
