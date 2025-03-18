@@ -9,7 +9,11 @@ app = FastAPI()
 app.include_router(outlet.router)
 app.include_router(chatbot.router)
 
-origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+default_origins = "http://localhost:3000,https://subway-outlets-frontend.onrender.com"
+origins_str = os.getenv("CORS_ORIGINS", default_origins)
+origins = [origin.strip() for origin in origins_str.split(",")]
+
+print(f"Allowing CORS for origins: {origins}")  # Debug message
 
 app.add_middleware(
     CORSMiddleware,
